@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--
+  ═══════════════════════════════════════════════════════════════
+  PIXEL — Snippet à coller dans le <head> de toutes les pages
+  ═══════════════════════════════════════════════════════════════
+
+  COMMENT L'UTILISER
+  ──────────────────
+  1. Ouvre chaque page HTML du site (index.html et les 6 fiches produits)
+  2. Dans le <head>, remplace/complète les balises existantes par le bloc
+     ci-dessous. Le plus important : les <link rel="icon"> et <link rel="manifest">
+     ne sont PAS encore présents — il faut les ajouter.
+  3. Vérifie que les chemins (/assets/...) correspondent à ton arborescence
+     une fois en ligne. En local, remplace par ../assets/ depuis /products/.
+
+  ÉGALEMENT À FAIRE UNE FOIS EN PROD
+  ──────────────────────────────────
+  • Déposer sitemap.xml et robots.txt à la racine du domaine
+    (→ https://pixelwear.fr/sitemap.xml et https://pixelwear.fr/robots.txt)
+  • Déclarer le sitemap dans Google Search Console
+  • Tester l'OG image sur https://www.opengraph.xyz/ ou
+    https://cards-dev.twitter.com/validator
+  • Tester les favicons sur https://realfavicongenerator.net/favicon_checker
+-->
+
+<!-- ─── FAVICONS ────────────────────────────────────────────── -->
+<link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+<link rel="manifest" href="/assets/site.webmanifest">
+<meta name="theme-color" content="#0A0A0A">
+<meta name="msapplication-TileColor" content="#0A0A0A">
+
+<!-- ─── OPEN GRAPH (à corriger : l'image existe maintenant) ─── -->
+<meta property="og:image" content="https://pixelwear.fr/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="PIXEL — Streetwear Gaming Pixel Art, Made in Portugal">
+
+<!-- ─── TWITTER CARD ──────────────────────────────────────────── -->
+<meta name="twitter:image" content="https://pixelwear.fr/assets/og-image.png">
+<meta name="twitter:image:alt" content="PIXEL — Streetwear Gaming Pixel Art">
+
+<!-- ─── PERFORMANCE (preconnect Google Fonts) ─────────────────── -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PIXEL — Brand Identity Book</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --noir:    #0A0A0A;
+    --blanc:   #F5F5F5;
+    --rouge:   #FF2D55;
+    --cyan:    #00D4E8;
+    --violet:  #7B2FBE;
+    --gris:    #2A2A2A;
+    --gris-l:  #1A1A1A;
+    --gris-m:  #888;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--noir);
+    color: var(--blanc);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* ── NAV ─────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid #222;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 56px;
+  }
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem; font-weight: 700;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .nav-logo .sq { width: 18px; height: 18px; background: var(--rouge); display: inline-block; }
+  .nav-links { display: flex; gap: 1.5rem; }
+  .nav-links a {
+    font-family: 'Space Mono', monospace; font-size: 0.72rem;
+    color: var(--gris-m); text-decoration: none; text-transform: uppercase;
+    letter-spacing: 0.08em; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--rouge); }
+
+  /* ── COVER ───────────────────────────────── */
+  .cover {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .cover-grid {
+    position: absolute; inset: 0; opacity: 0.06;
+    background-image:
+      linear-gradient(var(--blanc) 1px, transparent 1px),
+      linear-gradient(90deg, var(--blanc) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+  }
+  .cover-logo-block {
+    display: flex; flex-direction: column; align-items: center; gap: 0;
+    position: relative; z-index: 1;
+  }
+  .logo-square-big {
+    width: 80px; height: 80px;
+    background: var(--rouge);
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .logo-square-big::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 12px, rgba(0,0,0,0.15) 12px, rgba(0,0,0,0.15) 13px
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 12px, rgba(0,0,0,0.15) 12px, rgba(0,0,0,0.15) 13px
+    );
+  }
+  .cover h1 {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(5rem, 15vw, 10rem);
+    font-weight: 700; letter-spacing: -0.02em;
+    color: var(--blanc);
+    line-height: 0.9;
+    position: relative; z-index: 1;
+  }
+  .cover-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem; letter-spacing: 0.25em;
+    color: var(--gris-m); text-transform: uppercase;
+    margin-top: 1.5rem; position: relative; z-index: 1;
+  }
+  .cover-tagline {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: var(--rouge); margin-top: 2.5rem;
+    position: relative; z-index: 1;
+    border: 1px solid var(--rouge); padding: 0.7rem 2rem;
+    letter-spacing: 0.1em;
+  }
+  .cover-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem; color: #444;
+    margin-top: 4rem; position: relative; z-index: 1;
+  }
+  .pixel-bar {
+    width: 100%; height: 6px;
+    background: linear-gradient(90deg, var(--rouge), var(--violet), var(--cyan), var(--rouge));
+    background-size: 200% 100%;
+  }
+
+  /* ── SECTIONS ────────────────────────────── */
+  section { padding: 5rem 0; border-bottom: 1px solid #1a1a1a; }
+  .container { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem; color: var(--rouge);
+    text-transform: uppercase; letter-spacing: 0.2em;
+    margin-bottom: 0.6rem;
+  }
+  h2 {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700; color: var(--blanc);
+    margin-bottom: 2.5rem; line-height: 1.15;
+  }
+  h3 {
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem; font-weight: 700;
+    color: var(--rouge); margin: 2.5rem 0 0.8rem;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  p { color: #ccc; margin-bottom: 1.2rem; font-weight: 300; font-size: 0.97rem; }
+  strong { color: var(--blanc); font-weight: 600; }
+
+  /* ── DIVIDER ─────────────────────────────── */
+  .divider {
+    height: 1px; background: #222;
+    margin: 2.5rem 0;
+  }
+  .divider.red { background: var(--rouge); opacity: 0.4; }
+
+  /* ── LOGO CONCEPT ────────────────────────── */
+  .logo-concept {
+    display: flex; gap: 2rem; margin: 2.5rem 0; flex-wrap: wrap;
+  }
+  .logo-variant {
+    flex: 1; min-width: 200px;
+    background: var(--gris-l);
+    border: 1px solid #2a2a2a;
+    padding: 2rem;
+    display: flex; flex-direction: column; align-items: center; gap: 1rem;
+    text-align: center;
+  }
+  .logo-variant .sq {
+    display: block;
+  }
+  .logo-variant .label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem; color: var(--gris-m);
+    text-transform: uppercase; letter-spacing: 0.15em;
+  }
+  .logo-variant .desc {
+    font-size: 0.82rem; color: #777; margin: 0;
+  }
+
+  /* ── LOGO INTEGRATION DEMO ───────────────── */
+  .logo-integration {
+    background: var(--gris-l); border: 1px solid #2a2a2a;
+    padding: 2.5rem; margin: 2rem 0;
+    display: flex; gap: 3rem; align-items: center; flex-wrap: wrap;
+  }
+  .logo-scene {
+    position: relative;
+    width: 180px; height: 180px; flex-shrink: 0;
+    font-size: 10px; line-height: 1;
+  }
+  /* Pixel Mario simple en CSS grid */
+  .pixel-art {
+    display: grid;
+    grid-template-columns: repeat(11, 14px);
+    grid-template-rows: repeat(12, 14px);
+    gap: 1px;
+  }
+  .px { width: 14px; height: 14px; }
+  .logo-integration-text h3 { margin-top: 0; }
+  .logo-integration-text p { font-size: 0.9rem; }
+
+  /* ── PALETTE ─────────────────────────────── */
+  .palette { display: flex; gap: 0; margin: 2rem 0; flex-wrap: wrap; }
+  .swatch {
+    flex: 1; min-width: 100px;
+    height: 100px;
+    display: flex; flex-direction: column;
+    justify-content: flex-end; padding: 0.7rem;
+    cursor: default;
+  }
+  .swatch .sw-name { font-family: 'Space Mono', monospace; font-size: 0.65rem; font-weight: 700; }
+  .swatch .sw-hex  { font-family: 'Space Mono', monospace; font-size: 0.6rem; opacity: 0.7; }
+
+  /* ── VALEURS ─────────────────────────────── */
+  .valeurs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1px; margin: 2rem 0; }
+  .valeur-card {
+    background: var(--gris-l);
+    padding: 2rem 1.5rem; border: 1px solid #222;
+    position: relative; overflow: hidden;
+  }
+  .valeur-card::before {
+    content: attr(data-num);
+    position: absolute; top: 1rem; right: 1.2rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 2.5rem; font-weight: 700;
+    opacity: 0.06; color: var(--blanc);
+  }
+  .valeur-card .v-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    margin-bottom: 0.8rem;
+  }
+  .valeur-card p { font-size: 0.88rem; margin: 0; }
+
+  /* ── TON ─────────────────────────────────── */
+  .ton-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+  .ton-table th {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em;
+    background: #1a1a1a; padding: 0.8rem 1rem; text-align: left;
+    border-bottom: 2px solid var(--rouge); color: var(--gris-m);
+  }
+  .ton-table td { padding: 0.9rem 1rem; border-bottom: 1px solid #222; font-size: 0.88rem; vertical-align: top; }
+  .ton-table tr:hover td { background: #111; }
+  .oui { color: #4caf50; }
+  .non { color: #e53935; }
+
+  /* ── COLLECTIONS ─────────────────────────── */
+  .collections-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px; margin: 2rem 0; }
+  .collection-card {
+    padding: 2.5rem 2rem;
+    position: relative; overflow: hidden; min-height: 220px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  .collection-card .c-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 4rem; font-weight: 700; line-height: 1;
+    position: absolute; top: 1rem; right: 1.5rem;
+    opacity: 0.1;
+  }
+  .collection-card .c-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;
+  }
+  .collection-card .c-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em;
+    opacity: 0.6; margin-bottom: 1rem;
+  }
+  .collection-card p { font-size: 0.85rem; margin: 0; }
+  .tag {
+    display: inline-block; font-family: 'Space Mono', monospace;
+    font-size: 0.62rem; padding: 0.2rem 0.6rem;
+    border: 1px solid currentColor; margin-right: 0.4rem; margin-top: 0.8rem;
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+
+  /* ── DISCRÉTION ──────────────────────────── */
+  .placement-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem 0; }
+  .placement-card {
+    background: var(--gris-l); border: 1px solid #2a2a2a;
+    padding: 1.5rem; text-align: center;
+  }
+  .placement-card .icon {
+    font-size: 2rem; margin-bottom: 0.8rem; display: block;
+    font-family: 'Space Mono', monospace;
+  }
+  .placement-card .p-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--cyan); margin-bottom: 0.5rem;
+  }
+  .placement-card p { font-size: 0.82rem; margin: 0; }
+
+  /* ── PRODUCTION ──────────────────────────── */
+  .production-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem 0; }
+  .prod-card {
+    background: var(--gris-l); border: 1px solid #2a2a2a;
+    padding: 1.5rem;
+  }
+  .prod-card .p-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem; color: var(--rouge);
+    text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.4rem;
+  }
+  .prod-card .p-val { font-size: 0.9rem; color: var(--blanc); font-weight: 500; }
+  .prod-card p { font-size: 0.82rem; margin-top: 0.3rem; color: #888; }
+
+  /* ── IDENTITÉ VISUELLE ───────────────────── */
+  .typo-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+  .typo-table th {
+    font-family: 'Space Mono', monospace; font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    background: #1a1a1a; padding: 0.8rem 1rem; text-align: left;
+    border-bottom: 2px solid #2a2a2a; color: var(--gris-m);
+  }
+  .typo-table td { padding: 0.9rem 1rem; border-bottom: 1px solid #1a1a1a; font-size: 0.88rem; }
+  .mono { font-family: 'Space Mono', monospace; color: var(--violet); }
+
+  /* ── EXPÉRIENCE ──────────────────────────── */
+  .exp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin: 2rem 0; }
+  .exp-card {
+    background: var(--gris-l); border: 1px solid #2a2a2a;
+    padding: 2rem 1.5rem;
+  }
+  .exp-card .e-label {
+    font-family: 'Space Mono', monospace; font-size: 0.68rem;
+    color: var(--cyan); text-transform: uppercase; letter-spacing: 0.15em;
+    margin-bottom: 0.6rem;
+  }
+  .exp-card .e-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.8rem; color: var(--blanc); }
+  .exp-card p { font-size: 0.85rem; margin: 0; }
+
+  /* ── FOOTER ──────────────────────────────── */
+  footer {
+    padding: 4rem 2rem;
+    text-align: center; border-top: 1px solid #1a1a1a;
+  }
+  footer .f-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 3rem; font-weight: 700; color: var(--blanc);
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+  }
+  footer .f-logo .sq { width: 40px; height: 40px; background: var(--rouge); display: inline-block; }
+  footer .f-tagline {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem; color: var(--rouge); margin-top: 1rem;
+    letter-spacing: 0.15em;
+  }
+  footer .f-meta { color: #333; font-size: 0.75rem; margin-top: 2rem; font-family: 'Space Mono', monospace; }
+
+  /* ── QUOTE ───────────────────────────────── */
+  blockquote {
+    border-left: 3px solid var(--rouge);
+    padding: 1rem 1.5rem; margin: 2rem 0;
+    background: var(--gris-l); font-style: italic;
+    color: #aaa; font-size: 0.95rem;
+  }
+  blockquote strong { color: var(--rouge); font-style: normal; }
+
+  /* ── PIXEL DECORATION ────────────────────── */
+  .pixel-row {
+    display: flex; gap: 2px; flex-wrap: wrap; margin: 1.5rem 0;
+  }
+  .pixel-row .px-dot {
+    width: 10px; height: 10px;
+    background: var(--rouge); opacity: 0.15;
+  }
+  .pixel-row .px-dot:nth-child(3n) { background: var(--cyan); opacity: 0.2; }
+  .pixel-row .px-dot:nth-child(5n) { background: var(--violet); opacity: 0.2; }
+  .pixel-row .px-dot:nth-child(7n) { opacity: 0.05; }
+
+  /* ── RESPONSIVE ──────────────────────────── */
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .logo-integration { flex-direction: column; }
+    .palette .swatch { min-width: 80px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><span class="sq"></span> PIXEL</div>
+  <div class="nav-links">
+    <a href="#histoire">Histoire</a>
+    <a href="#logo">Logo</a>
+    <a href="#discretion">Discrétion</a>
+    <a href="#collections">Collections</a>
+    <a href="#ton">Ton</a>
+    <a href="#identite">Identité</a>
+    <a href="#production">Production</a>
+    <a href="#experience">Expérience</a>
+  </div>
+</nav>
+
+<!-- ── COVER ───────────────────────────────── -->
+<div class="cover">
+  <div class="cover-grid"></div>
+  <div class="cover-logo-block">
+    <div class="logo-square-big"></div>
+    <h1>PIXEL</h1>
+    <p class="cover-sub">Brand Identity Book — Saison 1 · 2026</p>
+    <div class="cover-tagline">8-BIT STYLE. 100% REAL.</div>
+    <p class="cover-meta">Confidentiel · Responsable marketing : Jonathan · Production Portugal</p>
+  </div>
+</div>
+<div class="pixel-bar"></div>
+
+<!-- ── 01 HISTOIRE ─────────────────────────── -->
+<section id="histoire">
+  <div class="container">
+    <p class="section-label">// 01</p>
+    <h2>Notre histoire</h2>
+
+    <blockquote>
+      <strong>"Le pixel est l'atome du monde numérique."</strong><br>
+      Un carré. Un point de couleur. Et pourtant, tout un univers.
+    </blockquote>
+
+    <h3>L'origine</h3>
+    <p>PIXEL naît d'une obsession simple : le pixel. Cette petite unité carrée, brique élémentaire de toute image numérique, est à la fois contrainte absolue et liberté totale. Dans un monde qui court après la résolution maximale, PIXEL revendique l'inverse — la beauté du grain, du visible, de l'imparfait qui crée le sens.</p>
+    <p>La marque est fondée par des passionnés de culture gaming et de design, qui ont grandi entre les salles d'arcade et les premières consoles. Ce n'est pas de la nostalgie passive. C'est une revendication culturelle : le pixel art est un art à part entière, avec ses codes, sa grammaire, sa poésie.</p>
+
+    <h3>Notre manifeste</h3>
+    <p>Nous fabriquons des vêtements qui portent une histoire. Pas des logos vides, pas de la mode éphémère — des œuvres portables inspirées de la plus contrainte des formes artistiques. Chaque design PIXEL est pensé comme une création 8-bit : chaque couleur compte, chaque forme est intentionnelle, chaque pixel a sa raison d'être.</p>
+    <p>PIXEL n'est pas un costume de gamer. C'est une marque pour tous ceux qui voient le monde autrement — qui trouvent la beauté dans la contrainte, l'art dans le code, la profondeur dans la simplicité pixelisée. <strong>Un chef d'entreprise peut la porter sans qu'on le remarque. Un passionné la reconnaîtra au premier coup d'œil.</strong></p>
+  </div>
+</section>
+
+<!-- ── 02 LOGO ──────────────────────────────── -->
+<section id="logo">
+  <div class="container">
+    <p class="section-label">// 02</p>
+    <h2>Le logo — le carré noir</h2>
+
+    <p>Le logo PIXEL est <strong>un carré noir</strong>. Rien de plus. Rien de moins. C'est littéralement un pixel — l'unité irréductible de l'image numérique. Simple, géométrique, reconnaissable à l'infini, reproduisable sur tous supports, à toutes tailles, avec une cohérence parfaite.</p>
+
+    <h3>Le principe d'intégration</h3>
+    <p>Ce qui rend le logo PIXEL unique, c'est sa capacité à s'intégrer dans les illustrations tout en restant identifiable. Le carré noir n'est pas posé <em>sur</em> le design — il en fait partie. Il devient un élément de la scène.</p>
+
+    <div class="logo-integration">
+      <!-- Illustration conceptuelle ASCII pixel art -->
+      <div style="font-family: 'Space Mono', monospace; font-size: 11px; line-height: 14px; color: #ccc; white-space: pre; background: #111; padding: 1.5rem; border: 1px solid #2a2a2a; flex-shrink: 0;">
+<span style="color:#FF2D55">   ██████   </span>
+<span style="color:#FF2D55">  ████████ </span>
+<span style="color:#f8b">  ██<span style="color:#fff">██</span>██  </span>
+<span style="color:#f8b"> ████████  </span>
+<span style="color:#cc9955">  ████████ </span>
+<span style="color:#cc9955">████████   </span>
+<span style="color:#cc9955"> ████████  </span>
+<span style="color:#3399ff"> ██  ██   </span>
+<span style="color:#3399ff"> ██  ██   </span>
+<span style="color:#777"> ██  ██   </span>
+<span style="color:#777"> ██  ██   </span>
+      <span style="background:#0A0A0A; color:#0A0A0A; border: 2px solid #FF2D55; padding: 2px 8px;">■■■■</span>←<span style="color:#FF2D55"> LOGO</span>
+      </div>
+      <div class="logo-integration-text">
+        <h3>Comment ça fonctionne</h3>
+        <p>Dans cet exemple, le personnage pixelisé pose le pied sur le carré noir. La scène narrative existe autour du logo — mais le carré reste clairement visible, reconnaissable, identifiable comme le logo PIXEL.</p>
+        <p>Le carré noir peut être :</p>
+        <ul style="color: #ccc; padding-left: 1.5rem; font-size: 0.88rem; margin-top: 0.8rem;">
+          <li style="margin-bottom: 0.4rem;">Un socle sur lequel pose un personnage</li>
+          <li style="margin-bottom: 0.4rem;">Un obstacle dans une scène de jeu</li>
+          <li style="margin-bottom: 0.4rem;">Une brique dans un mur</li>
+          <li style="margin-bottom: 0.4rem;">Un écran allumé ou éteint</li>
+          <li style="margin-bottom: 0.4rem;">Un portail, une case de jeu de plateau</li>
+        </ul>
+        <p style="margin-top: 1rem; color: #777; font-size: 0.82rem; font-style: italic;">Le carré reste toujours noir, toujours identifiable. Le reste est libre.</p>
+      </div>
+    </div>
+
+    <h3>Les 3 déclinaisons du logo</h3>
+    <div class="logo-concept">
+      <div class="logo-variant">
+        <div class="sq" style="width: 56px; height: 56px; background: #0A0A0A; border: 2px solid #333;"></div>
+        <span class="label">Logo principal</span>
+        <p class="desc">Carré noir sur fond blanc ou clair — version standard, étiquettes, papeterie</p>
+      </div>
+      <div class="logo-variant">
+        <div class="sq" style="width: 56px; height: 56px; background: #0A0A0A; outline: 2px solid #FF2D55;"></div>
+        <span class="label">Logo accent rouge</span>
+        <p class="desc">Carré noir avec liseré rouge — drops spéciaux, collab, éditions limitées</p>
+      </div>
+      <div class="logo-variant">
+        <div class="sq" style="width: 56px; height: 56px; background: #F5F5F5; border: 2px solid #333;"></div>
+        <span class="label">Logo inversé</span>
+        <p class="desc">Carré blanc sur fond noir — broderie foncée, supports sombres, packaging</p>
+      </div>
+    </div>
+
+    <blockquote>
+      Un carré noir. Tout le monde sait ce que c'est quand on le voit. Personne d'autre ne pourrait le revendiquer.
+    </blockquote>
+  </div>
+</section>
+
+<!-- ── 03 DISCRÉTION ────────────────────────── -->
+<section id="discretion">
+  <div class="container">
+    <p class="section-label">// 03</p>
+    <h2>La philosophie discrétion</h2>
+
+    <blockquote>
+      <strong>"Tu peux être CEO et porter un t-shirt PIXEL en réunion. Personne ne verra le référence. Toi, si."</strong>
+    </blockquote>
+
+    <p>PIXEL refuse la surenchère. Nos designs ne hurlent pas. Ils chuchotent à ceux qui savent écouter. Un non-initié verra un vêtement élégant, sobre, de qualité. Un membre de notre communauté reconnaîtra immédiatement la scène, le personnage, l'easter egg.</p>
+    <p>C'est le principe du <strong>wink culture</strong> : une complicité silencieuse entre ceux qui partagent les mêmes références. Pas d'affichage, pas de marquage territorial — juste une signature discrète qui dit "je sais, toi aussi tu sais".</p>
+
+    <h3>Règles de placement des designs</h3>
+    <div class="placement-grid">
+      <div class="placement-card">
+        <span class="icon" style="color: var(--cyan);">▲</span>
+        <div class="p-title">Sous le col du cou</div>
+        <p>Intérieur du col arrière. Le design n'est visible que si on soulève le col ou si le porteur le montre volontairement.</p>
+      </div>
+      <div class="placement-card">
+        <span class="icon" style="color: var(--rouge);">◀</span>
+        <div class="p-title">Sous le col de manche</div>
+        <p>Intérieur de la manche droite ou gauche. Visible uniquement quand la manche est retroussée.</p>
+      </div>
+      <div class="placement-card">
+        <span class="icon" style="color: var(--violet);">◆</span>
+        <div class="p-title">Bas de la pièce</div>
+        <p>Ourlet intérieur ou bas-côté discret. Le dessin n'apparaît que quand le vêtement est retourné ou soulevé.</p>
+      </div>
+      <div class="placement-card">
+        <span class="icon" style="color: var(--blanc);">●</span>
+        <div class="p-title">Poche intérieure</div>
+        <p>Sur les pièces qui en ont une. Pour les pulls et vestes. Un trésor privé.</p>
+      </div>
+    </div>
+
+    <h3>Le design extérieur — quand il existe</h3>
+    <p>Certaines pièces portent un design visible extérieurement. Dans ce cas, la règle est la même : <strong>petit format, placement atypique</strong>. Pas de face avant en plein centre comme un band tee. On préfère :</p>
+    <ul style="color: #ccc; padding-left: 1.5rem; font-size: 0.88rem; margin: 1rem 0;">
+      <li style="margin-bottom: 0.5rem;">La manche droite, à mi-hauteur</li>
+      <li style="margin-bottom: 0.5rem;">Le bas gauche du t-shirt (5 cm au-dessus de l'ourlet)</li>
+      <li style="margin-bottom: 0.5rem;">Le dos haut (nuque), format 6×6 cm maximum</li>
+      <li style="margin-bottom: 0.5rem;">Le genou ou la cuisse pour les pantalons</li>
+    </ul>
+    <p>Le carré noir (logo) est toujours intégré dans la scène. Il ancre le design, signe subtilement la pièce.</p>
+  </div>
+</section>
+
+<!-- ── 04 COLLECTIONS ───────────────────────── -->
+<section id="collections">
+  <div class="container">
+    <p class="section-label">// 04</p>
+    <h2>Les collections</h2>
+    <p>Chaque collection est un niveau. Un univers visuel cohérent, une palette définie, un territoire d'expression spécifique. La philosophie discrétion s'applique à toutes.</p>
+
+    <div class="collections-grid">
+      <div class="collection-card" style="background: #0A0A0A; border: 1px solid #333; color: var(--blanc);">
+        <div class="c-num">01</div>
+        <div class="c-name" style="color: var(--blanc);">ORIGIN</div>
+        <div class="c-sub">Le fondamental · Noir & Blanc</div>
+        <p style="color: #999;">L'épure absolue. Noir, blanc, rien d'autre. Designs haute densité en pixel art monochrome. La collection la plus intemporelle, celle qu'on peut porter partout, avec n'importe quoi.</p>
+        <div>
+          <span class="tag" style="color: var(--blanc);">Intemporel</span>
+          <span class="tag" style="color: var(--blanc);">Universel</span>
+          <span class="tag" style="color: var(--blanc);">Point d'entrée</span>
+        </div>
+      </div>
+
+      <div class="collection-card" style="background: #1a0000; border: 1px solid var(--rouge);">
+        <div class="c-num" style="color: var(--rouge);">02</div>
+        <div class="c-name" style="color: var(--rouge);">RGB</div>
+        <div class="c-sub" style="color: #ff6b80;">L'arcade · Couleurs saturées</div>
+        <p style="color: #999;">Couleurs vives et saturées, directement sorties des palettes arcade 80s. Designs dynamiques, énergie, contraste fort. La collection qui capte l'œil — mais toujours avec sobriété de placement.</p>
+        <div>
+          <span class="tag" style="color: var(--rouge);">Dynamique</span>
+          <span class="tag" style="color: var(--rouge);">Arcade</span>
+          <span class="tag" style="color: var(--rouge);">Saisonnier</span>
+        </div>
+      </div>
+
+      <div class="collection-card" style="background: #0d0019; border: 1px solid var(--violet);">
+        <div class="c-num" style="color: var(--violet);">03</div>
+        <div class="c-name" style="color: var(--violet);">GLITCH</div>
+        <div class="c-sub" style="color: #a855f7;">L'anomalie · Drop limité</div>
+        <p style="color: #999;">L'erreur comme esthétique. Corruption d'image, pixels cassés, glitch numérique volontaire. Pièces en édition ultra-limitée, collector. La collection la plus underground de PIXEL.</p>
+        <div>
+          <span class="tag" style="color: var(--violet);">Collector</span>
+          <span class="tag" style="color: var(--violet);">Limité</span>
+          <span class="tag" style="color: var(--violet);">Underground</span>
+        </div>
+      </div>
+
+      <div class="collection-card" style="background: #001a1a; border: 1px solid var(--cyan);">
+        <div class="c-num" style="color: var(--cyan);">04</div>
+        <div class="c-name" style="color: var(--cyan);">COLLAB</div>
+        <div class="c-sub" style="color: #67e8f9;">Drops artistiques · Co-signature</div>
+        <p style="color: #999;">PIXEL invite des artistes pixel art reconnus à concevoir une capsule exclusive. Chaque artiste apporte sa palette et ses personnages. Co-signature visible sur l'étiquette intérieure.</p>
+        <div>
+          <span class="tag" style="color: var(--cyan);">Artistique</span>
+          <span class="tag" style="color: var(--cyan);">Co-signé</span>
+          <span class="tag" style="color: var(--cyan);">Éphémère</span>
+        </div>
+      </div>
+    </div>
+
+    <h3>Les pièces par collection</h3>
+    <table class="ton-table">
+      <thead>
+        <tr>
+          <th>Pièce</th>
+          <th>ORIGIN</th>
+          <th>RGB</th>
+          <th>GLITCH</th>
+          <th>COLLAB</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>T-shirt</td><td class="oui">✓</td><td class="oui">✓</td><td class="oui">✓</td><td class="oui">✓</td></tr>
+        <tr><td>Sweat capuche</td><td class="oui">✓</td><td class="oui">✓</td><td class="oui">✓</td><td class="oui">✓</td></tr>
+        <tr><td>Pull crewneck</td><td class="oui">✓</td><td class="oui">✓</td><td style="color:#555">–</td><td class="oui">✓</td></tr>
+        <tr><td>Pantalon</td><td class="oui">✓</td><td class="oui">✓</td><td style="color:#555">–</td><td style="color:#555">–</td></tr>
+        <tr><td>Veste / Bomber</td><td style="color:#555">–</td><td class="oui">✓</td><td class="oui">✓</td><td class="oui">✓</td></tr>
+        <tr><td>Tote bag</td><td class="oui">✓</td><td class="oui">✓</td><td style="color:#555">–</td><td class="oui">✓</td></tr>
+        <tr><td>Casquette</td><td class="oui">✓</td><td class="oui">✓</td><td style="color:#555">–</td><td style="color:#555">–</td></tr>
+        <tr><td>Chaussettes</td><td class="oui">✓</td><td class="oui">✓</td><td class="oui">✓</td><td class="oui">✓</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ── 05 TON ────────────────────────────────── -->
+<section id="ton">
+  <div class="container">
+    <p class="section-label">// 05</p>
+    <h2>Ton éditorial</h2>
+
+    <p>PIXEL parle comme quelqu'un que vous voudriez avoir dans votre crew. Direct, à l'aise avec les références, jamais condescendant. On ne sur-explique pas les clins d'œil — si tu comprends, tu comprends.</p>
+
+    <div class="valeurs-grid" style="margin: 2rem 0;">
+      <div class="valeur-card" data-num="01" style="border-top: 2px solid var(--rouge);">
+        <div class="v-title" style="color: var(--rouge);">Direct</div>
+        <p>Phrases courtes. Impactantes. Chaque mot compte — comme chaque pixel.</p>
+      </div>
+      <div class="valeur-card" data-num="02" style="border-top: 2px solid var(--violet);">
+        <div class="v-title" style="color: var(--violet);">Référencé</div>
+        <p>Les références sont là pour ceux qui les reconnaissent. Jamais expliquées.</p>
+      </div>
+      <div class="valeur-card" data-num="03" style="border-top: 2px solid var(--cyan);">
+        <div class="v-title" style="color: var(--cyan);">Communautaire</div>
+        <p>On parle à une tribu, pas à un segment. Tutoiement. Complicité.</p>
+      </div>
+      <div class="valeur-card" data-num="04" style="border-top: 2px solid #888;">
+        <div class="v-title" style="color: #888;">Décalé</div>
+        <p>Un peu d'humour. Jamais forcé. Comme un easter egg bien caché.</p>
+      </div>
+    </div>
+
+    <h3>Ce qu'on dit · ce qu'on ne dit pas</h3>
+    <table class="ton-table">
+      <thead>
+        <tr><th>Registre</th><th class="oui">ON DIT ✓</th><th class="non">ON NE DIT PAS ✗</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Accueil</td><td class="oui">"Ce drop, c'est pour toi ou pas."</td><td class="non">"Découvrez notre nouvelle collection exclusive."</td></tr>
+        <tr><td>Description produit</td><td class="oui">"T-shirt ORIGIN. 100% coton. Fabriqué au Portugal."</td><td class="non">"Un t-shirt innovant aux finitions premium haut de gamme."</td></tr>
+        <tr><td>Référence</td><td class="oui">"Tu reconnaîtras peut-être qui pose le pied dessus."</td><td class="non">"Inspiré du célèbre personnage de jeux vidéo Mario."</td></tr>
+        <tr><td>Lancement</td><td class="oui">"48h. Ensuite c'est fini."</td><td class="non">"Ne manquez pas cette offre limitée exceptionnelle !"</td></tr>
+        <tr><td>Qualité</td><td class="oui">"Fait au Portugal. Pour durer."</td><td class="non">"Des matières soigneusement sélectionnées pour votre confort."</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Règles d'or</h3>
+    <ul style="color: #ccc; padding-left: 1.5rem; font-size: 0.9rem; margin: 1rem 0;">
+      <li style="margin-bottom: 0.6rem;"><strong>Tutoiement systématique</strong> — on parle à un ami, pas à un client</li>
+      <li style="margin-bottom: 0.6rem;"><strong>Jamais de superlatifs creux</strong> : "unique", "révolutionnaire", "innovant" sont bannis</li>
+      <li style="margin-bottom: 0.6rem;"><strong>Les références ne s'expliquent pas</strong> — si tu les vois, bravo. Sinon, le vêtement reste beau</li>
+      <li style="margin-bottom: 0.6rem;"><strong>Phrases courtes</strong>. Toujours. Comme des pixels.</li>
+      <li style="margin-bottom: 0.6rem;"><strong>Le portugais de fabrication</strong> est une fierté, pas un argument marketing — on le mentionne, on ne l'exploite pas</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── 06 VALEURS ───────────────────────────── -->
+<section>
+  <div class="container">
+    <p class="section-label">// 06</p>
+    <h2>Valeurs de marque</h2>
+    <div class="valeurs-grid">
+      <div class="valeur-card" data-num="01" style="border-left: 3px solid var(--rouge);">
+        <div class="v-title" style="color: var(--rouge);">Craft</div>
+        <p>Chaque design est une œuvre. Rien n'est là par hasard. Chaque pixel est intentionnel, chaque placement est réfléchi.</p>
+      </div>
+      <div class="valeur-card" data-num="02" style="border-left: 3px solid var(--violet);">
+        <div class="v-title" style="color: var(--violet);">Culture</div>
+        <p>Nous venons du gaming. Le pixel art est un art légitime. Nos collaborations le prouvent.</p>
+      </div>
+      <div class="valeur-card" data-num="03" style="border-left: 3px solid var(--cyan);">
+        <div class="v-title" style="color: var(--cyan);">Communauté</div>
+        <p>Une tribu, pas un marché. On construit avec eux, pas pour eux.</p>
+      </div>
+      <div class="valeur-card" data-num="04" style="border-left: 3px solid #888;">
+        <div class="v-title" style="color: #888;">Discrétion</div>
+        <p>La vraie qualité n'a pas besoin de crier. Nos designs non plus.</p>
+      </div>
+      <div class="valeur-card" data-num="05" style="border-left: 3px solid var(--blanc);">
+        <div class="v-title" style="color: var(--blanc);">Contrainte créatrice</div>
+        <p>Le pixel est la plus petite unité d'art possible. Travailler dans la contrainte libère la créativité.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 07 IDENTITÉ VISUELLE ─────────────────── -->
+<section id="identite">
+  <div class="container">
+    <p class="section-label">// 07</p>
+    <h2>Identité visuelle</h2>
+
+    <h3>Palette chromatique</h3>
+    <div class="palette">
+      <div class="swatch" style="background: #0A0A0A; border: 1px solid #222;">
+        <span class="sw-name" style="color: #fff;">Pixel Black</span>
+        <span class="sw-hex" style="color: #fff;">#0A0A0A</span>
+      </div>
+      <div class="swatch" style="background: #F5F5F5;">
+        <span class="sw-name" style="color: #111;">Pixel White</span>
+        <span class="sw-hex" style="color: #111;">#F5F5F5</span>
+      </div>
+      <div class="swatch" style="background: #FF2D55;">
+        <span class="sw-name">Pixel Red</span>
+        <span class="sw-hex">#FF2D55</span>
+      </div>
+      <div class="swatch" style="background: #00D4E8;">
+        <span class="sw-name" style="color: #111;">Pixel Cyan</span>
+        <span class="sw-hex" style="color: #111;">#00D4E8</span>
+      </div>
+      <div class="swatch" style="background: #7B2FBE;">
+        <span class="sw-name">Pixel Violet</span>
+        <span class="sw-hex">#7B2FBE</span>
+      </div>
+    </div>
+    <p style="font-size: 0.82rem; color: #666; margin-top: 0.5rem;">Sur tissu, les couleurs sont adaptées aux contraintes de teinture et d'impression. Le Pixel Red est la couleur d'accent principale sur toutes les étiquettes et le packaging.</p>
+
+    <h3>Typographie</h3>
+    <table class="typo-table">
+      <thead>
+        <tr><th>Usage</th><th>Police</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Titres / Logo textuel</td>
+          <td><span class="mono">Press Start 2P</span></td>
+          <td style="color: #888;">Authentique 8-bit. Pour les grands titres, le logomark textuel, les affiches.</td>
+        </tr>
+        <tr>
+          <td>Labels / UI</td>
+          <td><span class="mono">Space Mono</span></td>
+          <td style="color: #888;">Technique, propre. Pour les sous-titres, tags, références produit.</td>
+        </tr>
+        <tr>
+          <td>Corps de texte</td>
+          <td><span class="mono">Inter</span></td>
+          <td style="color: #888;">Lisibilité maximale. Descriptions, emails, pages web.</td>
+        </tr>
+        <tr>
+          <td>Slogans / Accents</td>
+          <td><span class="mono">VT323</span></td>
+          <td style="color: #888;">Terminal rétro. Citations, accroche poétique, touches décoratives.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Le logo en pratique</h3>
+    <ul style="color: #ccc; padding-left: 1.5rem; font-size: 0.9rem; margin: 1rem 0;">
+      <li style="margin-bottom: 0.5rem;">Sur les étiquettes : carré noir + texte "PIXEL" en Space Mono</li>
+      <li style="margin-bottom: 0.5rem;">En broderie : carré minimal, 1×1 cm, toujours en position discrète</li>
+      <li style="margin-bottom: 0.5rem;">Sur le packaging : carré noir gaufré mat</li>
+      <li style="margin-bottom: 0.5rem;">En numérique : carré noir comme favicon, avatar, icône</li>
+      <li style="margin-bottom: 0.5rem;">Zone de protection : marge égale à la moitié de la taille du carré tout autour</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── 08 PRODUCTION ─────────────────────────── -->
+<section id="production">
+  <div class="container">
+    <p class="section-label">// 08</p>
+    <h2>Production — Made in Portugal</h2>
+
+    <blockquote>
+      La qualité ne se voit pas. Elle se ressent. Et quand on demande où c'est fabriqué, on répond "Portugal" — pas "optimisé pour le coût".
+    </blockquote>
+
+    <div class="production-grid">
+      <div class="prod-card">
+        <div class="p-label">Lieu de fabrication</div>
+        <div class="p-val">Portugal</div>
+        <p>Made in Europe. Traceable, proche, de qualité reconnue dans l'industrie premium.</p>
+      </div>
+      <div class="prod-card">
+        <div class="p-label">Matière T-shirts</div>
+        <div class="p-val">100% coton biologique</div>
+        <p>Grammage 200–240 g/m². Coupe droite légèrement oversize. Épaulettes renforcées.</p>
+      </div>
+      <div class="prod-card">
+        <div class="p-label">Matière Pulls / Sweats</div>
+        <div class="p-val">Coton + polyester premium</div>
+        <p>Tissu brossé intérieur. Côtes serrées. Résistance au lavage garantie 60 cycles.</p>
+      </div>
+      <div class="prod-card">
+        <div class="p-label">Matière Pantalons</div>
+        <div class="p-val">Twill coton / Denim léger</div>
+        <p>Coupe chino ou jogger selon la collection. Finitions soignées, boutons métal.</p>
+      </div>
+      <div class="prod-card">
+        <div class="p-label">Impression / Broderie</div>
+        <div class="p-val">Sérigraphie eau + broderie</div>
+        <p>Sérigraphie à l'encre à base d'eau. Broderie pour les pièces premium et étiquettes.</p>
+      </div>
+      <div class="prod-card">
+        <div class="p-label">Étiquette intérieure</div>
+        <div class="p-val">Tissée main, carré noir</div>
+        <p>Le logo carré noir brodé sur tissu blanc. Taille 1,5×1,5 cm. Cousu main.</p>
+      </div>
+    </div>
+
+    <h3>Engagements qualité</h3>
+    <ul style="color: #ccc; padding-left: 1.5rem; font-size: 0.9rem; margin: 1rem 0;">
+      <li style="margin-bottom: 0.5rem;">Usines certifiées OEKO-TEX Standard 100</li>
+      <li style="margin-bottom: 0.5rem;">Contrôle qualité pièce par pièce avant expédition</li>
+      <li style="margin-bottom: 0.5rem;">Pas de fast production : délais honnêtes, stock maîtrisé</li>
+      <li style="margin-bottom: 0.5rem;">Réparation offerte sur présentation du ticket d'achat (3 ans)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── 09 EXPÉRIENCE CLIENT ──────────────────── -->
+<section id="experience">
+  <div class="container">
+    <p class="section-label">// 09</p>
+    <h2>Expérience client</h2>
+
+    <div class="exp-grid">
+      <div class="exp-card">
+        <div class="e-label">Digital</div>
+        <div class="e-title">pixel.store — D2C en premier</div>
+        <p>Site épuré, pixel art animé. Les drops sont annoncés avec date et heure — le compte à rebours fait partie du rituel. Paiement en 1 clic, livraison en 48h depuis le Portugal.</p>
+      </div>
+      <div class="exp-card">
+        <div class="e-label">Packaging</div>
+        <div class="e-title">L'unboxing comme cadeau</div>
+        <p>Boîte noire mat · Logo gaufré · Papier de soie noir · Autocollant holographique · Carte QR vers le making-of du design · 1 pixel art imprimé collector glissé dans chaque colis.</p>
+      </div>
+      <div class="exp-card">
+        <div class="e-label">Pop-ups</div>
+        <div class="e-title">Éphémères. 48h. Ça compte.</div>
+        <p>Pas de boutique permanente. Des pop-ups dans des lieux inattendus (galeries, salles d'arcade, studios créatifs). Chaque pop-up est un événement culturel : expo pixel art, live chiptune, gaming.</p>
+      </div>
+      <div class="exp-card">
+        <div class="e-label">Communauté</div>
+        <div class="e-title">Discord · Instagram · TikTok</div>
+        <p>Discord : avant-premières, votes sur les designs, accès aux artistes. Instagram : storytelling fort, behind-the-scenes. TikTok : culture gaming, tutoriels pixel art, contenu décalé.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ────────────────────────────────── -->
+<div class="pixel-bar"></div>
+<footer>
+  <div class="f-logo">
+    <span class="sq"></span>PIXEL
+  </div>
+  <div class="f-tagline">8-BIT STYLE. 100% REAL.</div>
+  <div class="f-meta">
+    pixel.store · @pixelbrand · contact@pixel.store<br>
+    © PIXEL 2026 — Confidentiel · Made in Portugal
+  </div>
+</footer>
+
+</body>
+</htm

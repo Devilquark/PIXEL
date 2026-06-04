@@ -1,0 +1,42 @@
+# ═══════════════════════════════════════════════════════════════
+# PIXEL — robots.txt
+# Streetwear gaming pixel art · Made in Portugal
+# ═══════════════════════════════════════════════════════════════
+
+User-agent: *
+Allow: /
+
+# Bloquer les éventuels dossiers techniques / privés
+Disallow: /admin/
+Disallow: /checkout/
+Disallow: /panier/
+Disallow: /cart/
+Disallow: /account/
+Disallow: /compte/
+Disallow: /*?*utm_          # URLs avec paramètres de tracking
+Disallow: /*?*fbclid=       # Paramètres Facebook
+Disallow: /*?*gclid=        # Paramètres Google Ads
+
+# ─── Bots IA : autoriser l'indexation, refuser l'entraînement ───
+# Laisser passer les crawlers pour la découverte,
+# mais refuser les scrapers qui entraînent des modèles sans consentement.
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+# ─── Sitemap ────────────────────────────────────────────────────
+Sitemap: https://pixelwear.fr/sitemap.xml
+
+# ─── Crawl delay (optionnel, évite de surcharger l'hébergeur) ───
+Crawl-delay: 1

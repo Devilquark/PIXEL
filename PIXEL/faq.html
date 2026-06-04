@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ | PIXEL — Questions fréquentes streetwear gaming</title>
+<meta name="description" content="FAQ PIXEL — toutes les réponses sur les commandes, la livraison, les retours, les tailles et la fabrication de nos pièces streetwear gaming pixel art.">
+<meta name="keywords" content="FAQ PIXEL, livraison streetwear, retour vêtement, taille t-shirt, fabrication Portugal">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://pixelwear.fr/faq">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="FAQ | PIXEL">
+<meta property="og:description" content="Commandes, livraison, retours, matières — toutes les réponses en un endroit.">
+<meta property="og:url" content="https://pixelwear.fr/faq.html">
+<meta property="og:image" content="https://pixelwear.fr/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="PIXEL">
+<meta property="og:locale" content="fr_FR">
+
+<!-- JSON-LD FAQPage pour rich snippets Google -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Quels sont les délais de livraison ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "France métropolitaine : 2 à 4 jours ouvrés en Colissimo suivi. Union européenne : 4 à 7 jours. Reste du monde : 7 à 14 jours. Tu reçois un email avec le numéro de suivi dès l'expédition."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Où sont fabriqués les vêtements PIXEL ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Tous nos vêtements sont fabriqués au Portugal, dans des ateliers certifiés avec des conditions de travail respectueuses. Coton bio pour les t-shirts, molleton gratté pour les pulls."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je retourner un article ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui, tu as 14 jours pour te rétracter (remboursement) et 30 jours pour un échange. L'article doit être neuf, non porté, avec ses étiquettes. Voir notre politique de retour pour les détails."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Comment choisir ma taille ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Consulte notre guide des tailles avec les mesures exactes de chaque pièce. Nos coupes sont légèrement oversize — entre deux tailles, prends la plus grande pour l'effet streetwear."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- PIXEL:HEAD_PATCH_V1 -->
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="assets/site.webmanifest">
+<meta name="theme-color" content="#0A0A0A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link rel="stylesheet" href="legal/legal.css">
+
+<style>
+  /* Extras FAQ */
+  .faq-category {
+    margin: 2.5rem 0;
+  }
+  .faq-category-title {
+    font-family: var(--mono) !important;
+    font-size: .75rem !important;
+    letter-spacing: .2em !important;
+    color: var(--cyan) !important;
+    text-transform: uppercase;
+    padding-bottom: .8rem !important;
+    border-bottom: 1px solid var(--border) !important;
+    margin: 2.5rem 0 1.5rem !important;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+  }
+  .faq-category-title .num {
+    font-family: var(--pixel);
+    font-size: .7rem;
+    color: var(--red);
+  }
+
+  details.faq-item {
+    border-bottom: 1px solid var(--border);
+    padding: 1.2rem 0;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  details.faq-item[open] {
+    background: rgba(255,45,85,.03);
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-left: 3px solid var(--red);
+  }
+  details.faq-item summary {
+    font-family: var(--sans);
+    font-size: .95rem;
+    font-weight: 500;
+    color: var(--white);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-right: .5rem;
+  }
+  details.faq-item summary::-webkit-details-marker { display: none; }
+  details.faq-item summary::after {
+    content: "+";
+    font-family: var(--pixel);
+    font-size: .9rem;
+    color: var(--red);
+    flex-shrink: 0;
+    transition: transform .2s;
+  }
+  details.faq-item[open] summary::after {
+    content: "×";
+  }
+  details.faq-item summary:hover { color: var(--red); }
+  details.faq-item .answer {
+    padding: 1rem 0 .2rem;
+    color: var(--gray-light);
+    font-size: .88rem;
+    line-height: 1.7;
+  }
+  details.faq-item .answer p { margin-bottom: .8rem; }
+  details.faq-item .answer p:last-child { margin-bottom: 0; }
+  details.faq-item .answer ul { margin: .5rem 0 .8rem 1.2rem; }
+
+  .search-box {
+    background: #0d0d0d;
+    border: 1px solid var(--border);
+    padding: 1.2rem;
+    margin: 2rem 0 3rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .search-box input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--gray);
+    padding: .7rem 0;
+    color: var(--white);
+    font-family: var(--sans);
+    font-size: .95rem;
+    outline: none;
+  }
+  .search-box input::placeholder { color: var(--gray); }
+  .search-box input:focus { border-bottom-color: var(--red); }
+  .search-box .label {
+    font-family: var(--mono);
+    font-size: .6rem;
+    letter-spacing: .2em;
+    color: var(--gray);
+    text-transform: uppercase;
+  }
+
+  .contact-block {
+    background: #0d0d0d;
+    border: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    margin: 3rem 0;
+  }
+  .contact-block h3 {
+    color: var(--white) !important;
+    font-family: var(--pixel) !important;
+    font-size: .9rem !important;
+    margin-bottom: 1rem !important;
+  }
+  .contact-block .cta-btn {
+    display: inline-block;
+    background: var(--red);
+    color: var(--white);
+    padding: 1rem 2rem;
+    font-family: var(--mono);
+    font-size: .7rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    margin-top: 1rem;
+  }
+  .contact-block .cta-btn:hover { opacity: .85; text-decoration: none; }
+</style>
+<!-- PIXEL:OG_PATCH_V1 -->
+<meta property="og:title" content="FAQ — PIXEL">
+<meta property="og:description" content="Toutes les réponses sur vos commandes, la livraison, les retours, les produits et votre compte PIXEL.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pixelwear.fr/faq.html">
+<meta property="og:image" content="https://pixelwear.fr/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="PIXEL">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FAQ — PIXEL">
+<meta name="twitter:description" content="Toutes les réponses sur vos commandes, la livraison, les retours, les produits et votre compte PIXEL.">
+<meta name="twitter:image" content="https://pixelwear.fr/assets/og-image.png">
+<!-- /PIXEL:OG_PATCH_V1 -->
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><div class="nav-sq"></div>PIXEL</a>
+  <div class="nav-links">
+    <a href="index.html#collections">Collections</a>
+    <a href="index.html#boutique">Boutique</a>
+    <a href="index.html#philosophie">ADN</a>
+  </div>
+  <a href="index.html" class="nav-back">← Retour</a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Accueil</a><span>›</span>
+  <span>Aide</span><span>›</span>
+  FAQ
+</div>
+
+<header class="legal-header">
+  <div class="legal-tag">▓ HELP CENTER</div>
+  <h1 class="legal-title">Questions<br>fréquentes</h1>
+  <p class="legal-meta">Toutes les réponses · Mise à jour 22 avril 2026</p>
+</header>
+
+<main class="legal-content">
+
+  <div class="callout">
+    <strong>Pas de réponse à ta question ?</strong>
+    Écris-nous à <a href="mailto:contact@pixelwear.fr">contact@pixelwear.fr</a> — réponse sous 24 h en jours ouvrés.
+  </div>
+
+  <div class="search-box">
+    <span class="label">// CHERCHE</span>
+    <input type="text" id="faq-search" placeholder="tape un mot-clé : livraison, taille, retour...">
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <div class="faq-category">
+    <h2 class="faq-category-title"><span class="num">01</span> Commandes &amp; paiement</h2>
+
+    <details class="faq-item">
+      <summary>Quels moyens de paiement acceptez-vous ?</summary>
+      <div class="answer">
+        <p>Nous acceptons les cartes bancaires (Visa, Mastercard, American Express), Apple Pay, Google Pay, ainsi que PayPal. Le paiement en 3 ou 4 fois sans frais est disponible dès 80 € d'achat via notre partenaire.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Mon paiement est-il sécurisé ?</summary>
+      <div class="answer">
+        <p>Oui, 100%. Tous les paiements transitent par un prestataire certifié <strong>PCI-DSS niveau 1</strong>. Nous ne stockons aucune donnée bancaire sur nos serveurs. Le site est entièrement en HTTPS (chiffrement SSL/TLS).</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Puis-je modifier ou annuler ma commande ?</summary>
+      <div class="answer">
+        <p>Tant que la commande n'est pas expédiée (généralement dans les 24 h), tu peux nous contacter à <a href="mailto:contact@pixelwear.fr">contact@pixelwear.fr</a> pour toute modification ou annulation. Une fois expédiée, il faudra suivre la procédure de retour.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Je n'ai pas reçu d'email de confirmation ?</summary>
+      <div class="answer">
+        <p>Vérifie d'abord tes spams (souvent coupable). Si rien, écris-nous avec ton nom et la date approximative de la commande — on retrouve vite.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Les drops limités, ça marche comment ?</summary>
+      <div class="answer">
+        <p>Nos drops <strong>GLITCH</strong> et <strong>KONAMI</strong> sortent en édition limitée (100 à 300 pièces). Une fois sold-out, on ne ré-édite pas. Pour être prévenu en avant-première, inscris-toi à la newsletter — les abonnés ont 1 h d'avance sur le public.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <div class="faq-category">
+    <h2 class="faq-category-title"><span class="num">02</span> Livraison</h2>
+
+    <details class="faq-item">
+      <summary>Quels sont les délais de livraison ?</summary>
+      <div class="answer">
+        <p>Délais moyens (à partir de l'expédition, 24 à 48 h après la commande) :</p>
+        <ul>
+          <li><strong>France métropolitaine :</strong> 2 à 4 jours ouvrés (Colissimo suivi)</li>
+          <li><strong>Union européenne :</strong> 4 à 7 jours</li>
+          <li><strong>UK, Suisse, Norvège :</strong> 5 à 10 jours</li>
+          <li><strong>Reste du monde :</strong> 7 à 14 jours</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Combien coûte la livraison ?</summary>
+      <div class="answer">
+        <p>France métropolitaine : <strong>4,90 €</strong>, offerte dès 80 €. Union européenne : <strong>9,90 €</strong>, offerte dès 120 €. Reste du monde : à partir de <strong>19,90 €</strong> selon destination. Le tarif final est calculé automatiquement au checkout.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Comment suivre ma commande ?</summary>
+      <div class="answer">
+        <p>Tu reçois un email avec le numéro de suivi dès que ta commande quitte l'atelier. Tu peux aussi te connecter à ton compte PIXEL pour voir l'historique et l'état en temps réel.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Livrez-vous en point relais ?</summary>
+      <div class="answer">
+        <p>Oui, via Mondial Relay et les points Colis Colissimo. Option disponible au moment du choix de livraison au checkout. Le tarif est souvent inférieur à la livraison à domicile.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Que faire si mon colis est perdu ou endommagé ?</summary>
+      <div class="answer">
+        <p>Contacte-nous immédiatement à <a href="mailto:contact@pixelwear.fr">contact@pixelwear.fr</a> avec ton numéro de commande et des photos si le colis est endommagé. On ouvre une enquête auprès du transporteur et on te réexpédie ou rembourse selon le cas, sans frais supplémentaires.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <div class="faq-category">
+    <h2 class="faq-category-title"><span class="num">03</span> Retours &amp; échanges</h2>
+
+    <details class="faq-item">
+      <summary>Quelle est votre politique de retour ?</summary>
+      <div class="answer">
+        <p>Tu as <strong>14 jours</strong> pour te rétracter (remboursement intégral) et <strong>30 jours</strong> pour un échange de taille ou de modèle. L'article doit être neuf, non porté, avec ses étiquettes.</p>
+        <p>Tous les détails dans notre <a href="legal/politique-retour.html">politique de retour</a>.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Comment fonctionne un échange de taille ?</summary>
+      <div class="answer">
+        <p>Écris-nous à <a href="mailto:retours@pixelwear.fr">retours@pixelwear.fr</a> avec ton numéro de commande. On te renvoie une étiquette prépayée, tu réexpédies l'article, on envoie la nouvelle taille dès réception. <strong>Le 1er échange de taille est gratuit</strong>.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Combien de temps pour être remboursé ?</summary>
+      <div class="answer">
+        <p>Sous 14 jours après réception du retour à notre atelier. Le remboursement s'effectue sur le moyen de paiement d'origine. Tu recevras une confirmation par email.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Et pour un article défectueux ou non conforme ?</summary>
+      <div class="answer">
+        <p>Tu bénéficies d'une <strong>garantie légale de conformité de 2 ans</strong> (Code de la consommation L217-4). Envoie-nous une photo du défaut à <a href="mailto:contact@pixelwear.fr">contact@pixelwear.fr</a> — on gère le remplacement ou le remboursement, frais de retour à notre charge.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <div class="faq-category">
+    <h2 class="faq-category-title"><span class="num">04</span> Produits &amp; matières</h2>
+
+    <details class="faq-item">
+      <summary>Quelles sont les matières utilisées ?</summary>
+      <div class="answer">
+        <p>Nos <strong>t-shirts</strong> sont en 100% coton bio peigné, 220 g/m² (qualité moyenne-lourde, tombé franc). Nos <strong>pulls et hoodies</strong> sont en coton 80% / polyester recyclé 20%, molleton gratté intérieur 400 g/m² pour une douceur maximale.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Où sont fabriquées les pièces ?</summary>
+      <div class="answer">
+        <p>Tout est fabriqué au <strong>Portugal</strong>, dans des ateliers partenaires certifiés GOTS et OEKO-TEX, avec des conditions de travail respectueuses et des salaires supérieurs au SMIC portugais. Le choix du Portugal, c'est la qualité européenne + la traçabilité + un impact carbone maîtrisé.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Comment laver mes pièces PIXEL ?</summary>
+      <div class="answer">
+        <p>Machine <strong>30°C à l'envers</strong>, avec des couleurs similaires. Séchage à plat ou sur cintre (<em>jamais au sèche-linge</em>, ça ruine les impressions). Repassage à l'envers, température moyenne, en évitant les zones imprimées.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Les impressions vont-elles s'abîmer ?</summary>
+      <div class="answer">
+        <p>Nos impressions sont réalisées en <strong>sérigraphie professionnelle</strong> (et non en flex thermocollant), pour une durée de vie exceptionnelle. Si tu respectes les consignes de lavage, aucun décollement ni fissure après 50+ lavages.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Je n'arrive pas à trouver le design caché — où est-il ?</summary>
+      <div class="answer">
+        <p>C'est exactement l'idée 😉. Chaque pièce cache un pixel art à un endroit <em>discret</em> : sous le col, à l'intérieur de l'ourlet, sous la manche, ou en broderie invisible. Consulte la fiche produit — on donne un indice pour chaque drop.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <div class="faq-category">
+    <h2 class="faq-category-title"><span class="num">05</span> Compte &amp; newsletter</h2>
+
+    <details class="faq-item">
+      <summary>Dois-je créer un compte pour commander ?</summary>
+      <div class="answer">
+        <p>Non, tu peux commander en invité. Mais créer un compte te permet de suivre tes commandes, gérer tes retours, sauvegarder tes adresses et tes tailles préférées — et tu reçois 10% sur ta 1re commande.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Comment me désinscrire de la newsletter ?</summary>
+      <div class="answer">
+        <p>Clique simplement sur le lien <strong>« Se désinscrire »</strong> en bas de n'importe quel email. C'est immédiat et définitif. Tu peux aussi nous écrire à <a href="mailto:privacy@pixelwear.fr">privacy@pixelwear.fr</a>.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Mes données sont-elles protégées ?</summary>
+      <div class="answer">
+        <p>Oui, on respecte scrupuleusement le RGPD. On collecte le strict minimum, on ne revend jamais tes données, et tu peux les consulter, modifier ou supprimer à tout moment. Tout est détaillé dans notre <a href="legal/politique-confidentialite.html">politique de confidentialité</a>.</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="contact-block">
+    <h3>Toujours coincé ?</h3>
+    <p>Notre équipe est là pour toi — réponse sous 24 h en jours ouvrés.</p>
+    <a href="mailto:contact@pixelwear.fr" class="cta-btn">▓ contact@pixelwear.fr</a>
+  </div>
+
+</main>
+
+<aside class="legal-footer-nav">
+  <h3>// Pages utiles</h3>
+  <div class="legal-links">
+    <a class="legal-link-card" href="guide-tailles.html"><div class="label">Tailles</div><div class="name">Guide des tailles complet</div></a>
+    <a class="legal-link-card" href="legal/politique-retour.html"><div class="label">Retours</div><div class="name">Politique de retour</div></a>
+    <a class="legal-link-card" href="legal/cgv.html"><div class="label">CGV</div><div class="name">Conditions générales de vente</div></a>
+    <a class="legal-link-card" href="legal/politique-confidentialite.html"><div class="label">RGPD</div><div class="name">Politique de confidentialité</div></a>
+  </div>
+</aside>
+
+<!-- PIXEL:FOOTER_V2 -->
+<footer style="background:#0a0a0a;border-top:1px solid #1E1E1E;padding:3rem 2.5rem 2rem;color:#888;font-family:'Inter',sans-serif;">
+  <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:2.5rem;margin-bottom:2.5rem;">
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;">
+        <div style="width:16px;height:16px;background:#fff;"></div>
+        <span style="font-family:'Space Mono',monospace;font-size:.8rem;letter-spacing:.12em;color:#fff;font-weight:700;">PIXEL</span>
+      </div>
+      <p style="font-size:.82rem;line-height:1.65;color:#888;max-width:280px;margin-bottom:1rem;">
+        Streetwear gaming pixel art. Designs discrets pour ceux qui savent regarder. Made in Portugal.
+      </p>
+      <p style="font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.2em;color:#FF2D55;text-transform:uppercase;">
+        &#9617; 8-BIT STYLE. 100% REAL.
+      </p>
+    </div>
+    <div>
+      <h4 style="font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.2em;color:#fff;text-transform:uppercase;margin-bottom:1rem;">Boutique</h4>
+      <ul style="list-style:none;padding:0;margin:0;font-size:.82rem;line-height:1.9;">
+        <li><a href="index.html#collections" style="color:#888;text-decoration:none;">Collections</a></li>
+        <li><a href="products/tshirt-origin-noir.html" style="color:#888;text-decoration:none;">T-Shirts</a></li>
+        <li><a href="products/pull-origin.html" style="color:#888;text-decoration:none;">Pulls</a></li>
+        <li><a href="index.html#boutique" style="color:#888;text-decoration:none;">Drops limit&eacute;s</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 style="font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.2em;color:#fff;text-transform:uppercase;margin-bottom:1rem;">Service client</h4>
+      <ul style="list-style:none;padding:0;margin:0;font-size:.82rem;line-height:1.9;">
+        <li><a href="guide-tailles.html" style="color:#888;text-decoration:none;">Guide des tailles</a></li>
+        <li><a href="faq.html" style="color:#888;text-decoration:none;">FAQ</a></li>
+        <li><a href="legal/politique-retour.html" style="color:#888;text-decoration:none;">Retours &amp; &eacute;changes</a></li>
+        <li><a href="mailto:contact@pixelwear.fr" style="color:#888;text-decoration:none;">Nous contacter</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 style="font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.2em;color:#fff;text-transform:uppercase;margin-bottom:1rem;">L&eacute;gal</h4>
+      <ul style="list-style:none;padding:0;margin:0;font-size:.82rem;line-height:1.9;">
+        <li><a href="legal/mentions-legales.html" style="color:#888;text-decoration:none;">Mentions l&eacute;gales</a></li>
+        <li><a href="legal/cgv.html" style="color:#888;text-decoration:none;">CGV</a></li>
+        <li><a href="legal/politique-confidentialite.html" style="color:#888;text-decoration:none;">Confidentialit&eacute; (RGPD)</a></li>
+        <li><a href="legal/politique-cookies.html" style="color:#888;text-decoration:none;">Politique cookies</a></li>
+        <li><a href="#" onclick="if(window.PixelCookies)window.PixelCookies.openPreferences();return false;" style="color:#888;text-decoration:none;cursor:pointer;">G&eacute;rer mes cookies</a></li>
+      </ul>
+    </div>
+  </div>
+  <div style="max-width:1200px;margin:0 auto;padding-top:1.8rem;border-top:1px solid #1E1E1E;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.15em;color:#555;">
+    <div>&copy; 2026 PIXEL &middot; TOUS DROITS R&Eacute;SERV&Eacute;S</div>
+    <div>MADE IN PORTUGAL &#127477;&#127481; &middot; SHIPPED WORLDWIDE</div>
+  </div>
+</footer>
+<!-- /PIXEL:FOOTER_V2 -->
+<!-- Footer inséré par patch_footers.py — re-run le script pour regénérer -->
+
+<script>
+  // Filtre live de la FAQ
+  (function() {
+    const input = document.getElementById('faq-search');
+    if (!input) return;
+    const items = document.querySelectorAll('details.faq-item');
+    const categories = document.querySelectorAll('.faq-category');
+
+    input.addEventListener('input', () => {
+      const q = input.value.trim().toLowerCase();
+      if (!q) {
+        items.forEach(i => i.style.display = '');
+        categories.forEach(c => c.style.display = '');
+        return;
+      }
+      categories.forEach(cat => {
+        let hasMatch = false;
+        cat.querySelectorAll('details.faq-item').forEach(item => {
+          const txt = item.textContent.toLowerCase();
+          const match = txt.includes(q);
+          item.style.display = match ? '' : 'none';
+          if (match) { hasMatch = true; item.setAttribute('open', ''); }
+        });
+        cat.style.display = hasMatch ? '' : 'none';
+      });
+    });
+  })();
+</script>
+
+<!-- PIXEL:COOKIE_BANNER_V1 -->
+<script src="assets/cookie-banner.js" defer></script>
+</body>
+</html>

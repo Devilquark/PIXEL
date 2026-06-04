@@ -1,0 +1,82 @@
+<!--
+═══════════════════════════════════════════════════════════════
+PIXEL — Snippet footer + bannière cookies
+═══════════════════════════════════════════════════════════════
+
+À COLLER :
+──────────
+1. Dans CHAQUE page HTML (index.html + 6 fiches produits),
+   remplace le <footer> minimaliste existant par le <footer> ci-dessous.
+
+2. Avant la balise </body>, ajoute le <script> de la bannière cookies.
+
+3. Adapte les chemins :
+   - Depuis /index.html       → legal/... et assets/...
+   - Depuis /products/xxx.html → ../legal/... et ../assets/...
+
+═══════════════════════════════════════════════════════════════
+-->
+
+<!-- ─── FOOTER — À coller juste avant </body> ─── -->
+<footer style="background:#0a0a0a;border-top:1px solid #1E1E1E;padding:3rem 2.5rem 2rem;color:#888;font-family:'Inter',sans-serif;">
+  <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:2.5rem;margin-bottom:2.5rem;">
+
+    <!-- Colonne 1 — Brand -->
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;">
+        <div style="width:16px;height:16px;background:#fff;"></div>
+        <span style="font-family:'Space Mono',monospace;font-size:.8rem;letter-spacing:.12em;color:#fff;font-weight:700;">PIXEL</span>
+      </div>
+      <p style="font-size:.82rem;line-height:1.65;color:#888;max-width:280px;margin-bottom:1rem;">
+        Streetwear gaming pixel art. Designs discrets pour ceux qui savent regarder. Made in Portugal.
+      </p>
+      <p style="font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.2em;color:#FF2D55;text-transform:uppercase;">
+        ▓ 8-BIT STYLE. 100% REAL.
+      </p>
+    </div>
+
+    <!-- Colonne 2 — Boutique -->
+    <div>
+      <h4 style="font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.2em;color:#fff;text-transform:uppercase;margin-bottom:1rem;">Boutique</h4>
+      <ul style="list-style:none;padding:0;margin:0;font-size:.82rem;line-height:1.9;">
+        <li><a href="/index.html#collections" style="color:#888;text-decoration:none;">Collections</a></li>
+        <li><a href="/products/tshirt-origin-noir.html" style="color:#888;text-decoration:none;">T-Shirts</a></li>
+        <li><a href="/products/pull-origin.html" style="color:#888;text-decoration:none;">Pulls</a></li>
+        <li><a href="/index.html#boutique" style="color:#888;text-decoration:none;">Drops limités</a></li>
+      </ul>
+    </div>
+
+    <!-- Colonne 3 — Service client -->
+    <div>
+      <h4 style="font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.2em;color:#fff;text-transform:uppercase;margin-bottom:1rem;">Service client</h4>
+      <ul style="list-style:none;padding:0;margin:0;font-size:.82rem;line-height:1.9;">
+        <li><a href="/legal/politique-retour.html" style="color:#888;text-decoration:none;">Retours &amp; échanges</a></li>
+        <li><a href="#" style="color:#888;text-decoration:none;">Guide des tailles</a></li>
+        <li><a href="#" style="color:#888;text-decoration:none;">FAQ</a></li>
+        <li><a href="mailto:contact@pixelwear.fr" style="color:#888;text-decoration:none;">Nous contacter</a></li>
+      </ul>
+    </div>
+
+    <!-- Colonne 4 — Légal -->
+    <div>
+      <h4 style="font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.2em;color:#fff;text-transform:uppercase;margin-bottom:1rem;">Légal</h4>
+      <ul style="list-style:none;padding:0;margin:0;font-size:.82rem;line-height:1.9;">
+        <li><a href="/legal/mentions-legales.html" style="color:#888;text-decoration:none;">Mentions légales</a></li>
+        <li><a href="/legal/cgv.html" style="color:#888;text-decoration:none;">CGV</a></li>
+        <li><a href="/legal/politique-confidentialite.html" style="color:#888;text-decoration:none;">Confidentialité (RGPD)</a></li>
+        <li><a href="/legal/politique-cookies.html" style="color:#888;text-decoration:none;">Politique cookies</a></li>
+        <li><a href="#" onclick="if(window.PixelCookies)window.PixelCookies.openPreferences();return false;" style="color:#888;text-decoration:none;">Gérer mes cookies</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- Bas du footer — copyright -->
+  <div style="max-width:1200px;margin:0 auto;padding-top:1.8rem;border-top:1px solid #1E1E1E;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.15em;color:#555;">
+    <div>© 2026 PIXEL · TOUS DROITS RÉSERVÉS</div>
+    <div>MADE IN PORTUGAL 🇵🇹 · SHIPPED WORLDWIDE</div>
+  </div>
+</footer>
+
+<!-- ─── BANNIÈRE COOKIES — juste avant </body> ─── -->
+<script src="/assets/cookie-banner.js" defer></script>

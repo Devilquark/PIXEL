@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" font-family="'Courier New', monospace">
+  <defs>
+    <radialGradient id="bg03" cx="50%" cy="45%" r="70%">
+      <stop offset="0%" stop-color="#FAF8F4"/>
+      <stop offset="100%" stop-color="#EFEAE2"/>
+    </radialGradient>
+    <radialGradient id="shadow03" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0.18"/>
+      <stop offset="60%" stop-color="#000" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fabric03" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#9C9890"/>
+      <stop offset="50%" stop-color="#878379"/>
+      <stop offset="100%" stop-color="#6F6B62"/>
+    </linearGradient>
+    <linearGradient id="hoodInner03" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#5a5751"/>
+      <stop offset="100%" stop-color="#403d38"/>
+    </linearGradient>
+    <linearGradient id="ribbing03" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#787469"/>
+      <stop offset="100%" stop-color="#5e5a52"/>
+    </linearGradient>
+    <linearGradient id="fold03" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#000" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="1500" fill="url(#bg03)"/>
+
+  <!-- Top text -->
+  <text x="80" y="100" font-size="11" letter-spacing="3" fill="#1a1a1a">PIXEL — STUDIO ARCHIVE</text>
+  <text x="80" y="120" font-size="11" letter-spacing="3" fill="#888">REF. 003 / SS26</text>
+  <text x="1120" y="100" font-size="11" letter-spacing="3" fill="#1a1a1a" text-anchor="end">HOODIE — GRIS CENDRE</text>
+  <text x="1120" y="120" font-size="11" letter-spacing="3" fill="#888" text-anchor="end">MOLLETON 380 G/M² — DOUBLURE BROSSÉE</text>
+
+  <rect x="80" y="160" width="1040" height="1180" fill="none" stroke="#1a1a1a" stroke-width="0.5" opacity="0.3"/>
+
+  <!-- Shadow -->
+  <ellipse cx="600" cy="1230" rx="340" ry="30" fill="url(#shadow03)"/>
+
+  <!-- Hoodie -->
+  <g transform="translate(600, 760)">
+    <!-- Sleeves -->
+    <path d="M -310,-180
+             L -260,-220
+             L -200,-200
+             L -200,-50
+             L -250,150
+             L -310,170
+             L -340,140
+             L -330,-50 Z"
+          fill="url(#fabric03)" stroke="#5e5a52" stroke-width="0.5"/>
+    <path d="M 310,-180
+             L 260,-220
+             L 200,-200
+             L 200,-50
+             L 250,150
+             L 310,170
+             L 340,140
+             L 330,-50 Z"
+          fill="url(#fabric03)" stroke="#5e5a52" stroke-width="0.5"/>
+
+    <!-- Cuffs ribbing -->
+    <rect x="-340" y="130" width="60" height="42" rx="2" fill="url(#ribbing03)" stroke="#4d4a42" stroke-width="0.5"/>
+    <rect x="280" y="130" width="60" height="42" rx="2" fill="url(#ribbing03)" stroke="#4d4a42" stroke-width="0.5"/>
+    <!-- Cuff lines -->
+    <g stroke="#4d4a42" stroke-width="0.4" opacity="0.7">
+      <line x1="-340" y1="138" x2="-280" y2="138"/>
+      <line x1="-340" y1="146" x2="-280" y2="146"/>
+      <line x1="-340" y1="154" x2="-280" y2="154"/>
+      <line x1="-340" y1="162" x2="-280" y2="162"/>
+      <line x1="280" y1="138" x2="340" y2="138"/>
+      <line x1="280" y1="146" x2="340" y2="146"/>
+      <line x1="280" y1="154" x2="340" y2="154"/>
+      <line x1="280" y1="162" x2="340" y2="162"/>
+    </g>
+
+    <!-- Body -->
+    <path d="M -200,-200
+             Q -200,-220 -180,-235
+             Q -120,-260 -80,-275
+             L -80,-285
+             Q -80,-295 -65,-298
+             L 65,-298
+             Q 80,-295 80,-285
+             L 80,-275
+             Q 120,-260 180,-235
+             Q 200,-220 200,-200
+             L 200,330
+             Q 200,345 188,348
+             L -188,348
+             Q -200,345 -200,330 Z"
+          fill="url(#fabric03)" stroke="#5e5a52" stroke-width="0.5"/>
+
+    <!-- Hood -->
+    <path d="M -90,-280
+             Q -110,-310 -110,-345
+             Q -100,-380 -50,-395
+             Q 0,-405 50,-395
+             Q 100,-380 110,-345
+             Q 110,-310 90,-280
+             Q 60,-272 0,-272
+             Q -60,-272 -90,-280 Z"
+          fill="url(#fabric03)" stroke="#5e5a52" stroke-width="0.5"/>
+
+    <!-- Hood inner -->
+    <path d="M -78,-285
+             Q -90,-305 -85,-335
+             Q -75,-360 -35,-370
+             Q 0,-378 35,-370
+             Q 75,-360 85,-335
+             Q 90,-305 78,-285
+             Q 50,-272 0,-272
+             Q -50,-272 -78,-285 Z"
+          fill="url(#hoodInner03)" stroke="#403d38" stroke-width="0.5"/>
+
+    <!-- Drawstrings -->
+    <line x1="-22" y1="-272" x2="-30" y2="-180" stroke="#FAF7F0" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="22" y1="-272" x2="30" y2="-180" stroke="#FAF7F0" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="-30" cy="-178" r="3.5" fill="#FAF7F0" stroke="#999" stroke-width="0.3"/>
+    <circle cx="30" cy="-178" r="3.5" fill="#FAF7F0" stroke="#999" stroke-width="0.3"/>
+
+    <!-- Kangaroo pocket -->
+    <path d="M -130,80
+             L -110,55
+             L 110,55
+             L 130,80
+             L 130,200
+             L -130,200 Z"
+          fill="none" stroke="#5e5a52" stroke-width="0.7" opacity="0.6"/>
+    <line x1="-110" y1="55" x2="-110" y2="190" stroke="#5e5a52" stroke-width="0.5" opacity="0.5"/>
+    <line x1="110" y1="55" x2="110" y2="190" stroke="#5e5a52" stroke-width="0.5" opacity="0.5"/>
+
+    <!-- Hem ribbing -->
+    <rect x="-200" y="305" width="400" height="43" fill="url(#ribbing03)" opacity="0.95"/>
+    <g stroke="#4d4a42" stroke-width="0.4" opacity="0.5">
+      <line x1="-200" y1="315" x2="200" y2="315"/>
+      <line x1="-200" y1="325" x2="200" y2="325"/>
+      <line x1="-200" y1="335" x2="200" y2="335"/>
+    </g>
+
+    <!-- Subtle fabric folds -->
+    <path d="M -180,-180 L -180,300" stroke="url(#fold03)" stroke-width="50" opacity="0.6"/>
+    <path d="M 180,-180 L 180,300" stroke="url(#fold03)" stroke-width="50" opacity="0.6"/>
+
+    <!-- PIXEL signature on chest -->
+    <g transform="translate(-110, -120)">
+      <text x="0" y="0" font-size="14" letter-spacing="6" fill="#1a1a1a" opacity="0.95">PIXEL</text>
+      <rect x="62" y="-9" width="6" height="6" fill="#E63946"/>
+    </g>
+  </g>
+
+  <!-- Bottom -->
+  <text x="80" y="1410" font-size="11" letter-spacing="3" fill="#1a1a1a">FIG. 03 — VUE FRONTALE</text>
+  <text x="80" y="1430" font-size="11" letter-spacing="3" fill="#888">COUPE BOXY / CAPUCHE DOUBLÉE</text>
+  <text x="1120" y="1410" font-size="11" letter-spacing="3" fill="#1a1a1a" text-anchor="end">EU — XS / S / M / L / XL</text>
+  <text x="1120" y="1430" font-size="11" letter-spacing="3" fill="#888" text-anchor="end">€ 110,00</text>
+
+  <g transform="translate(600, 1380)">
+    <rect x="-3" y="-3" width="6" height="6" fill="#E63946"/>
+  </g>
+</svg>

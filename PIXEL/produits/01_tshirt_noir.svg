@@ -1,0 +1,286 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 2000" font-family="'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <!-- Studio backdrop -->
+    <radialGradient id="bg" cx="50%" cy="42%" r="75%">
+      <stop offset="0%" stop-color="#F5F1E8"/>
+      <stop offset="55%" stop-color="#EBE5D8"/>
+      <stop offset="100%" stop-color="#D6CFBE"/>
+    </radialGradient>
+
+    <!-- Fabric noise (cotton weave) -->
+    <filter id="weave" x="-2%" y="-2%" width="104%" height="104%">
+      <feTurbulence type="fractalNoise" baseFrequency="2.6" numOctaves="2" seed="7" result="noise"/>
+      <feColorMatrix in="noise" type="matrix"
+        values="0 0 0 0 0
+                0 0 0 0 0
+                0 0 0 0 0
+                0 0 0 0.32 0" result="alpha"/>
+      <feComposite in="alpha" in2="SourceGraphic" operator="in" result="masked"/>
+      <feBlend in="SourceGraphic" in2="masked" mode="multiply"/>
+    </filter>
+
+    <!-- Soft fabric grain overlay -->
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="3.5" numOctaves="2" seed="3"/>
+      <feColorMatrix type="matrix"
+        values="0 0 0 0 0.05
+                0 0 0 0 0.05
+                0 0 0 0 0.05
+                0 0 0 0.18 0"/>
+    </filter>
+
+    <!-- Drop shadow filter -->
+    <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="22"/>
+      <feOffset dx="0" dy="20" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.55"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Inner shadow for fabric depth -->
+    <filter id="innerShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="blur"/>
+      <feOffset in="blur" dx="0" dy="3" result="offsetBlur"/>
+      <feFlood flood-color="#000" flood-opacity="0.65"/>
+      <feComposite in2="offsetBlur" operator="in"/>
+      <feComposite in2="SourceGraphic" operator="over"/>
+    </filter>
+
+    <!-- BASE FABRIC: very dark, with subtle volume -->
+    <radialGradient id="bodyVol" cx="50%" cy="35%" r="80%">
+      <stop offset="0%" stop-color="#2a2a2a"/>
+      <stop offset="40%" stop-color="#181818"/>
+      <stop offset="80%" stop-color="#0c0c0c"/>
+      <stop offset="100%" stop-color="#050505"/>
+    </radialGradient>
+
+    <!-- Sleeve gradients (left/right asymmetric for depth) -->
+    <linearGradient id="sleeveL" x1="0%" y1="0%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#050505"/>
+      <stop offset="40%" stop-color="#1a1a1a"/>
+      <stop offset="80%" stop-color="#222"/>
+      <stop offset="100%" stop-color="#0d0d0d"/>
+    </linearGradient>
+    <linearGradient id="sleeveR" x1="100%" y1="0%" x2="0%" y2="50%">
+      <stop offset="0%" stop-color="#050505"/>
+      <stop offset="40%" stop-color="#1a1a1a"/>
+      <stop offset="80%" stop-color="#222"/>
+      <stop offset="100%" stop-color="#0d0d0d"/>
+    </linearGradient>
+
+    <!-- Fold highlights -->
+    <linearGradient id="hiL" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#fff" stop-opacity="0.07"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="hiR" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#fff" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Shoulder highlight -->
+    <radialGradient id="shoulder" cx="50%" cy="20%" r="60%">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.10"/>
+      <stop offset="60%" stop-color="#fff" stop-opacity="0.02"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Center crease shadow -->
+    <linearGradient id="centerCrease" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="48%" stop-color="#000" stop-opacity="0.3"/>
+      <stop offset="50%" stop-color="#000" stop-opacity="0.45"/>
+      <stop offset="52%" stop-color="#000" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Hem shadow -->
+    <linearGradient id="hemShadow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.55"/>
+    </linearGradient>
+
+    <!-- Neck rib -->
+    <linearGradient id="neckRib" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a1a"/>
+      <stop offset="50%" stop-color="#0c0c0c"/>
+      <stop offset="100%" stop-color="#000"/>
+    </linearGradient>
+
+    <!-- Drop shadow under garment -->
+    <radialGradient id="floorShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0.45"/>
+      <stop offset="50%" stop-color="#000" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Backdrop -->
+  <rect width="1600" height="2000" fill="url(#bg)"/>
+  <!-- Slight studio vignette -->
+  <rect width="1600" height="2000" fill="url(#bg)" filter="url(#grain)" opacity="0.5"/>
+
+  <!-- Top header -->
+  <text x="100" y="100" font-size="11" letter-spacing="4" fill="#1a1a1a">PIXEL</text>
+  <text x="100" y="120" font-size="10" letter-spacing="3" fill="#888">CORE TEE / NOIR / SS26</text>
+  <text x="1500" y="100" font-size="11" letter-spacing="4" fill="#1a1a1a" text-anchor="end">001</text>
+  <text x="1500" y="120" font-size="10" letter-spacing="3" fill="#888" text-anchor="end">100% COTON BIO — 220 G/M²</text>
+
+  <!-- Floor shadow under garment -->
+  <ellipse cx="800" cy="1620" rx="480" ry="42" fill="url(#floorShadow)"/>
+  <ellipse cx="800" cy="1625" rx="380" ry="22" fill="#000" opacity="0.18"/>
+
+  <!-- T-SHIRT COMPOSITION -->
+  <g transform="translate(800, 950)" filter="url(#dropShadow)">
+
+    <!-- LEFT SLEEVE (back layer) -->
+    <path d="M -395,-285
+             C -415,-275 -425,-260 -428,-245
+             L -445,-150
+             C -448,-130 -440,-118 -422,-115
+             L -325,-100
+             C -310,-100 -300,-110 -298,-125
+             L -288,-218
+             C -288,-235 -298,-248 -315,-258
+             L -395,-285 Z"
+          fill="url(#sleeveL)"/>
+    <!-- Left sleeve cuff shadow -->
+    <path d="M -445,-150 C -448,-130 -440,-118 -422,-115 L -325,-100 C -310,-100 -300,-110 -298,-125"
+          fill="none" stroke="#000" stroke-width="1.5" opacity="0.5"/>
+    <!-- Sleeve highlight -->
+    <ellipse cx="-370" cy="-200" rx="35" ry="80" fill="url(#hiL)" opacity="0.7" transform="rotate(-15 -370 -200)"/>
+
+    <!-- RIGHT SLEEVE -->
+    <path d="M 395,-285
+             C 415,-275 425,-260 428,-245
+             L 445,-150
+             C 448,-130 440,-118 422,-115
+             L 325,-100
+             C 310,-100 300,-110 298,-125
+             L 288,-218
+             C 288,-235 298,-248 315,-258
+             L 395,-285 Z"
+          fill="url(#sleeveR)"/>
+    <path d="M 445,-150 C 448,-130 440,-118 422,-115 L 325,-100 C 310,-100 300,-110 298,-125"
+          fill="none" stroke="#000" stroke-width="1.5" opacity="0.5"/>
+    <ellipse cx="370" cy="-200" rx="35" ry="80" fill="url(#hiR)" opacity="0.7" transform="rotate(15 370 -200)"/>
+
+    <!-- BODY -->
+    <path d="M -298,-235
+             C -298,-255 -288,-272 -270,-282
+             C -210,-310 -150,-325 -90,-335
+             C -75,-345 -55,-352 -30,-355
+             C -10,-358 10,-358 30,-355
+             C 55,-352 75,-345 90,-335
+             C 150,-325 210,-310 270,-282
+             C 288,-272 298,-255 298,-235
+             L 305,200
+             C 308,260 312,320 318,380
+             C 320,420 322,450 320,475
+             C 318,490 308,498 295,500
+             L -295,500
+             C -308,498 -318,490 -320,475
+             C -322,450 -320,420 -318,380
+             C -312,320 -308,260 -305,200 Z"
+          fill="url(#bodyVol)"/>
+
+    <!-- Fabric texture overlay -->
+    <path d="M -298,-235
+             C -298,-255 -288,-272 -270,-282
+             C -210,-310 -150,-325 -90,-335
+             C -75,-345 -55,-352 -30,-355
+             C -10,-358 10,-358 30,-355
+             C 55,-352 75,-345 90,-335
+             C 150,-325 210,-310 270,-282
+             C 288,-272 298,-255 298,-235
+             L 305,200
+             C 308,260 312,320 318,380
+             C 320,420 322,450 320,475
+             C 318,490 308,498 295,500
+             L -295,500
+             C -308,498 -318,490 -320,475
+             C -322,450 -320,420 -318,380
+             C -312,320 -308,260 -305,200 Z"
+          fill="#000" filter="url(#grain)" opacity="0.7"/>
+
+    <!-- Shoulder highlight -->
+    <ellipse cx="0" cy="-280" rx="280" ry="80" fill="url(#shoulder)"/>
+
+    <!-- Side fold highlights -->
+    <path d="M -260,-200 Q -270,0 -290,400" stroke="url(#hiL)" stroke-width="55" fill="none" opacity="0.5"/>
+    <path d="M 260,-200 Q 270,0 290,400" stroke="url(#hiR)" stroke-width="55" fill="none" opacity="0.5"/>
+
+    <!-- Subtle vertical center crease -->
+    <rect x="-90" y="-260" width="180" height="740" fill="url(#centerCrease)" opacity="0.35"/>
+
+    <!-- Natural fabric folds (creases) -->
+    <g opacity="0.4">
+      <path d="M -200,-100 Q -180,80 -210,300" stroke="#000" stroke-width="2" fill="none" opacity="0.5"/>
+      <path d="M 195,-90 Q 215,90 200,310" stroke="#000" stroke-width="2" fill="none" opacity="0.5"/>
+      <path d="M -130,200 Q -100,320 -150,460" stroke="#fff" stroke-width="1.5" fill="none" opacity="0.06"/>
+      <path d="M 140,180 Q 110,310 160,455" stroke="#fff" stroke-width="1.5" fill="none" opacity="0.06"/>
+      <path d="M 30,-150 Q 40,100 20,400" stroke="#000" stroke-width="1.2" fill="none" opacity="0.3"/>
+    </g>
+
+    <!-- Hem shadow (bottom edge) -->
+    <rect x="-320" y="460" width="640" height="42" fill="url(#hemShadow)" opacity="0.45"/>
+    <!-- Hem stitch line -->
+    <line x1="-318" y1="478" x2="318" y2="478" stroke="#1f1f1f" stroke-width="0.6" stroke-dasharray="3,2" opacity="0.6"/>
+
+    <!-- Sleeve hem stitches -->
+    <path d="M -445,-148 C -448,-128 -440,-118 -422,-115" stroke="#2a2a2a" stroke-width="0.5" stroke-dasharray="2,2" fill="none" opacity="0.7"/>
+    <path d="M 445,-148 C 448,-128 440,-118 422,-115" stroke="#2a2a2a" stroke-width="0.5" stroke-dasharray="2,2" fill="none" opacity="0.7"/>
+
+    <!-- NECK RIB -->
+    <path d="M -90,-335
+             C -75,-345 -55,-352 -30,-355
+             C -10,-358 10,-358 30,-355
+             C 55,-352 75,-345 90,-335
+             C 88,-310 70,-295 35,-292
+             C 12,-289 -12,-289 -35,-292
+             C -70,-295 -88,-310 -90,-335 Z"
+          fill="url(#neckRib)"/>
+    <!-- Neck rib texture lines -->
+    <g stroke="#2a2a2a" stroke-width="0.5" fill="none" opacity="0.5">
+      <path d="M -80,-326 C -60,-318 -30,-314 0,-313 C 30,-314 60,-318 80,-326"/>
+      <path d="M -78,-318 C -55,-310 -28,-307 0,-306 C 28,-307 55,-310 78,-318"/>
+      <path d="M -76,-310 C -52,-303 -26,-300 0,-299 C 26,-300 52,-303 76,-310"/>
+    </g>
+    <!-- Inner neck shadow -->
+    <path d="M -88,-330 C -85,-318 -70,-308 -45,-305 C -22,-302 22,-302 45,-305 C 70,-308 85,-318 88,-330"
+          fill="none" stroke="#000" stroke-width="2" opacity="0.5"/>
+
+    <!-- Inner neck darkness (the dark void of the collar opening) -->
+    <ellipse cx="0" cy="-320" rx="60" ry="14" fill="#000" opacity="0.85"/>
+
+    <!-- Tiny pixel accent on chest -->
+    <g transform="translate(-115, -150)">
+      <rect x="0" y="0" width="5" height="5" fill="#E63946" opacity="0.95"/>
+      <text x="14" y="5" font-size="9" letter-spacing="3" fill="#aaaaaa" font-family="'Courier New', monospace">PIXEL</text>
+    </g>
+
+    <!-- Subtle stitching detail at shoulder seam -->
+    <path d="M -298,-235 C -260,-260 -200,-280 -150,-295" stroke="#0a0a0a" stroke-width="0.5" stroke-dasharray="2,2" fill="none" opacity="0.7"/>
+    <path d="M 298,-235 C 260,-260 200,-280 150,-295" stroke="#0a0a0a" stroke-width="0.5" stroke-dasharray="2,2" fill="none" opacity="0.7"/>
+
+  </g>
+
+  <!-- Bottom info -->
+  <text x="100" y="1880" font-size="10" letter-spacing="3" fill="#1a1a1a">FIG. 01 — VUE FRONTALE / FLAT LAY</text>
+  <text x="100" y="1900" font-size="10" letter-spacing="3" fill="#888">COUPE OVERSIZE — COL ROND DOUBLE COUTURE</text>
+  <text x="1500" y="1880" font-size="10" letter-spacing="3" fill="#1a1a1a" text-anchor="end">EU XS / S / M / L / XL</text>
+  <text x="1500" y="1900" font-size="10" letter-spacing="3" fill="#888" text-anchor="end">€ 45,00</text>
+
+  <!-- Hairline divider -->
+  <line x1="100" y1="1830" x2="1500" y2="1830" stroke="#1a1a1a" stroke-width="0.4" opacity="0.3"/>
+
+  <!-- Final grain overlay across everything for filmic feel -->
+  <rect width="1600" height="2000" fill="transparent" filter="url(#grain)" opacity="0.25" style="mix-blend-mode:multiply"/>
+</svg>

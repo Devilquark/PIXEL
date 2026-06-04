@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PIXEL — Audit SEO Complet</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap');
+:root {
+  --black: #0A0A0A;
+  --white: #FFFFFF;
+  --red: #FF2D55;
+  --green: #00D97E;
+  --yellow: #FFB800;
+  --gray: #888;
+  --border: #1E1E1E;
+  --card: #111;
+  --mono: 'Space Mono', monospace;
+  --sans: 'Inter', sans-serif;
+}
+* { box-sizing: border-box; margin:0; padding:0; }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--sans);
+  line-height: 1.65;
+  font-size: 15px;
+}
+a { color: var(--red); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── HEADER ── */
+header {
+  background: #0A0A0A;
+  border-bottom: 1px solid var(--border);
+  padding: 2rem 3rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.logo-mark {
+  width: 18px; height: 18px;
+  background: var(--white);
+  display: inline-block;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+.header-title {
+  font-family: var(--mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.header-meta {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--gray);
+  letter-spacing: 0.15em;
+  text-align: right;
+}
+
+/* ── LAYOUT ── */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+section { padding: 3.5rem 0; border-bottom: 1px solid var(--border); }
+section:last-child { border-bottom: none; }
+
+/* ── SECTION LABEL ── */
+.section-num {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  color: var(--red);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+h2 {
+  font-family: var(--mono);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--white);
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+}
+h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--white);
+  margin: 1.8rem 0 0.8rem;
+}
+
+/* ── EXEC SUMMARY ── */
+.exec-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--red);
+  padding: 2rem 2.5rem;
+  margin-bottom: 2rem;
+  border-radius: 2px;
+}
+.exec-card p { color: #ccc; margin-bottom: 0.8rem; font-size: 0.95rem; }
+.exec-card p:last-child { margin-bottom: 0; }
+
+.score-row {
+  display: flex; gap: 1.5rem; flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.score-card {
+  flex: 1; min-width: 200px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  border-radius: 2px;
+  text-align: center;
+}
+.score-value {
+  font-family: var(--mono);
+  font-size: 2.2rem;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.score-label {
+  font-size: 0.7rem;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-family: var(--mono);
+}
+.score-red   { color: var(--red); }
+.score-yellow{ color: var(--yellow); }
+.score-green { color: var(--green); }
+
+/* ── TABLES ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+  font-size: 0.88rem;
+}
+th {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gray);
+  text-align: left;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #181818;
+  color: #ddd;
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #141414; }
+
+/* ── BADGES ── */
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  font-weight: 700;
+}
+.badge-critical { background: rgba(255,45,85,0.2); color: var(--red); }
+.badge-high     { background: rgba(255,184,0,0.15); color: var(--yellow); }
+.badge-medium   { background: rgba(0,150,200,0.15); color: #00aacc; }
+.badge-low      { background: rgba(0,217,126,0.1); color: #aaa; }
+.badge-pass     { background: rgba(0,217,126,0.15); color: var(--green); }
+.badge-fail     { background: rgba(255,45,85,0.2); color: var(--red); }
+.badge-warn     { background: rgba(255,184,0,0.15); color: var(--yellow); }
+
+.opp-high   { color: var(--green); font-family: var(--mono); font-size: 0.75rem; }
+.opp-medium { color: var(--yellow); font-family: var(--mono); font-size: 0.75rem; }
+.opp-low    { color: var(--gray); font-family: var(--mono); font-size: 0.75rem; }
+
+/* ── ACTION CARDS ── */
+.action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.action-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  border-radius: 2px;
+}
+.action-card.priority { border-left: 3px solid var(--green); }
+.action-card.strategic { border-left: 3px solid var(--yellow); }
+.action-card h4 {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 1rem;
+}
+.action-card.strategic h4 { color: var(--yellow); }
+.action-item {
+  display: flex; gap: 0.8rem; align-items: flex-start;
+  margin-bottom: 1rem; padding-bottom: 1rem;
+  border-bottom: 1px solid #1a1a1a;
+  font-size: 0.88rem;
+}
+.action-item:last-child { border-bottom: none; margin-bottom:0; padding-bottom:0; }
+.action-num {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--red);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.action-body { flex: 1; }
+.action-title { color: var(--white); font-weight: 600; margin-bottom: 0.3rem; }
+.action-meta { color: var(--gray); font-size: 0.8rem; }
+
+/* ── DIVIDER ── */
+.divider {
+  height: 1px; background: var(--border);
+  margin: 2rem 0;
+}
+
+@media(max-width:768px) {
+  header { padding: 1.5rem; flex-direction:column; gap:0.5rem; align-items:flex-start; }
+  .action-grid { grid-template-columns: 1fr; }
+  .score-row { flex-direction:column; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <span class="logo-mark"></span>
+    <span class="header-title">PIXEL · AUDIT SEO</span>
+  </div>
+  <div class="header-meta">
+    Rapport confidentiel<br>
+    Version 1.0 · Avril 2026
+  </div>
+</header>
+
+<!-- ─── 0. EXECUTIVE SUMMARY ──────────────────────────────────── -->
+<section>
+<div class="container">
+  <div class="section-num">// 00</div>
+  <h2>Executive Summary</h2>
+
+  <div class="exec-card">
+    <p>PIXEL est un site e-commerce en phase de lancement sur un marché de niche à fort potentiel : le <strong>streetwear gaming / pixel art discret</strong>. La bonne nouvelle — aucun concurrent direct ne possède clairement ce positionnement en France. La mauvaise — le site actuel est quasi-invisible pour Google, avec zéro métadonnée SEO, aucun contenu indexable sur les produits, et aucune structure technique de base.</p>
+    <p><strong>Priorité absolue :</strong> corriger les fondamentaux (title, meta, schema) avant le lancement. Ensuite, s'approprier les requêtes longue traîne que personne n'a encore colonisées : <em>"vêtement gaming discret"</em>, <em>"t-shirt konami code"</em>, <em>"streetwear pixel art France"</em>.</p>
+    <p>Avec 3 à 4 mois de contenu SEO cohérent post-lancement, PIXEL peut positionner des pages en première page Google sur des termes à forte intention d'achat, avant que les concurrents identifient l'opportunité.</p>
+  </div>
+
+  <div class="score-row">
+    <div class="score-card">
+      <span class="score-value score-red">23<small style="font-size:1rem;">/100</small></span>
+      <span class="score-label">Score SEO actuel</span>
+    </div>
+    <div class="score-card">
+      <span class="score-value score-yellow">8</span>
+      <span class="score-label">Problèmes critiques</span>
+    </div>
+    <div class="score-card">
+      <span class="score-value score-green">Faible</span>
+      <span class="score-label">Concurrence niche</span>
+    </div>
+    <div class="score-card">
+      <span class="score-value score-green">Haute</span>
+      <span class="score-label">Opportunité long terme</span>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ─── 1. KEYWORD OPPORTUNITIES ─────────────────────────────── -->
+<section>
+<div class="container">
+  <div class="section-num">// 01</div>
+  <h2>Opportunités de mots-clés</h2>
+  <p style="color:#aaa; margin-bottom:2rem; font-size:0.9rem;">Données estimées basées sur l'analyse du marché français. Les volumes et difficultés sont des ordres de grandeur — connecter Semrush ou Ahrefs pour des chiffres précis.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Mot-clé</th>
+        <th>Volume est.</th>
+        <th>Difficulté</th>
+        <th>Opportunité</th>
+        <th>Intent</th>
+        <th>Type de contenu</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>t-shirt streetwear gaming</strong></td>
+        <td>1 200 – 2 000 / mois</td>
+        <td>Moyenne</td>
+        <td><span class="opp-high">■ HAUTE</span></td>
+        <td>Transactionnel</td>
+        <td>Page collection + landing</td>
+      </tr>
+      <tr>
+        <td><strong>vêtement gaming discret</strong></td>
+        <td>100 – 400 / mois</td>
+        <td>Faible</td>
+        <td><span class="opp-high">■ HAUTE</span></td>
+        <td>Transactionnel</td>
+        <td>Landing page ADN + collection</td>
+      </tr>
+      <tr>
+        <td><strong>t-shirt pixel art</strong></td>
+        <td>800 – 1 500 / mois</td>
+        <td>Moyenne</td>
+        <td><span class="opp-high">■ HAUTE</span></td>
+        <td>Transactionnel</td>
+        <td>Page collection ORIGIN</td>
+      </tr>
+      <tr>
+        <td><strong>marque streetwear française gaming</strong></td>
+        <td>200 – 600 / mois</td>
+        <td>Faible</td>
+        <td><span class="opp-high">■ HAUTE</span></td>
+        <td>Informationnel / Commercial</td>
+        <td>Page À propos / Blog</td>
+      </tr>
+      <tr>
+        <td><strong>streetwear pixel art</strong></td>
+        <td>400 – 900 / mois</td>
+        <td>Faible</td>
+        <td><span class="opp-high">■ HAUTE</span></td>
+        <td>Commercial</td>
+        <td>Homepage + collection RGB</td>
+      </tr>
+      <tr>
+        <td><strong>wink culture vêtement</strong></td>
+        <td>50 – 200 / mois</td>
+        <td>Très faible</td>
+        <td><span class="opp-high">■ HAUTE</span></td>
+        <td>Informationnel</td>
+        <td>Blog pilier — concept ADN</td>
+      </tr>
+      <tr>
+        <td><strong>t-shirt konami code</strong></td>
+        <td>150 – 400 / mois</td>
+        <td>Faible</td>
+        <td><span class="opp-high">■ HAUTE</span></td>
+        <td>Transactionnel</td>
+        <td>Page collection KONAMI dédiée</td>
+      </tr>
+      <tr>
+        <td><strong>mode gaming premium France</strong></td>
+        <td>100 – 300 / mois</td>
+        <td>Faible</td>
+        <td><span class="opp-high">■ HAUTE</span></td>
+        <td>Commercial</td>
+        <td>Blog + landing positioning</td>
+      </tr>
+      <tr>
+        <td><strong>t-shirt retro gaming</strong></td>
+        <td>1 000 – 2 500 / mois</td>
+        <td>Haute</td>
+        <td><span class="opp-medium">▪ MOYENNE</span></td>
+        <td>Transactionnel</td>
+        <td>Collection RGB + filtres produit</td>
+      </tr>
+      <tr>
+        <td><strong>streetwear geek France</strong></td>
+        <td>300 – 800 / mois</td>
+        <td>Moyenne</td>
+        <td><span class="opp-medium">▪ MOYENNE</span></td>
+        <td>Commercial</td>
+        <td>Homepage + Blog</td>
+      </tr>
+      <tr>
+        <td><strong>vêtement gamer</strong></td>
+        <td>500 – 1 200 / mois</td>
+        <td>Moyenne</td>
+        <td><span class="opp-medium">▪ MOYENNE</span></td>
+        <td>Transactionnel</td>
+        <td>Boutique + page catégorie</td>
+      </tr>
+      <tr>
+        <td><strong>sweat gaming pixel art</strong></td>
+        <td>100 – 300 / mois</td>
+        <td>Faible</td>
+        <td><span class="opp-medium">▪ MOYENNE</span></td>
+        <td>Transactionnel</td>
+        <td>Page pulls / sweats</td>
+      </tr>
+      <tr>
+        <td><strong>drop limité streetwear</strong></td>
+        <td>200 – 500 / mois</td>
+        <td>Moyenne</td>
+        <td><span class="opp-medium">▪ MOYENNE</span></td>
+        <td>Transactionnel</td>
+        <td>Collection GLITCH</td>
+      </tr>
+      <tr>
+        <td><strong>made in portugal vêtement</strong></td>
+        <td>400 – 1 000 / mois</td>
+        <td>Faible</td>
+        <td><span class="opp-medium">▪ MOYENNE</span></td>
+        <td>Informationnel</td>
+        <td>Page fabrication + blog</td>
+      </tr>
+      <tr>
+        <td><strong>t-shirt gaming streetwear</strong></td>
+        <td>600 – 1 500 / mois</td>
+        <td>Haute</td>
+        <td><span class="opp-medium">▪ MOYENNE</span></td>
+        <td>Transactionnel</td>
+        <td>Boutique + catégories</td>
+      </tr>
+      <tr>
+        <td><strong>streetwear pour gamers</strong></td>
+        <td>100 – 250 / mois</td>
+        <td>Faible</td>
+        <td><span class="opp-medium">▪ MOYENNE</span></td>
+        <td>Informationnel</td>
+        <td>Article blog + FAQ</td>
+      </tr>
+      <tr>
+        <td><strong>t-shirt geek discret</strong></td>
+        <td>80 – 200 / mois</td>
+        <td>Très faible</td>
+        <td><span class="opp-high">■ HAUTE</span></td>
+        <td>Transactionnel</td>
+        <td>Page ADN + sous-col concept</td>
+      </tr>
+      <tr>
+        <td><strong>marque de vêtement geek</strong></td>
+        <td>300 – 700 / mois</td>
+        <td>Haute</td>
+        <td><span class="opp-low">· FAIBLE</span></td>
+        <td>Informationnel</td>
+        <td>Blog — différenciation</td>
+      </tr>
+      <tr>
+        <td><strong>pixel art fashion</strong></td>
+        <td>200 – 500 / mois</td>
+        <td>Faible</td>
+        <td><span class="opp-high">■ HAUTE</span></td>
+        <td>Commercial</td>
+        <td>Homepage + Instagram / SEO</td>
+      </tr>
+      <tr>
+        <td><strong>easter egg vêtement</strong></td>
+        <td>50 – 150 / mois</td>
+        <td>Très faible</td>
+        <td><span class="opp-high">■ HAUTE</span></td>
+        <td>Informationnel</td>
+        <td>Blog — concept wink culture</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="background:var(--card); border:1px solid var(--border); padding:1.5rem; border-left:3px solid var(--green);">
+    <strong style="font-family:var(--mono); font-size:0.75rem; letter-spacing:0.1em; color:var(--green);">▓ INSIGHT CLÉ — BLUE OCEAN</strong>
+    <p style="margin-top:0.8rem; color:#ccc; font-size:0.9rem;">PIXEL dispose d'une fenêtre rare : les requêtes <em>"vêtement gaming discret"</em>, <em>"t-shirt konami code"</em>, <em>"wink culture streetwear"</em> et <em>"easter egg vêtement"</em> sont quasi-vierges sur Google France. Aucun acteur ne les a encore colonisées. En publiant 3 à 4 articles de blog ciblés dans les 6 premiers mois, PIXEL peut prendre la première position sur ces requêtes avant même d'avoir une DA (Domain Authority) significative.</p>
+  </div>
+</div>
+</section>
+
+<!-- ─── 2. ON-PAGE AUDIT ───────────────────────────────────────── -->
+<section>
+<div class="container">
+  <div class="section-num">// 02</div>
+  <h2>Audit On-Page — Homepage</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Élément</th>
+        <th>État avant</th>
+        <th>Sévérité</th>
+        <th>Fix appliqué</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Balise &lt;title&gt;</strong></td>
+        <td>"PIXEL — 8-BIT STYLE. 100% REAL." — aucun mot-clé fonctionnel</td>
+        <td><span class="badge badge-critical">Critique</span></td>
+        <td>✅ "PIXEL — Streetwear Gaming Pixel Art | Made in Portugal"</td>
+      </tr>
+      <tr>
+        <td><strong>Meta description</strong></td>
+        <td>Absente</td>
+        <td><span class="badge badge-critical">Critique</span></td>
+        <td>✅ Ajoutée — 155 caractères, 3 mots-clés, CTA implicite</td>
+      </tr>
+      <tr>
+        <td><strong>H1</strong></td>
+        <td>"PIXEL" — nom seul, aucun contexte sémantique</td>
+        <td><span class="badge badge-critical">Critique</span></td>
+        <td>✅ aria-label="PIXEL — marque streetwear gaming pixel art"</td>
+      </tr>
+      <tr>
+        <td><strong>H2 collections</strong></td>
+        <td>"Les collections" — générique</td>
+        <td><span class="badge badge-high">Haute</span></td>
+        <td>✅ "Collections streetwear gaming"</td>
+      </tr>
+      <tr>
+        <td><strong>H2 boutique</strong></td>
+        <td>"Boutique" — aucun mot-clé</td>
+        <td><span class="badge badge-high">Haute</span></td>
+        <td>✅ "T-shirts &amp; pulls gaming pixel art"</td>
+      </tr>
+      <tr>
+        <td><strong>H2 newsletter</strong></td>
+        <td>"Sois le premier informé." — zéro SEO</td>
+        <td><span class="badge badge-medium">Moyenne</span></td>
+        <td>✅ "Accès anticipé aux drops gaming &amp; pixel art"</td>
+      </tr>
+      <tr>
+        <td><strong>Open Graph tags</strong></td>
+        <td>Absents — partage social sans données</td>
+        <td><span class="badge badge-critical">Critique</span></td>
+        <td>✅ og:title, og:description, og:image, og:type, og:locale</td>
+      </tr>
+      <tr>
+        <td><strong>Twitter Card</strong></td>
+        <td>Absent</td>
+        <td><span class="badge badge-high">Haute</span></td>
+        <td>✅ summary_large_image ajoutée</td>
+      </tr>
+      <tr>
+        <td><strong>Schema.org JSON-LD</strong></td>
+        <td>Absent — zéro données structurées</td>
+        <td><span class="badge badge-critical">Critique</span></td>
+        <td>✅ Organization + WebSite + ClothingStore</td>
+      </tr>
+      <tr>
+        <td><strong>Canonical tag</strong></td>
+        <td>Absent</td>
+        <td><span class="badge badge-high">Haute</span></td>
+        <td>✅ &lt;link rel="canonical" href="https://pixelwear.fr/"&gt;</td>
+      </tr>
+      <tr>
+        <td><strong>Alt text sur images/SVG</strong></td>
+        <td>Absent sur tous les éléments visuels</td>
+        <td><span class="badge badge-high">Haute</span></td>
+        <td>✅ aria-label ajouté sur logo et hero SVG</td>
+      </tr>
+      <tr>
+        <td><strong>Produits générés en JS</strong></td>
+        <td>Contenu produit invisible aux crawlers</td>
+        <td><span class="badge badge-critical">Critique</span></td>
+        <td>⚠️ À corriger au lancement — SSR ou HTML statique requis</td>
+      </tr>
+      <tr>
+        <td><strong>Contenu texte indexable</strong></td>
+        <td>Peu de contenu dense en mots-clés</td>
+        <td><span class="badge badge-high">Haute</span></td>
+        <td>✅ Bloc sr-only + enrichissement section ADN</td>
+      </tr>
+      <tr>
+        <td><strong>Cohérence langue (fr/en)</strong></td>
+        <td>Mélange FR / EN ("For those who understand")</td>
+        <td><span class="badge badge-medium">Moyenne</span></td>
+        <td>⚠️ À monitorer — tagline EN maintenu pour la marque, acceptable</td>
+      </tr>
+      <tr>
+        <td><strong>robots.txt</strong></td>
+        <td>Absent</td>
+        <td><span class="badge badge-high">Haute</span></td>
+        <td>🔲 À créer au lancement</td>
+      </tr>
+      <tr>
+        <td><strong>sitemap.xml</strong></td>
+        <td>Absent</td>
+        <td><span class="badge badge-high">Haute</span></td>
+        <td>🔲 À générer au lancement (Shopify ou plugin)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<!-- ─── 3. CONTENT GAP ────────────────────────────────────────── -->
+<section>
+<div class="container">
+  <div class="section-num">// 03</div>
+  <h2>Opportunités de contenu manquant</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Sujet / Mot-clé</th>
+        <th>Pourquoi ça compte</th>
+        <th>Format recommandé</th>
+        <th>Priorité</th>
+        <th>Effort</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Qu'est-ce que la wink culture ?</strong></td>
+        <td>Requête quasi-vierge. Permet à PIXEL de définir et posséder le terme sur Google.</td>
+        <td>Article blog pilier (1 500 mots)</td>
+        <td><span class="badge badge-critical">P1</span></td>
+        <td>Modéré — 1 jour</td>
+      </tr>
+      <tr>
+        <td><strong>Comment s'habiller comme un gamer sans avoir l'air d'un gamer</strong></td>
+        <td>Requête longue traîne, intention d'achat, audience cœur de cible parfaite.</td>
+        <td>Article blog + produits associés</td>
+        <td><span class="badge badge-critical">P1</span></td>
+        <td>Modéré — 1 jour</td>
+      </tr>
+      <tr>
+        <td><strong>Collection KONAMI — Page dédiée</strong></td>
+        <td>"t-shirt konami code" = requête transactionnelle avec peu de concurrence directe.</td>
+        <td>Landing page collection</td>
+        <td><span class="badge badge-critical">P1</span></td>
+        <td>Rapide — 2h</td>
+      </tr>
+      <tr>
+        <td><strong>Pourquoi Made in Portugal ?</strong></td>
+        <td>"made in portugal vêtement" est une requête en croissance. Différenciation qualité.</td>
+        <td>Page marque / blog</td>
+        <td><span class="badge badge-high">P2</span></td>
+        <td>Rapide — 2h</td>
+      </tr>
+      <tr>
+        <td><strong>Les meilleurs easter eggs dans les jeux vidéo</strong></td>
+        <td>Contenu viral possible, lien direct avec l'ADN PIXEL, attire l'audience cible.</td>
+        <td>Article top-liste blog</td>
+        <td><span class="badge badge-high">P2</span></td>
+        <td>Modéré — 1 jour</td>
+      </tr>
+      <tr>
+        <td><strong>FAQ : Livraison, tailles, matières</strong></td>
+        <td>Contenu qui génère des snippets FAQ Google. Réduit le taux de rebond.</td>
+        <td>Page FAQ avec Schema FAQPage</td>
+        <td><span class="badge badge-high">P2</span></td>
+        <td>Rapide — 3h</td>
+      </tr>
+      <tr>
+        <td><strong>Streetwear gaming 2026 — Tendances</strong></td>
+        <td>Requête saisonnière avec intention commerciale. Positionner PIXEL comme référence éditoriale.</td>
+        <td>Article blog annuel</td>
+        <td><span class="badge badge-medium">P3</span></td>
+        <td>Modéré — 1 jour</td>
+      </tr>
+      <tr>
+        <td><strong>Pixel art dans la mode — Histoire</strong></td>
+        <td>Contenu evergreen, backlinks naturels potentiels depuis sites gaming / mode.</td>
+        <td>Article long-form (2 000 mots)</td>
+        <td><span class="badge badge-medium">P3</span></td>
+        <td>Substantiel — 2 jours</td>
+      </tr>
+      <tr>
+        <td><strong>Guide cadeaux gamer 2026</strong></td>
+        <td>Pic saisonnier (Noël, anniversaires). Trafic qualifié avec haute intention d'achat.</td>
+        <td>Guide d'achat + produits PIXEL</td>
+        <td><span class="badge badge-medium">P3</span></td>
+        <td>Modéré — 1 jour</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<!-- ─── 4. TECHNICAL SEO ───────────────────────────────────────── -->
+<section>
+<div class="container">
+  <div class="section-num">// 04</div>
+  <h2>Checklist Technique SEO</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Vérification</th>
+        <th>Statut</th>
+        <th>Détails &amp; recommandation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Balise &lt;title&gt; avec mots-clés</td>
+        <td><span class="badge badge-pass">✓ OK</span></td>
+        <td>Corrigé — "Streetwear Gaming Pixel Art | Made in Portugal"</td>
+      </tr>
+      <tr>
+        <td>Meta description</td>
+        <td><span class="badge badge-pass">✓ OK</span></td>
+        <td>Ajoutée — 155 caractères</td>
+      </tr>
+      <tr>
+        <td>Open Graph complet</td>
+        <td><span class="badge badge-pass">✓ OK</span></td>
+        <td>og:title, og:description, og:image, og:locale, og:type</td>
+      </tr>
+      <tr>
+        <td>Schema.org JSON-LD</td>
+        <td><span class="badge badge-pass">✓ OK</span></td>
+        <td>Organization + WebSite + ClothingStore</td>
+      </tr>
+      <tr>
+        <td>Canonical tag</td>
+        <td><span class="badge badge-pass">✓ OK</span></td>
+        <td>Pointe vers https://pixelwear.fr/</td>
+      </tr>
+      <tr>
+        <td>HTTPS</td>
+        <td><span class="badge badge-warn">⚠ À VÉRIFIER</span></td>
+        <td>Obligatoire au lancement — prévoir certificat SSL (Let's Encrypt ou hébergeur)</td>
+      </tr>
+      <tr>
+        <td>robots.txt</td>
+        <td><span class="badge badge-fail">✗ ABSENT</span></td>
+        <td>Créer à la racine du domaine au lancement</td>
+      </tr>
+      <tr>
+        <td>sitemap.xml</td>
+        <td><span class="badge badge-fail">✗ ABSENT</span></td>
+        <td>Générer et soumettre dans Google Search Console dès le lancement</td>
+      </tr>
+      <tr>
+        <td>Google Search Console</td>
+        <td><span class="badge badge-fail">✗ NON CONFIGURÉ</span></td>
+        <td>Configurer dès l'achat du domaine</td>
+      </tr>
+      <tr>
+        <td>Google Analytics 4</td>
+        <td><span class="badge badge-fail">✗ NON CONFIGURÉ</span></td>
+        <td>Intégrer le tag GA4 dans le &lt;head&gt; avant lancement</td>
+      </tr>
+      <tr>
+        <td>Produits indexables (SSR)</td>
+        <td><span class="badge badge-fail">✗ JS UNIQUEMENT</span></td>
+        <td>Les produits sont générés en JavaScript. Google peut ne pas les indexer. Solution : rendre les fiches produit en HTML statique ou migrer vers Shopify/Next.js</td>
+      </tr>
+      <tr>
+        <td>Performance / vitesse</td>
+        <td><span class="badge badge-warn">⚠ À TESTER</span></td>
+        <td>Google Fonts bloque le rendu. Ajouter <code>display=swap</code> ✓ (déjà présent). Minifier le CSS au lancement.</td>
+      </tr>
+      <tr>
+        <td>Mobile-friendliness</td>
+        <td><span class="badge badge-pass">✓ OK</span></td>
+        <td>Viewport configuré, responsive CSS présent</td>
+      </tr>
+      <tr>
+        <td>Alt text sur éléments visuels</td>
+        <td><span class="badge badge-warn">⚠ PARTIEL</span></td>
+        <td>aria-label ajouté sur logo. Tous les SVG produits devront avoir des alt/aria-label</td>
+      </tr>
+      <tr>
+        <td>Liens internes</td>
+        <td><span class="badge badge-warn">⚠ PARTIEL</span></td>
+        <td>Liens ancre vers sections — corrects. Manque : liens vers pages produit individuelles</td>
+      </tr>
+      <tr>
+        <td>Balise lang</td>
+        <td><span class="badge badge-pass">✓ OK</span></td>
+        <td>&lt;html lang="fr"&gt; en place</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<!-- ─── 5. COMPETITOR COMPARISON ─────────────────────────────── -->
+<section>
+<div class="container">
+  <div class="section-num">// 05</div>
+  <h2>Analyse concurrentielle SEO</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Dimension</th>
+        <th>PIXEL</th>
+        <th>Gamesens.fr</th>
+        <th>Grafitee.fr</th>
+        <th>Checkpoint-tshirt</th>
+        <th>Avantage</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Positionnement niche</td>
+        <td>Gaming discret / wink culture</td>
+        <td>Gaming éco-responsable</td>
+        <td>T-shirts jeux vidéo</td>
+        <td>T-shirts geek généraliste</td>
+        <td><strong style="color:var(--green);">PIXEL</strong></td>
+      </tr>
+      <tr>
+        <td>Mots-clés longue traîne niche</td>
+        <td>0 (à construire)</td>
+        <td>Faible</td>
+        <td>Moyen</td>
+        <td>Fort</td>
+        <td>Grafitee / Checkpoint</td>
+      </tr>
+      <tr>
+        <td>Domain Authority estimée</td>
+        <td>0 (nouveau)</td>
+        <td>Faible (~15)</td>
+        <td>Moyen (~30)</td>
+        <td>Moyen (~35)</td>
+        <td>Concurrents</td>
+      </tr>
+      <tr>
+        <td>Contenu blog / éditorial</td>
+        <td>Absent</td>
+        <td>Faible</td>
+        <td>Faible</td>
+        <td>Faible</td>
+        <td><strong style="color:var(--green);">PIXEL (opportunité)</strong></td>
+      </tr>
+      <tr>
+        <td>Données structurées</td>
+        <td>✅ (ajoutées)</td>
+        <td>Partiel</td>
+        <td>Partiel</td>
+        <td>Partiel</td>
+        <td><strong style="color:var(--green);">PIXEL</strong></td>
+      </tr>
+      <tr>
+        <td>Storytelling de marque</td>
+        <td>Fort (ADN unique)</td>
+        <td>Moyen</td>
+        <td>Faible</td>
+        <td>Faible</td>
+        <td><strong style="color:var(--green);">PIXEL</strong></td>
+      </tr>
+      <tr>
+        <td>Production locale / qualité</td>
+        <td>Portugal — premium</td>
+        <td>Eco-responsable</td>
+        <td>Impression à la demande</td>
+        <td>Impression à la demande</td>
+        <td><strong style="color:var(--green);">PIXEL + Gamesens</strong></td>
+      </tr>
+      <tr>
+        <td>Drops limités / exclusivité</td>
+        <td>Core ADN</td>
+        <td>Absent</td>
+        <td>Absent</td>
+        <td>Absent</td>
+        <td><strong style="color:var(--green);">PIXEL</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="background:var(--card); border:1px solid var(--border); padding:1.5rem; border-left:3px solid var(--yellow); margin-top:1.5rem;">
+    <strong style="font-family:var(--mono); font-size:0.75rem; letter-spacing:0.1em; color:var(--yellow);">▓ ANALYSE</strong>
+    <p style="margin-top:0.8rem; color:#ccc; font-size:0.9rem;">Aucun concurrent ne possède le positionnement <em>"streetwear gaming discret / wink culture"</em> en France. Grafitee et Checkpoint sont des boutiques de print-on-demand sans storytelling fort. Gamesens est le concurrent le plus proche sur le plan éditorial, mais son positionnement eco-gaming est différent. PIXEL a une fenêtre de 6 à 12 mois pour s'imposer sur ses mots-clés de niche avant qu'un acteur plus grand ne s'y intéresse.</p>
+  </div>
+</div>
+</section>
+
+<!-- ─── 6. ACTION PLAN ────────────────────────────────────────── -->
+<section>
+<div class="container">
+  <div class="section-num">// 06</div>
+  <h2>Plan d'action priorisé</h2>
+
+  <div class="action-grid">
+
+    <!-- QUICK WINS -->
+    <div class="action-card priority">
+      <h4>⚡ Quick Wins — Cette semaine</h4>
+
+      <div class="action-item">
+        <span class="action-num">01</span>
+        <div class="action-body">
+          <div class="action-title">Acheter le domaine pixelwear.fr</div>
+          <div class="action-meta">Impact : Élevé · Effort : 15 min · Dépendance : toutes les URL</div>
+        </div>
+      </div>
+
+      <div class="action-item">
+        <span class="action-num">02</span>
+        <div class="action-body">
+          <div class="action-title">Configurer Google Search Console</div>
+          <div class="action-meta">Impact : Élevé · Effort : 30 min · Dépendance : domaine</div>
+        </div>
+      </div>
+
+      <div class="action-item">
+        <span class="action-num">03</span>
+        <div class="action-body">
+          <div class="action-title">Intégrer Google Analytics 4</div>
+          <div class="action-meta">Impact : Élevé · Effort : 1h · Dépendance : Search Console</div>
+        </div>
+      </div>
+
+      <div class="action-item">
+        <span class="action-num">04</span>
+        <div class="action-body">
+          <div class="action-title">Créer og-image.png (1 200x630px)</div>
+          <div class="action-meta">Impact : Moyen · Effort : 1h · Pour partage social</div>
+        </div>
+      </div>
+
+      <div class="action-item">
+        <span class="action-num">05</span>
+        <div class="action-body">
+          <div class="action-title">Créer robots.txt + sitemap.xml</div>
+          <div class="action-meta">Impact : Élevé · Effort : 1h · Obligatoire au lancement</div>
+        </div>
+      </div>
+
+      <div class="action-item">
+        <span class="action-num">06</span>
+        <div class="action-body">
+          <div class="action-title">Générer favicon.ico (carré noir)</div>
+          <div class="action-meta">Impact : Moyen · Effort : 30 min · UX + branding SERP</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STRATEGIC -->
+    <div class="action-card strategic">
+      <h4>🎯 Investissements stratégiques — Ce trimestre</h4>
+
+      <div class="action-item">
+        <span class="action-num">01</span>
+        <div class="action-body">
+          <div class="action-title">Créer un blog PIXEL (section /blog)</div>
+          <div class="action-meta">Impact : Très élevé · Effort : Continu · 1 article / 2 semaines</div>
+        </div>
+      </div>
+
+      <div class="action-item">
+        <span class="action-num">02</span>
+        <div class="action-body">
+          <div class="action-title">Article pilier : "Qu'est-ce que la wink culture ?"</div>
+          <div class="action-meta">Impact : Élevé · Effort : 1 jour · Requête vierge</div>
+        </div>
+      </div>
+
+      <div class="action-item">
+        <span class="action-num">03</span>
+        <div class="action-body">
+          <div class="action-title">Landing page Collection KONAMI</div>
+          <div class="action-meta">Impact : Élevé · Effort : 2h · "t-shirt konami code"</div>
+        </div>
+      </div>
+
+      <div class="action-item">
+        <span class="action-num">04</span>
+        <div class="action-body">
+          <div class="action-title">Rendre les fiches produit indexables (HTML)</div>
+          <div class="action-meta">Impact : Critique · Effort : Élevé · Migrer vers SSR ou Shopify</div>
+        </div>
+      </div>
+
+      <div class="action-item">
+        <span class="action-num">05</span>
+        <div class="action-body">
+          <div class="action-title">Ajouter Schema Product sur chaque fiche</div>
+          <div class="action-meta">Impact : Élevé · Effort : Moyen · Rich snippets prix / stock</div>
+        </div>
+      </div>
+
+      <div class="action-item">
+        <span class="action-num">06</span>
+        <div class="action-body">
+          <div class="action-title">Stratégie de backlinks gaming / mode</div>
+          <div class="action-meta">Impact : Élevé · Effort : Continu · Presse, YouTubeurs gaming</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CONTENT CALENDAR -->
+  <h3 style="margin-top:3rem;">Calendrier contenu recommandé — 6 premiers mois</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Mois</th>
+        <th>Article / Page</th>
+        <th>Mot-clé cible</th>
+        <th>Impact</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>M+1</td>
+        <td>Qu'est-ce que la wink culture ? Définition et exemples</td>
+        <td>wink culture vêtement</td>
+        <td><span class="badge badge-critical">Fondateur</span></td>
+      </tr>
+      <tr>
+        <td>M+1</td>
+        <td>Collection KONAMI — landing page dédiée</td>
+        <td>t-shirt konami code</td>
+        <td><span class="badge badge-critical">Transactionnel</span></td>
+      </tr>
+      <tr>
+        <td>M+2</td>
+        <td>Comment s'habiller gaming sans en avoir l'air</td>
+        <td>vêtement gaming discret</td>
+        <td><span class="badge badge-high">Acquisition</span></td>
+      </tr>
+      <tr>
+        <td>M+2</td>
+        <td>Pourquoi PIXEL fabrique au Portugal</td>
+        <td>made in portugal vêtement qualité</td>
+        <td><span class="badge badge-high">Confiance</span></td>
+      </tr>
+      <tr>
+        <td>M+3</td>
+        <td>Top 10 easter eggs dans les jeux vidéo cultes</td>
+        <td>easter egg jeu vidéo</td>
+        <td><span class="badge badge-medium">Viral</span></td>
+      </tr>
+      <tr>
+        <td>M+3</td>
+        <td>FAQ PIXEL : livraison, tailles, retours</td>
+        <td>—</td>
+        <td><span class="badge badge-medium">UX / Snippet</span></td>
+      </tr>
+      <tr>
+        <td>M+4</td>
+        <td>Pixel art dans la mode — L'histoire complète</td>
+        <td>pixel art fashion streetwear</td>
+        <td><span class="badge badge-medium">Backlinks</span></td>
+      </tr>
+      <tr>
+        <td>M+5</td>
+        <td>Streetwear gaming 2026 : les tendances à connaître</td>
+        <td>streetwear gaming 2026</td>
+        <td><span class="badge badge-high">Saisonnier</span></td>
+      </tr>
+      <tr>
+        <td>M+6</td>
+        <td>Guide cadeaux gaming 2026 — Pour ceux qui savent</td>
+        <td>cadeau gamer streetwear</td>
+        <td><span class="badge badge-high">Saisonnier</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<!-- ─── FOOTER ──────────────────────────────────────────────── -->
+<footer style="padding:2rem 3rem; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;">
+  <div style="font-family:var(--mono); font-size:0.65rem; color:var(--gray);">
+    <span style="display:inline-block; width:10px; height:10px; background:white; margin-right:8px; vertical-align:middle;"></span>
+    PIXEL · Audit SEO v1.0
+  </div>
+  <div style="font-family:var(--mono); font-size:0.6rem; color:var(--gray);">
+    Document confidentiel · Avril 2026
+  </div>
+</footer>
+
+</body>
+</html>

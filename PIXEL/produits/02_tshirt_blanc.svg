@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" font-family="'Courier New', monospace">
+  <defs>
+    <radialGradient id="bg02" cx="50%" cy="45%" r="70%">
+      <stop offset="0%" stop-color="#1a1a1a"/>
+      <stop offset="100%" stop-color="#0a0a0a"/>
+    </radialGradient>
+    <radialGradient id="shadow02" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0.5"/>
+      <stop offset="60%" stop-color="#000" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fabric02" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FAF7F0"/>
+      <stop offset="50%" stop-color="#F2EEE4"/>
+      <stop offset="100%" stop-color="#E5E0D4"/>
+    </linearGradient>
+    <linearGradient id="fold02" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#000" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Dark background -->
+  <rect width="1200" height="1500" fill="url(#bg02)"/>
+
+  <!-- Top-left index -->
+  <text x="80" y="100" font-size="11" letter-spacing="3" fill="#FAF7F0">PIXEL — STUDIO ARCHIVE</text>
+  <text x="80" y="120" font-size="11" letter-spacing="3" fill="#666">REF. 002 / SS26</text>
+
+  <!-- Top-right meta -->
+  <text x="1120" y="100" font-size="11" letter-spacing="3" fill="#FAF7F0" text-anchor="end">CORE TEE — IVOIRE</text>
+  <text x="1120" y="120" font-size="11" letter-spacing="3" fill="#666" text-anchor="end">100% COTON BIO — 220 G/M²</text>
+
+  <!-- Hairline frame -->
+  <rect x="80" y="160" width="1040" height="1180" fill="none" stroke="#FAF7F0" stroke-width="0.5" opacity="0.2"/>
+
+  <!-- Soft shadow under tshirt -->
+  <ellipse cx="600" cy="1180" rx="320" ry="28" fill="url(#shadow02)"/>
+
+  <!-- T-Shirt body -->
+  <g transform="translate(600, 740)">
+    <!-- Sleeves -->
+    <path d="M -290,-220
+             L -240,-260
+             L -180,-240
+             L -180,-130
+             L -260,-110
+             L -290,-150 Z"
+          fill="url(#fabric02)" stroke="#C8C2B5" stroke-width="0.5"/>
+    <path d="M 290,-220
+             L 240,-260
+             L 180,-240
+             L 180,-130
+             L 260,-110
+             L 290,-150 Z"
+          fill="url(#fabric02)" stroke="#C8C2B5" stroke-width="0.5"/>
+
+    <!-- Body -->
+    <path d="M -180,-240
+             Q -180,-250 -160,-260
+             Q -100,-280 -50,-285
+             Q -25,-300 0,-300
+             Q 25,-300 50,-285
+             Q 100,-280 160,-260
+             Q 180,-250 180,-240
+             L 180,420
+             Q 180,430 170,432
+             L -170,432
+             Q -180,430 -180,420 Z"
+          fill="url(#fabric02)" stroke="#C8C2B5" stroke-width="0.5"/>
+
+    <!-- Neck inner -->
+    <path d="M -52,-285
+             Q -25,-272 0,-272
+             Q 25,-272 52,-285
+             Q 30,-260 0,-258
+             Q -30,-260 -52,-285 Z"
+          fill="#E5E0D4" stroke="#A8A294" stroke-width="0.8"/>
+
+    <!-- Subtle fabric fold shadow -->
+    <path d="M -160,-200 L -160,400" stroke="url(#fold02)" stroke-width="40" opacity="0.7"/>
+    <path d="M 160,-200 L 160,400" stroke="url(#fold02)" stroke-width="40" opacity="0.7"/>
+
+    <!-- PIXEL signature on chest left -->
+    <g transform="translate(-100, -120)">
+      <text x="0" y="0" font-size="14" letter-spacing="6" fill="#0a0a0a">PIXEL</text>
+      <rect x="62" y="-9" width="6" height="6" fill="#E63946"/>
+    </g>
+  </g>
+
+  <!-- Bottom-left descriptor -->
+  <text x="80" y="1410" font-size="11" letter-spacing="3" fill="#FAF7F0">FIG. 02 — VUE FRONTALE</text>
+  <text x="80" y="1430" font-size="11" letter-spacing="3" fill="#666">COUPE OVERSIZE / COL ROND</text>
+
+  <!-- Bottom-right -->
+  <text x="1120" y="1410" font-size="11" letter-spacing="3" fill="#FAF7F0" text-anchor="end">EU — XS / S / M / L / XL</text>
+  <text x="1120" y="1430" font-size="11" letter-spacing="3" fill="#666" text-anchor="end">€ 45,00</text>
+
+  <!-- Center bottom mark -->
+  <g transform="translate(600, 1380)">
+    <rect x="-3" y="-3" width="6" height="6" fill="#E63946"/>
+  </g>
+</svg>

@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PIXEL — Brief Génération IA (DALL-E 3)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --noir:    #0A0A0A;
+    --blanc:   #F5F5F5;
+    --rouge:   #FF2D55;
+    --cyan:    #00D4E8;
+    --violet:  #7B2FBE;
+    --gris:    #2A2A2A;
+    --gris-l:  #1A1A1A;
+    --gris-m:  #888;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--noir);
+    color: var(--blanc);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* ── NAV ─────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid #222;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 56px;
+  }
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem; font-weight: 700;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .nav-logo .sq { width: 18px; height: 18px; background: var(--rouge); display: inline-block; }
+  .nav-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .nav-links a {
+    font-family: 'Space Mono', monospace; font-size: 0.72rem;
+    color: var(--gris-m); text-decoration: none; text-transform: uppercase;
+    letter-spacing: 0.08em; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+
+  /* ── COVER ───────────────────────────────── */
+  .cover {
+    min-height: 92vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .cover-grid {
+    position: absolute; inset: 0; opacity: 0.06;
+    background-image:
+      linear-gradient(var(--blanc) 1px, transparent 1px),
+      linear-gradient(90deg, var(--blanc) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+  }
+  .cover-logo-block {
+    display: flex; flex-direction: column; align-items: center; gap: 0;
+    position: relative; z-index: 1;
+  }
+  .logo-square-big {
+    width: 80px; height: 80px;
+    background: var(--rouge);
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .logo-square-big::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 12px, rgba(0,0,0,0.15) 12px, rgba(0,0,0,0.15) 13px
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 12px, rgba(0,0,0,0.15) 12px, rgba(0,0,0,0.15) 13px
+    );
+  }
+  .cover h1 {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(3.5rem, 10vw, 6rem);
+    font-weight: 700; letter-spacing: -0.02em;
+    color: var(--blanc);
+    line-height: 0.95;
+    position: relative; z-index: 1;
+  }
+  .cover h1 .accent { color: var(--cyan); }
+  .cover-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem; letter-spacing: 0.25em;
+    color: var(--gris-m); text-transform: uppercase;
+    margin-top: 1.5rem; position: relative; z-index: 1;
+  }
+  .cover-tagline {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    color: var(--cyan); margin-top: 2.5rem;
+    position: relative; z-index: 1;
+    border: 1px solid var(--cyan); padding: 0.7rem 2rem;
+    letter-spacing: 0.1em;
+  }
+  .cover-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem; color: #444;
+    margin-top: 4rem; position: relative; z-index: 1;
+  }
+  .pixel-bar {
+    width: 100%; height: 6px;
+    background: linear-gradient(90deg, var(--rouge), var(--violet), var(--cyan), var(--rouge));
+    background-size: 200% 100%;
+  }
+
+  /* ── SECTIONS ────────────────────────────── */
+  section { padding: 4.5rem 0; border-bottom: 1px solid #1a1a1a; scroll-margin-top: 70px; }
+  .container { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem; color: var(--cyan);
+    text-transform: uppercase; letter-spacing: 0.2em;
+    margin-bottom: 0.6rem;
+  }
+  h2 {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700; color: var(--blanc);
+    margin-bottom: 2rem; line-height: 1.15;
+  }
+  h3 {
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem; font-weight: 700;
+    color: var(--rouge); margin: 2.2rem 0 0.8rem;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  h4 {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem; font-weight: 700;
+    color: var(--cyan); margin: 1.4rem 0 0.5rem;
+    letter-spacing: 0.05em;
+  }
+  p { color: #ccc; margin-bottom: 1.1rem; font-weight: 300; font-size: 0.97rem; }
+  strong { color: var(--blanc); font-weight: 600; }
+  em { color: var(--gris-m); font-style: italic; }
+  ul, ol { margin: 0.5rem 0 1.5rem 1.5rem; color: #ccc; font-weight: 300; }
+  li { margin-bottom: 0.6rem; font-size: 0.97rem; }
+  li::marker { color: var(--cyan); }
+  a { color: var(--cyan); text-decoration: none; border-bottom: 1px dotted var(--cyan); }
+  a:hover { color: var(--blanc); }
+
+  /* ── TL;DR ────────────────────────────────── */
+  .tldr {
+    background: linear-gradient(135deg, #0f0f1a 0%, #0a0a0a 100%);
+    border-left: 3px solid var(--cyan);
+    padding: 1.8rem 2rem;
+    margin: 2rem 0;
+  }
+  .tldr strong { color: var(--cyan); }
+
+  /* ── TABLES ───────────────────────────────── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0 2rem;
+    font-size: 0.9rem;
+  }
+  th {
+    background: var(--gris-l);
+    color: var(--cyan);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-align: left;
+    padding: 0.9rem 1rem;
+    border-bottom: 2px solid var(--cyan);
+  }
+  td {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid #1a1a1a;
+    color: #ccc;
+    vertical-align: top;
+  }
+  td strong { color: var(--blanc); }
+  tr:hover td { background: rgba(0, 212, 232, 0.04); }
+
+  /* ── PROMPT BLOCK ─────────────────────────── */
+  .prompt {
+    background: #0f0f14;
+    border: 1px solid #222;
+    border-left: 4px solid var(--cyan);
+    border-radius: 2px;
+    padding: 1.5rem 1.8rem 1.3rem;
+    margin: 0.8rem 0 1.8rem;
+    position: relative;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    line-height: 1.75;
+    color: #ddd;
+  }
+  .prompt-label {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--rouge);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.8rem;
+    font-weight: 700;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    background: var(--noir);
+    color: var(--cyan);
+    border: 1px solid var(--cyan);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.35rem 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .copy-btn:hover {
+    background: var(--cyan);
+    color: var(--noir);
+  }
+  .copy-btn.copied {
+    background: var(--cyan);
+    color: var(--noir);
+  }
+
+  /* ── CHECKBOX LISTS ───────────────────────── */
+  .checklist {
+    list-style: none;
+    margin-left: 0;
+  }
+  .checklist li {
+    padding: 0.4rem 0 0.4rem 2rem;
+    position: relative;
+    border-bottom: 1px dashed #1a1a1a;
+    color: #ccc;
+  }
+  .checklist li::before {
+    content: '☐';
+    position: absolute; left: 0.4rem;
+    color: var(--cyan);
+    font-size: 1.1rem;
+  }
+
+  /* ── ALERT / CALLOUTS ─────────────────────── */
+  .callout {
+    background: rgba(255, 45, 85, 0.06);
+    border-left: 3px solid var(--rouge);
+    padding: 1rem 1.5rem;
+    margin: 1.3rem 0;
+    border-radius: 2px;
+  }
+  .callout strong { color: var(--rouge); }
+
+  .callout-ok {
+    background: rgba(0, 212, 232, 0.06);
+    border-left: 3px solid var(--cyan);
+    padding: 1rem 1.5rem;
+    margin: 1.3rem 0;
+    border-radius: 2px;
+  }
+  .callout-ok strong { color: var(--cyan); }
+
+  /* ── PRODUCT BLOCK ────────────────────────── */
+  .product-block {
+    background: var(--gris-l);
+    border: 1px solid #222;
+    padding: 1.8rem;
+    margin: 2rem 0;
+    border-radius: 2px;
+  }
+  .product-block h3 {
+    margin-top: 0;
+    color: var(--rouge);
+    border-bottom: 1px solid #2a2a2a;
+    padding-bottom: 0.7rem;
+  }
+
+  /* ── CARDS (grid) ─────────────────────────── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.2rem;
+    margin: 1.5rem 0;
+  }
+  .card {
+    background: var(--gris-l);
+    border: 1px solid #222;
+    padding: 1.4rem;
+    border-radius: 2px;
+  }
+  .card h4 { margin-top: 0; color: var(--cyan); }
+  .card p { font-size: 0.88rem; margin-bottom: 0.5rem; }
+
+  /* ── FOOTER ───────────────────────────────── */
+  footer {
+    padding: 3rem 2rem;
+    text-align: center;
+    color: #555;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+  }
+  footer .pixel-bar { margin-bottom: 2rem; }
+
+  /* ── RESPONSIVE ───────────────────────────── */
+  @media (max-width: 720px) {
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+    .container { padding: 0 1.2rem; }
+    table { font-size: 0.82rem; }
+    th, td { padding: 0.6rem 0.5rem; }
+    .prompt { padding: 2.8rem 1rem 1rem; font-size: 0.78rem; }
+    .copy-btn { top: 0.6rem; right: 0.6rem; }
+  }
+
+  @media print {
+    nav, .copy-btn { display: none; }
+    body { background: white; color: black; }
+    h2, h3 { color: black; }
+    .prompt { background: #f5f5f5; color: black; }
+    section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ─────────────────────────────── -->
+<nav>
+  <div class="nav-logo"><span class="sq"></span> PIXEL / Brief IA</div>
+  <div class="nav-links">
+    <a href="#tldr">TL;DR</a>
+    <a href="#limites">Limites</a>
+    <a href="#legal">Légal</a>
+    <a href="#formule">Formule</a>
+    <a href="#prompts">Prompts</a>
+    <a href="#moods">Moods</a>
+    <a href="#postprod">Post-prod</a>
+    <a href="#workflow">Workflow</a>
+  </div>
+</nav>
+
+<!-- ── COVER ───────────────────────────── -->
+<section class="cover">
+  <div class="cover-grid"></div>
+  <div class="cover-logo-block">
+    <div class="logo-square-big"></div>
+    <h1>BRIEF <span class="accent">IA</span></h1>
+    <div class="cover-sub">Génération visuelle — ChatGPT + DALL-E 3</div>
+    <div class="cover-tagline">&gt; ZÉRO PHOTOGRAPHE — TOUT EN PROMPTS_</div>
+    <div class="cover-meta">Version 1.0 &nbsp;·&nbsp; Avril 2026 &nbsp;·&nbsp; Direction : Jonathan Ricou</div>
+  </div>
+</section>
+<div class="pixel-bar"></div>
+
+<!-- ── TL;DR ───────────────────────────── -->
+<section id="tldr">
+  <div class="container">
+    <div class="section-label">00 / Résumé express</div>
+    <h2>TL;DR</h2>
+    <div class="tldr">
+      <p>Tu génères l'intégralité des visuels produit et lifestyle via <strong>ChatGPT + DALL-E 3</strong>. Ce brief te donne la méthode, 12 prompts produit prêts à copier, 5 prompts d'ambiance pour les réseaux sociaux, la post-production minimale (gratuite) et le cadre légal à respecter.</p>
+      <p style="margin-bottom:0"><strong>Temps estimé</strong> pour produire le jeu complet : <strong>6 à 10 heures</strong> sur une semaine, en itérant. <strong>Coût</strong> : <strong>20 €/mois</strong> (ChatGPT Plus) — rien d'autre.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 01 / LIMITES ────────────────────── -->
+<section id="limites">
+  <div class="container">
+    <div class="section-label">01 / Outil</div>
+    <h2>DALL-E 3 — forces et pièges</h2>
+
+    <h3>Pourquoi ce choix pour PIXEL</h3>
+    <ul>
+      <li><strong>Intégré à ChatGPT</strong> : tu dialogues pour affiner (« refais la même avec une veste »), pas besoin de tout reprompter.</li>
+      <li><strong>Respect précis des consignes</strong> : DALL-E 3 suit mieux les descriptions détaillées que la plupart des concurrents.</li>
+      <li><strong>Aucune plateforme annexe</strong> : pas de Discord comme Midjourney, interface simple.</li>
+      <li><strong>Coût prévisible</strong> : 20 €/mois pour ChatGPT Plus (génération quasi illimitée).</li>
+    </ul>
+
+    <h3>Les 4 limites à anticiper</h3>
+
+    <h4>1. Les mains et les doigts</h4>
+    <p>DALL-E 3 rate encore régulièrement les mains (6 doigts, articulations fausses). <strong>Solution</strong> : demande explicitement « mains dans les poches », « bras croisés », ou cadre un plan qui coupe sous la poitrine.</p>
+
+    <h4>2. Les textes et logos</h4>
+    <p>Si tu veux que le motif pixel art ressorte sur le t-shirt, DALL-E 3 va le déformer. <strong>Solution recommandée</strong> : génère la scène avec un <strong>t-shirt uni</strong>, puis ajoute le motif en post-prod via <strong>Photopea</strong> (gratuit). Tu gardes 100 % de contrôle sur ton visuel de marque.</p>
+
+    <h4>3. La cohérence entre plusieurs images</h4>
+    <p>Impossible d'obtenir exactement le même mannequin sur 10 photos. <strong>Solution</strong> : décris précisément le mannequin dans chaque prompt (« jeune femme 25 ans, cheveux mi-longs noirs ») pour rester cohérent. Ou assume plusieurs profils pour suggérer une communauté.</p>
+
+    <h4>4. Le droit à l'image et l'éthique</h4>
+    <p>Tes mannequins IA ne ressemblent à personne de spécifique, mais le sujet reste sensible : transparence attendue par l'<strong>AI Act européen</strong> (effectif depuis août 2025).</p>
+
+    <h3>Alternatives en backup</h3>
+    <table>
+      <thead>
+        <tr><th>Outil</th><th>Prix</th><th>Points forts</th><th>Limites</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>ChatGPT + DALL-E 3</strong></td><td>20 €/mois</td><td>Intégré ChatGPT, dialogue pour affiner, précis sur les consignes</td><td>Mains parfois ratées, textile moins fin</td></tr>
+        <tr><td>Midjourney v6</td><td>10 €/mois</td><td>Meilleur rendu mode/lifestyle, textile photoréaliste</td><td>Interface Discord</td></tr>
+        <tr><td>Flux (Freepik/Fal.ai)</td><td>10-15 €/mois</td><td>Open-source, excellent sur texte/logo</td><td>Plus technique</td></tr>
+        <tr><td>Google Imagen 3</td><td>Gratuit (limité)</td><td>Bon rapport qualité/prix</td><td>Filtres stricts sur les humains</td></tr>
+      </tbody>
+    </table>
+    <p><em>Démarre 100 % ChatGPT + DALL-E 3. Si un visuel précis déçoit, test Midjourney v6 en one-shot (10 €/mois sans engagement).</em></p>
+  </div>
+</section>
+
+<!-- ── 02 / LÉGAL ──────────────────────── -->
+<section id="legal">
+  <div class="container">
+    <div class="section-label">02 / Légal</div>
+    <h2>Cadre légal et éthique IA</h2>
+
+    <div class="callout">
+      <strong>Obligations France / Europe (AI Act)</strong>
+      <ul style="margin: 0.8rem 0 0 1.5rem;">
+        <li>Tout contenu IA en communication commerciale doit être signalé (mention « Image générée par IA »).</li>
+        <li>Interdiction de créer un visage ressemblant à une célébrité ou personne identifiable réelle.</li>
+        <li>Logos de marques tierces générés par IA dans le décor : à masquer en post-prod.</li>
+      </ul>
+    </div>
+
+    <h3>Rédaction recommandée pour PIXEL</h3>
+    <p>Sur les fiches produit, une ligne discrète sous les photos :</p>
+    <div class="callout-ok">
+      <em>« Visuels lifestyle générés par IA — le produit réel peut présenter de légères variations. Voir la photo packshot ci-dessus pour le rendu fidèle. »</em>
+    </div>
+    <p>Sur Instagram : hashtag <code style="color:var(--cyan)">#AIart</code> ou mention « visuel IA » en première ligne de la légende des posts lifestyle.</p>
+
+    <h3>Bonne pratique</h3>
+    <p>Garde au moins <strong>UNE photo packshot réelle par produit</strong> — toi qui portes la pièce, fond blanc, smartphone sur trépied. Ça crédibilise et respecte l'article L121-2 du Code de la consommation sur la fidélité au produit vendu.</p>
+  </div>
+</section>
+
+<!-- ── 03 / FORMULE ────────────────────── -->
+<section id="formule">
+  <div class="container">
+    <div class="section-label">03 / Méthode</div>
+    <h2>La formule de prompt PIXEL — 8 blocs</h2>
+    <p>Un prompt DALL-E 3 efficace pour PIXEL suit toujours la même structure. Copie cette trame, modifie les variables.</p>
+
+    <table>
+      <thead><tr><th style="width:28%">Bloc</th><th>Exemple</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1. Type de plan</strong></td><td>Plan américain (tête aux cuisses) — standard lifestyle e-commerce</td></tr>
+        <tr><td><strong>2. Sujet</strong></td><td>Jeune homme 25 ans, cheveux mi-longs bruns, morphologie athlétique</td></tr>
+        <tr><td><strong>3. Vêtement</strong></td><td>T-shirt coton noir oversize PIXEL, petit motif brodé col</td></tr>
+        <tr><td><strong>4. Décor</strong></td><td>Rue urbaine Paris style Belleville, graffitis flous en fond</td></tr>
+        <tr><td><strong>5. Lumière</strong></td><td>Lumière naturelle golden hour, léger contre-jour chaud</td></tr>
+        <tr><td><strong>6. Attitude</strong></td><td>Pose décontractée, mains dans les poches, regard caméra léger sourire</td></tr>
+        <tr><td><strong>7. Technique</strong></td><td>Photographie 35 mm, f/2.8, faible profondeur de champ, photoréaliste</td></tr>
+        <tr><td><strong>8. Format / ratio</strong></td><td>Portrait 4:5 (Instagram feed) ou 9:16 (stories/TikTok)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Trame générique à copier</h3>
+    <div class="prompt">
+      <span class="prompt-label">Trame universelle</span>
+      <button class="copy-btn" data-prompt="trame">Copier</button>
+      <span id="trame">Plan américain d'un [SUJET], portant [VETEMENT PIXEL], dans un décor de [LIEU]. Lumière [LUMIERE], attitude [ATTITUDE]. Photographie 35 mm, f/2.8, faible profondeur de champ, rendu photoréaliste éditorial streetwear. Format portrait 4:5.</span>
+    </div>
+
+    <h3>Astuces qui changent tout</h3>
+    <ul>
+      <li>Toujours préciser <strong>« photographie 35 mm, f/2.8 »</strong> → rendu photo pro au lieu du look « publicité stock ».</li>
+      <li>Ajouter <strong>« shot on Kodak Portra 400 »</strong> ou <strong>« shot on Fujifilm X-T4 »</strong> → texture film / grain réaliste.</li>
+      <li>Éviter « parfait », « beau », « magnifique » → DALL-E interprète comme kitsch instagrammable.</li>
+      <li>Finir par <strong>« editorial fashion magazine style »</strong> → rendu Vogue / Highsnobiety plutôt que catalogue.</li>
+      <li>Bannir « cool », « stylé » → sois concret (« mains dans les poches », « Nike Dunk blanches »).</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── 04 / PROMPTS PAR PRODUIT ────────── -->
+<section id="prompts">
+  <div class="container">
+    <div class="section-label">04 / Catalogue</div>
+    <h2>Prompts prêts à copier — les 6 produits</h2>
+    <p>Chaque produit a 2 prompts : homme + femme. Copie → colle dans ChatGPT → ajuste si besoin.</p>
+
+    <!-- T-shirt origin Noir -->
+    <div class="product-block">
+      <h3>5.1 — T-shirt origin Noir</h3>
+
+      <div class="prompt">
+        <span class="prompt-label">🙋‍♂️ Homme / rue Paris</span>
+        <button class="copy-btn" data-prompt="p1h">Copier</button>
+        <span id="p1h">Plan américain d'un jeune homme 25 ans, cheveux châtain mi-longs, barbe courte, morphologie athlétique, portant un t-shirt coton noir oversize uni (motif brodé discret au niveau du col, trop petit pour être lu), jean slim gris foncé, Nike Dunk low blanches. Décor : rue de Belleville Paris, graffitis colorés flous à l'arrière-plan, trottoir humide reflets néon. Lumière : fin de journée, golden hour chaude. Attitude : mains dans les poches, regard caméra léger sourire coin. Photographie 35 mm, f/2.8, shot on Kodak Portra 400, editorial fashion magazine style. Format portrait 4:5.</span>
+      </div>
+
+      <div class="prompt">
+        <span class="prompt-label">🙋‍♀️ Femme / skate park</span>
+        <button class="copy-btn" data-prompt="p1f">Copier</button>
+        <span id="p1f">Plan américain d'une jeune femme 24 ans, cheveux noirs mi-longs avec frange, piercing septum discret, peau mate, portant un t-shirt coton noir oversize uni (discret motif niveau col), short cargo beige, baskets New Balance 550 grises. Décor : skate park béton Paris 13e, rampe en arrière-plan, quelques skaters flous. Lumière : après-midi ensoleillé, ombres nettes. Attitude : bras croisés, pose confiante, regard vers l'objectif. Photographie 35 mm, f/2.8, shot on Fujifilm, editorial streetwear style. Format portrait 4:5.</span>
+      </div>
+    </div>
+
+    <!-- T-shirt origin Blanc -->
+    <div class="product-block">
+      <h3>5.2 — T-shirt origin Blanc</h3>
+
+      <div class="prompt">
+        <span class="prompt-label">🙋‍♂️ Homme / café</span>
+        <button class="copy-btn" data-prompt="p2h">Copier</button>
+        <span id="p2h">Plan américain d'un homme 28 ans, cheveux courts bruns, lunettes fines noires, portant un t-shirt coton blanc uni oversize, chino beige, Converse noires. Décor : terrasse d'un café parisien moderne, tables en marbre, plantes vertes. Lumière : soleil filtré, ambiance matinale. Attitude : appuyé sur une colonne, tasse à la main, regard détourné pensif. Photographie 50 mm, f/2, shot on Sony Alpha, editorial lifestyle style. Format portrait 4:5.</span>
+      </div>
+
+      <div class="prompt">
+        <span class="prompt-label">🙋‍♀️ Femme / intérieur minimaliste</span>
+        <button class="copy-btn" data-prompt="p2f">Copier</button>
+        <span id="p2f">Plan américain d'une femme 26 ans, cheveux blonds attachés en queue haute, portant un t-shirt coton blanc uni oversize, jean large bleu clair, sneakers Veja V10 blanches. Décor : intérieur d'appartement minimaliste, mur blanc cassé, plante monstera, lumière naturelle d'une grande baie vitrée. Lumière : jour naturel doux, reflets chauds. Attitude : assise sur un canapé beige, livre à la main, regard caméra franc. Photographie 35 mm, f/2.8, editorial fashion magazine style. Format portrait 4:5.</span>
+      </div>
+    </div>
+
+    <!-- Pull origin -->
+    <div class="product-block">
+      <h3>5.3 — Pull origin</h3>
+
+      <div class="prompt">
+        <span class="prompt-label">🙋‍♂️ Homme / atelier</span>
+        <button class="copy-btn" data-prompt="p3h">Copier</button>
+        <span id="p3h">Plan américain d'un homme 30 ans, barbe fournie, bonnet noir tricoté, portant un pull en coton épais noir uni oversize, jean brut foncé, boots Dr Martens noires. Décor : atelier industriel reconverti, murs briques apparentes, vieille moto au fond flou. Lumière : lampe industrielle chaude, contre-jour. Attitude : debout les bras croisés, regard intense vers l'objectif. Photographie 35 mm, f/2.8, shot on Kodak Portra, moody editorial streetwear. Format portrait 4:5.</span>
+      </div>
+
+      <div class="prompt">
+        <span class="prompt-label">🙋‍♀️ Femme / quai de Seine</span>
+        <button class="copy-btn" data-prompt="p3f">Copier</button>
+        <span id="p3f">Plan américain d'une femme 27 ans, cheveux bruns courts effilés, portant un pull en coton épais noir uni oversize, jupe midi en cuir noir, bottines Chelsea. Décor : quai de Seine au coucher du soleil, ponts flous en arrière-plan, lumière dorée sur l'eau. Lumière : golden hour, halos chauds. Attitude : appuyée sur la rambarde, regard horizon. Photographie 50 mm, f/1.8, editorial Parisian style. Format portrait 4:5.</span>
+      </div>
+    </div>
+
+    <!-- T-shirt RGB -->
+    <div class="product-block">
+      <h3>5.4 — T-shirt RGB</h3>
+
+      <div class="prompt">
+        <span class="prompt-label">🙋‍♂️ Homme / arcade</span>
+        <button class="copy-btn" data-prompt="p4h">Copier</button>
+        <span id="p4h">Plan américain d'un homme 23 ans, cheveux décolorés blond platine, oreille percée, portant un t-shirt coton blanc avec petit motif graphique minimal au centre (trois petits carrés colorés simples), jogger noir, Air Max 95 blanches. Décor : salle d'arcade rétro, écrans flous avec néons rouges bleus verts à l'arrière, ambiance cyberpunk soft. Lumière : néons multicolores RGB (rouge vert bleu), jeu de lumière sur le visage. Attitude : manette arcade en main, regard concentré. Photographie 35 mm, f/2, shot on Sony, editorial gaming streetwear style. Format portrait 4:5.</span>
+      </div>
+
+      <div class="prompt">
+        <span class="prompt-label">🙋‍♀️ Femme / rooftop nuit</span>
+        <button class="copy-btn" data-prompt="p4f">Copier</button>
+        <span id="p4f">Plan américain d'une femme 25 ans, cheveux auburn longs ondulés, eye-liner graphique, portant un t-shirt coton blanc oversize, jupe cargo noire, baskets Salomon noires. Décor : rooftop Paris la nuit, Tour Eiffel floue dans le lointain, skyline urbaine illuminée. Lumière : néon rose magenta sur le côté gauche, néon cyan à droite, style cyberpunk. Attitude : mains dans les poches, regard caméra assuré. Photographie 35 mm, f/1.8, editorial night fashion style. Format portrait 4:5.</span>
+      </div>
+    </div>
+
+    <!-- T-shirt Glitch -->
+    <div class="product-block">
+      <h3>5.5 — T-shirt Glitch</h3>
+
+      <div class="prompt">
+        <span class="prompt-label">🙋‍♂️ Homme / parking sous-sol</span>
+        <button class="copy-btn" data-prompt="p5h">Copier</button>
+        <span id="p5h">Plan américain d'un homme 26 ans, tête rasée, lunettes de soleil futuristes, portant un t-shirt coton noir uni oversize, pantalon technique tactique noir, bottes militaires. Décor : parking souterrain béton, néons verts cliniques, architecture brutaliste. Lumière : néons verts criards au plafond, ombres dures. Attitude : marche lente vers la caméra, pose dystopique. Photographie 35 mm, f/2.8, shot on Arri, editorial sci-fi streetwear. Format portrait 4:5.</span>
+      </div>
+
+      <div class="prompt">
+        <span class="prompt-label">🙋‍♀️ Femme / hall de métro</span>
+        <button class="copy-btn" data-prompt="p5f">Copier</button>
+        <span id="p5f">Plan américain d'une femme 24 ans, cheveux noirs longs lisses, lunettes de soleil miroir argent, portant un t-shirt coton noir oversize, minijupe en vinyle noir, cuissardes plates noires. Décor : couloir de métro parisien carrelage blanc, rames floues à l'arrière. Lumière : néons blancs froids plafond, reflets sur carrelage. Attitude : debout immobile, bras le long du corps, frontal. Photographie 35 mm, f/2, editorial high fashion street. Format portrait 4:5.</span>
+      </div>
+    </div>
+
+    <!-- T-shirt Konami -->
+    <div class="product-block">
+      <h3>5.6 — T-shirt Konami</h3>
+
+      <div class="prompt">
+        <span class="prompt-label">🙋‍♂️ Homme / canapé / manette</span>
+        <button class="copy-btn" data-prompt="p6h">Copier</button>
+        <span id="p6h">Plan américain d'un homme 22 ans, cheveux bruns bouclés, casquette baseball noire inversée, portant un t-shirt coton gris clair uni oversize (petit motif brodé col), jogger noir, Nike SB chaussettes hautes blanches. Décor : salon bohème étudiant, canapé velours vert, poster vintage jeu vidéo accroché au mur flou. Lumière : lampe à filament chaude, TV allumée reflet bleuté. Attitude : assis sur le canapé, manette en main, concentration amusée. Photographie 35 mm, f/2, editorial cosy gamer style. Format portrait 4:5.</span>
+      </div>
+
+      <div class="prompt">
+        <span class="prompt-label">🙋‍♀️ Femme / ruelle Tokyo</span>
+        <button class="copy-btn" data-prompt="p6f">Copier</button>
+        <span id="p6f">Plan américain d'une femme 23 ans, cheveux noirs courts carré, portant un t-shirt coton gris clair oversize, bermuda en jean brut, Converse montantes noires. Décor : ruelle de Shibuya Tokyo la nuit, enseignes japonaises lumineuses floues, distributeurs automatiques. Lumière : néons rouges jaunes violets mélangés, pluie fine sur asphalte, reflets. Attitude : marche décontractée vers la caméra, regard légèrement baissé. Photographie 35 mm, f/1.8, shot on Fuji, editorial Tokyo street style. Format portrait 4:5.</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── 05 / AMBIANCES ──────────────────── -->
+<section id="moods">
+  <div class="container">
+    <div class="section-label">05 / Atmosphère</div>
+    <h2>Prompts d'ambiance / mood — sans produit</h2>
+    <p>Pour les réseaux sociaux, headers de page, stories. Ces visuels posent l'univers PIXEL sans montrer de produit.</p>
+
+    <h3>6.1 — Arcade vintage cyberpunk</h3>
+    <div class="prompt">
+      <span class="prompt-label">Ambiance arcade</span>
+      <button class="copy-btn" data-prompt="m1">Copier</button>
+      <span id="m1">Gros plan d'une borne d'arcade vintage années 80, écran affichant un motif pixel art coloré abstrait (gris, magenta, cyan), reflets néons RGB sur l'acier brossé, fumée légère. Photographie macro, faible profondeur de champ, rendu photoréaliste cinématographique, palette néon cyberpunk. Format carré 1:1 pour Instagram.</span>
+    </div>
+
+    <h3>6.2 — Pixel art géant urbain</h3>
+    <div class="prompt">
+      <span class="prompt-label">Street art pixelisé</span>
+      <button class="copy-btn" data-prompt="m2">Copier</button>
+      <span id="m2">Vue en contre-plongée d'un mur d'immeuble parisien entièrement recouvert d'une fresque géante en pixel art façon retro gaming (couleurs cyan, magenta, blanc). Passant flou qui passe devant. Lumière de fin d'après-midi. Photographie grand angle 24 mm, f/5.6, rendu photoréaliste éditorial urbain. Format portrait 4:5.</span>
+    </div>
+
+    <h3>6.3 — Détail textile macro</h3>
+    <div class="prompt">
+      <span class="prompt-label">Matière textile</span>
+      <button class="copy-btn" data-prompt="m3">Copier</button>
+      <span id="m3">Gros plan macro extrême sur le tissu d'un t-shirt en coton noir, grain fin visible, couture blanche nette sur le côté, léger reflet doux. Fond flou. Photographie macro 100 mm, f/2.8, lumière studio douce, rendu photoréaliste publicité haut de gamme. Format carré 1:1.</span>
+    </div>
+
+    <h3>6.4 — Manette de jeu rétro</h3>
+    <div class="prompt">
+      <span class="prompt-label">Nostalgie gaming</span>
+      <button class="copy-btn" data-prompt="m4">Copier</button>
+      <span id="m4">Plan rapproché d'une main tenant une manette de console rétro grise années 90, boutons colorés (rouge, bleu, vert, jaune), vue du dessus, poussée sur un bois sombre. Éclairage cinématographique contrasté, rayon lumineux traversant. Photographie 50 mm, f/4, rendu photoréaliste éditorial nostalgique. Format carré 1:1.</span>
+    </div>
+
+    <h3>6.5 — Atelier couture / hommage made in Portugal</h3>
+    <div class="prompt">
+      <span class="prompt-label">Fabrication</span>
+      <button class="copy-btn" data-prompt="m5">Copier</button>
+      <span id="m5">Plan rapproché d'une machine à coudre industrielle en action sur du coton noir, fil blanc, mains expertes en flou partiel, atelier lumineux avec baie vitrée en fond flou. Lumière naturelle douce, tons chauds. Photographie 50 mm, f/2.8, rendu photoréaliste documentaire mode. Format paysage 16:9 pour vidéos / bannières.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── 06 / POST-PROD ──────────────────── -->
+<section id="postprod">
+  <div class="container">
+    <div class="section-label">06 / Post-production</div>
+    <h2>Post-production minimale — 100 % gratuit</h2>
+    <p>Ce que tu fais après avoir généré les images. Objectif : cohérence de marque et ajout du pixel art PIXEL réel sur les vêtements.</p>
+
+    <h3>Outils recommandés</h3>
+    <div class="cards">
+      <div class="card">
+        <h4>Photopea</h4>
+        <p>Clone gratuit de Photoshop, 100 % dans le navigateur. Ton outil principal.</p>
+        <p><a href="https://www.photopea.com" target="_blank" rel="noopener">photopea.com</a></p>
+      </div>
+      <div class="card">
+        <h4>Remove.bg</h4>
+        <p>Détoure automatiquement le sujet en 2 secondes, utile pour les packshots.</p>
+        <p><a href="https://www.remove.bg" target="_blank" rel="noopener">remove.bg</a></p>
+      </div>
+      <div class="card">
+        <h4>Upscayl</h4>
+        <p>Upscale 2x ou 4x les images IA. Gratuit, open-source, à installer.</p>
+        <p><a href="https://www.upscayl.org" target="_blank" rel="noopener">upscayl.org</a></p>
+      </div>
+      <div class="card">
+        <h4>Canva (gratuit)</h4>
+        <p>Ajouts texte, logos, mise en page rapide pour Instagram.</p>
+        <p><a href="https://www.canva.com" target="_blank" rel="noopener">canva.com</a></p>
+      </div>
+    </div>
+
+    <h3>Workflow type par image lifestyle</h3>
+    <ul class="checklist">
+      <li>Générer l'image via ChatGPT + DALL-E 3 (prompts ci-dessus)</li>
+      <li>Régénérer 3-4 variantes, garder la meilleure</li>
+      <li>Ouvrir dans Photopea</li>
+      <li>Ajouter ton vrai motif pixel art PIXEL en calque sur le t-shirt (mode « Produit », opacité 85-90 %)</li>
+      <li>Correction colorimétrique : −10 % saturation, +5 % contraste (virer la saturation Instagram par défaut de DALL-E)</li>
+      <li>Upscale 2x via Upscayl si destiné à la home ou à une pub</li>
+      <li>Exporter en JPG qualité 85 % (bon compromis poids / Core Web Vitals)</li>
+    </ul>
+
+    <h3>Ajouter le motif pixel art sur le t-shirt (pas à pas)</h3>
+    <p>C'est la manip la plus technique, mais elle change tout :</p>
+    <ul class="checklist">
+      <li>Ouvrir l'image lifestyle dans Photopea</li>
+      <li>Importer ton motif pixel art (PNG transparent) en nouveau calque</li>
+      <li>Redimensionner le motif à la bonne taille (petit, façon broderie col)</li>
+      <li>Clic droit sur le calque motif → « Convertir en objet dynamique »</li>
+      <li>Menu Édition → Transformation → Déformation → épouser les plis du t-shirt</li>
+      <li>Mode de fusion : « Produit » (ou « Multiplier » pour fond clair / « Superposition » pour blanc)</li>
+      <li>Opacité : 85-90 % pour que le motif respire</li>
+      <li>Léger flou gaussien (0.3 px) pour que le motif ne paraisse pas collé</li>
+    </ul>
+    <div class="callout-ok">
+      <strong>Astuce</strong> : garde ce fichier PSD comme template, tu duppliques à l'infini sur les autres photos.
+    </div>
+  </div>
+</section>
+
+<!-- ── 07 / CHECKLIST QUALITÉ ──────────── -->
+<section id="checklist">
+  <div class="container">
+    <div class="section-label">07 / QA</div>
+    <h2>Checklist qualité avant publication</h2>
+
+    <h3>Technique</h3>
+    <ul class="checklist">
+      <li>Mains et doigts corrects (pas 6 doigts, articulations naturelles)</li>
+      <li>Visage sans bizarrerie (yeux symétriques, oreilles présentes)</li>
+      <li>Reflets et ombres cohérents (lumière identique sur sujet et décor)</li>
+      <li>Vêtement sans déformation (manches égales, coutures droites)</li>
+      <li>Résolution minimale 2000 px de largeur (upscale si besoin)</li>
+      <li>Poids fichier final &lt; 300 Ko pour le web</li>
+    </ul>
+
+    <h3>Cohérence de marque</h3>
+    <ul class="checklist">
+      <li>Palette visible : noir, blanc, magenta ou cyan présents</li>
+      <li>Esprit discret / élégant, pas tape-à-l'œil</li>
+      <li>Décor cohérent avec la cible 20-35 ans urbaine</li>
+      <li>Cadrage 4:5 (fiche produit et Instagram) ou 9:16 (stories/TikTok)</li>
+      <li>Mannequins diversifiés sur le lot (profils, âges, ethnies, morphologies)</li>
+    </ul>
+
+    <h3>Légal</h3>
+    <ul class="checklist">
+      <li>Aucun visage ressemblant à une personnalité réelle connue</li>
+      <li>Aucun logo de marque tierce visible (Nike/Adidas peuvent apparaître mais jamais frontal/lisible)</li>
+      <li>Mention « IA » présente dans la légende ou le footer de la page</li>
+      <li>Au moins une photo packshot réelle disponible sur la fiche produit</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── 08 / WORKFLOW ───────────────────── -->
+<section id="workflow">
+  <div class="container">
+    <div class="section-label">08 / Exécution</div>
+    <h2>Plan d'exécution — 1 semaine</h2>
+    <p>Comment tu produis le jeu complet en une semaine en parallèle du reste du lancement.</p>
+
+    <h3>Jour 1 — Setup (2 h)</h3>
+    <ul class="checklist">
+      <li>Vérifier / activer l'abonnement ChatGPT Plus</li>
+      <li>Bookmarker photopea.com</li>
+      <li>Télécharger Upscayl (upscayl.org)</li>
+      <li>Créer /assets/visuels/IA/ sur ton Drive avec sous-dossiers par produit</li>
+      <li>Préparer ton motif pixel art officiel en PNG transparent, taille 512×512</li>
+    </ul>
+
+    <h3>Jour 2 & 3 — Génération produits (3-4 h/jour)</h3>
+    <ul class="checklist">
+      <li>Jour 2 : les 6 produits version homme (6 prompts × 3-4 variantes ≈ 20 générations)</li>
+      <li>Jour 3 : les 6 produits version femme (idem)</li>
+      <li>Sauvegarder les meilleures dans /assets/visuels/IA/[produit]/raw/</li>
+    </ul>
+
+    <h3>Jour 4 — Ambiances / moods (2 h)</h3>
+    <ul class="checklist">
+      <li>Les 5 prompts d'ambiance × 3 variantes = 15 générations</li>
+      <li>Sauvegarder dans /assets/visuels/IA/moods/</li>
+    </ul>
+
+    <h3>Jour 5 & 6 — Post-production (4-5 h/jour)</h3>
+    <ul class="checklist">
+      <li>Poser le motif pixel art sur le t-shirt (Photopea)</li>
+      <li>Créer un PSD template réutilisable</li>
+      <li>Itérer sur les 12 images lifestyle</li>
+      <li>Upscale final pour home / pubs</li>
+    </ul>
+
+    <h3>Jour 7 — Intégration site (2 h)</h3>
+    <ul class="checklist">
+      <li>Uploader dans WordPress via la bibliothèque médias</li>
+      <li>Fiche produit : 1 packshot réel + 2 visuels lifestyle IA</li>
+      <li>Ajouter la mention « visuels IA » dans le footer et les légendes Instagram</li>
+      <li>Screenshot pour validation avant mise en ligne publique</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── 09 / RESSOURCES ─────────────────── -->
+<section id="ressources">
+  <div class="container">
+    <div class="section-label">09 / Ressources</div>
+    <h2>Pour aller plus loin</h2>
+
+    <h3>Apprendre à bien prompter DALL-E 3</h3>
+    <ul>
+      <li>YouTube FR : « Le Monde de l'IA » — tutos DALL-E 3 fashion / mode</li>
+      <li>Guide officiel : <a href="https://help.openai.com" target="_blank" rel="noopener">help.openai.com</a> (section DALL-E, en anglais)</li>
+      <li>Prompt Hero : <a href="https://prompthero.com" target="_blank" rel="noopener">prompthero.com</a> — prompts testés par la communauté</li>
+    </ul>
+
+    <h3>Inspiration visuelle streetwear / gaming</h3>
+    <ul>
+      <li><a href="https://www.highsnobiety.com" target="_blank" rel="noopener">Highsnobiety</a> — références éditoriales streetwear</li>
+      <li><a href="https://www.hypebeast.com" target="_blank" rel="noopener">Hypebeast</a> — photographie mode urbaine</li>
+      <li>Pinterest : crée un board <em>« PIXEL — moodboard »</em> avec 50 références pour orienter tes prompts</li>
+    </ul>
+
+    <h3>Communautés IA francophones</h3>
+    <ul>
+      <li>Discord « French AI Artists » — retours et critique entre créateurs</li>
+      <li>Reddit : <code>r/DalleGallery</code>, <code>r/StableDiffusion</code></li>
+      <li>Hashtag <code>#AIfashion</code> sur Instagram — veille et inspiration</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── 10 / NEXT ACTIONS ───────────────── -->
+<section id="next">
+  <div class="container" style="text-align:center">
+    <div class="section-label" style="color:var(--rouge)">10 / Go</div>
+    <h2>Tes 3 premières actions aujourd'hui</h2>
+    <div style="max-width:640px; margin: 0 auto">
+      <ul class="checklist" style="text-align:left">
+        <li>Activer ChatGPT Plus si pas déjà fait (20 €/mois)</li>
+        <li>Copier le premier prompt (T-shirt origin Noir — version homme) et lancer 4 générations pour te faire la main</li>
+        <li>Identifier ton motif pixel art officiel en PNG transparent — c'est la brique de base de toute la post-prod</li>
+      </ul>
+      <p style="margin-top:2rem; color:var(--gris-m); font-style:italic">Avance prompt par prompt, ne vise pas la perfection du premier coup. En 10 générations tu vas caler le ton PIXEL et itérer 5× plus vite sur les suivantes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ──────────────────────────── -->
+<footer>
+  <div class="pixel-bar"></div>
+  PIXEL &nbsp;/&nbsp; BRIEF IA v1.0 &nbsp;/&nbsp; AVRIL 2026 &nbsp;/&nbsp; DOCUMENT INTERNE
+</footer>
+
+<script>
+  // Copier prompts
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id = btn.dataset.prompt;
+      const text = document.getElementById(id).textContent.trim();
+      try {
+        await navigator.clipboard.writeText(text);
+        const original = btn.textContent;
+        btn.textContent = '✓ Copié';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = original;
+          btn.classList.remove('copied');
+        }, 1800);
+      } catch (e) {
+        // fallback
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        btn.textContent = '✓ Copié';
+        setTimeout(() => btn.textContent = 'Copier', 1800);
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
