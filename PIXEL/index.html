@@ -1549,7 +1549,7 @@ function selectSize(id, size, btn) {
 
 function handleAdd(id) {
   const p = products.find(x => x.id === id);
-  addToCart(p.id, p.name, p.price, p.collection, p.emoji, selectedSizes[p.id]);
+  addToCart(p.id, p.name, p.price, p.collection, p.svg, selectedSizes[p.id]);
 }
 
 renderProducts();
