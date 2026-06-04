@@ -1,3 +1,6 @@
 [build]
   functions = "netlify/functions"
   publish = "PIXEL"
+
+[[plugins]]
+  package = "@netlify/plugin-functions-install-core"
