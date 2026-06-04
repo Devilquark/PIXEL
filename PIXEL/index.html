@@ -984,7 +984,7 @@ footer {
       <span>Total</span>
       <strong id="cart-total-price">0 €</strong>
     </div>
-    <button class="btn-checkout">Passer commande →</button>
+    <button class="btn-checkout" onclick="handleCheckout()">Passer commande →</button>
     <div style="text-align:center;margin-top:0.8rem;">
       <span style="font-family:var(--mono);font-size:0.6rem;color:var(--gray);">
         🇵🇹 Livraison depuis le Portugal · 48h
@@ -1413,6 +1413,35 @@ function updateCart() {
       </div>
     </div>
   `).join('');
+}
+
+async function handleCheckout() {
+  if (cart.length === 0) return;
+  const btn = document.querySelector('.btn-checkout');
+  btn.textContent = 'Chargement...';
+  btn.disabled = true;
+  try {
+    const items = cart.map(i => ({
+      name: `${i.name} — Taille ${i.size}`,
+      price: i.price,
+      quantity: i.qty,
+    }));
+    const res = await fetch('/.netlify/functions/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items }),
+    });
+    const data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      throw new Error(data.error || 'Erreur inconnue');
+    }
+  } catch (err) {
+    showToast('Erreur paiement : ' + err.message);
+    btn.textContent = 'Passer commande →';
+    btn.disabled = false;
+  }
 }
 
 function showToast(msg) {
