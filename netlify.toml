@@ -1,0 +1,4 @@
+[build]
+  base = "PIXEL"
+  functions = "netlify/functions"
+  publish = "."
