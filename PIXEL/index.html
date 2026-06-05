@@ -1342,11 +1342,12 @@ document.addEventListener('mouseover', e => {
 // ── CHEATCODE UNLOCK (via jeu GLITCH) ──────────────────────
 if (sessionStorage.getItem('pixel_cheatcode')) {
   sessionStorage.removeItem('pixel_cheatcode');
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.getElementById('konami-overlay').classList.add('show');
-      document.body.classList.add('secret-open');
-    }, 600);
+  sessionStorage.setItem('pixel_booted', '1'); // skip loader
+  document.addEventListener('DOMContentLoaded', () => {
+    const loader = document.getElementById('loader');
+    if (loader) loader.remove();
+    document.getElementById('konami-overlay').classList.add('show');
+    document.body.classList.add('secret-open');
   });
 }
 
