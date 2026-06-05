@@ -1133,6 +1133,7 @@ footer {
         <span class="coll-tag">T-shirts · Pulls · Pantalons</span>
       </div>
 
+      <a href="glitch-game.html" style="text-decoration:none;color:inherit;display:block;">
       <div class="coll-card">
         <div class="coll-num">02</div>
         <div class="coll-sq" style="background:var(--violet)"></div>
@@ -1141,6 +1142,7 @@ footer {
         <p class="coll-desc">L'erreur comme esthétique. Pièces ultra-limitées, collector. La face underground de PIXEL.</p>
         <span class="coll-tag">Édition limitée · Collector</span>
       </div>
+      </a>
 
     </div>
   </div>
@@ -1340,6 +1342,17 @@ document.addEventListener('mouseover', e => {
     cursor.classList.remove('hover');
   }
 });
+
+// ── CHEATCODE UNLOCK (via jeu GLITCH) ──────────────────────
+if (sessionStorage.getItem('pixel_cheatcode')) {
+  sessionStorage.removeItem('pixel_cheatcode');
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('konami-overlay').classList.add('show');
+      document.body.classList.add('secret-open');
+    }, 600);
+  });
+}
 
 // ── LOADER ─────────────────────────────────────────────────
 window.addEventListener('load', () => {

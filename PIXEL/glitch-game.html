@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GLITCH — PIXEL</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#0A0A0A; color:#f5f5f5;
+  font-family:'Courier New',monospace;
+  height:100vh; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  overflow:hidden; user-select:none;
+}
+canvas {
+  display:block;
+  image-rendering:pixelated;
+  image-rendering:crisp-edges;
+  border:1px solid #1a1a1a;
+}
+.logo {
+  position:fixed; top:1.5rem; left:1.5rem;
+  font-size:0.85rem; letter-spacing:0.3em; font-weight:700;
+  color:#f5f5f5; text-decoration:none;
+}
+.logo::before { content:'■ '; }
+#dpad {
+  display:grid;
+  grid-template-columns:44px 44px 44px;
+  grid-template-rows:44px 44px 44px;
+  gap:3px; margin-top:10px;
+}
+.db {
+  background:#111; border:1px solid #222; color:#444;
+  font-size:18px; display:flex; align-items:center;
+  justify-content:center; cursor:pointer;
+  touch-action:manipulation; border-radius:3px;
+  transition:background 0.1s;
+}
+.db:active, .db.pressed { background:#1e1e1e; color:#f5f5f5; }
+.de { opacity:0; pointer-events:none; }
+</style>
+</head>
+<body>
+<a href="/" class="logo">PIXEL</a>
+<canvas id="c"></canvas>
+<div id="dpad">
+  <div class="de"></div>
+  <div class="db" id="bu">↑</div>
+  <div class="de"></div>
+  <div class="db" id="bl">←</div>
+  <div class="de"></div>
+  <div class="db" id="br">→</div>
+  <div class="de"></div>
+  <div class="db" id="bd">↓</div>
+  <div class="de"></div>
+</div>
+
+<script>
+(function(){
+const cv = document.getElementById('c');
+const cx = cv.getContext('2d');
+const TL=32, CL=20, RW=13;
+cv.width=CL*TL; cv.height=RW*TL;
+
+function resize(){
+  const s=Math.min(window.innerWidth*0.96/cv.width,(window.innerHeight-160)*0.96/cv.height,1);
+  cv.style.width=Math.floor(cv.width*s)+'px';
+  cv.style.height=Math.floor(cv.height*s)+'px';
+}
+resize(); window.addEventListener('resize',resize);
+
+// Tile IDs
+const FL=0,WL=1,KY=2,EX=3,FR=5;
+
+// ── LEVELS ────────────────────────────────────────────────────────────
+// 0=floor 1=wall 2=key 3=exit(needs key) 5=fragment(L3 only)
+// Edge 0s = room passages
+const LEVELS = [
+
+  // ── LEVEL 1 ─ 2 rooms ─ no enemy ─ find key then exit ────────────
+  { needsFrag:false, start:0, rooms:[
+    { // Room 0: exit portal inside, passage right (col 19 rows 5-7)
+      map:[
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1],
+        [1,0,1,1,0,1,0,1,0,1,1,1,0,1,0,0,1,1,0,1],
+        [1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1],
+        [1,0,0,0,1,1,0,1,0,1,1,1,0,1,0,1,0,0,0,1],
+        [1,0,1,0,0,0,0,1,0,0,3,0,0,1,0,0,0,1,0,0],
+        [1,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0],
+        [1,0,1,0,0,0,0,1,0,0,3,0,0,1,0,0,0,1,0,0],
+        [1,0,0,0,1,1,0,1,0,1,1,1,0,1,0,1,0,0,0,1],
+        [1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1],
+        [1,0,1,1,0,1,0,1,0,1,1,1,0,1,0,0,1,1,0,1],
+        [1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+      ],
+      sp:{x:1,y:6}, exits:{right:1}, enm:[]
+    },
+    { // Room 1: key inside, passage left (col 0 rows 5-7)
+      map:[
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,1,0,1,1,0,1,0,1,0,1,1,0,1,1,0,0,1],
+        [1,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,1],
+        [1,1,0,1,0,1,1,0,1,0,1,0,1,0,1,1,0,1,0,1],
+        [0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1],
+        [0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,1],
+        [0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1],
+        [1,1,0,1,0,1,1,0,1,0,1,0,1,0,1,1,0,1,0,1],
+        [1,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,1],
+        [1,0,1,1,0,1,1,0,1,0,1,0,1,1,0,1,1,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+      ],
+      sp:{x:1,y:6}, exits:{left:0}, enm:[]
+    }
+  ]},
+
+  // ── LEVEL 2 ─ 2 rooms ─ 1 enemy each ─ key + exit ────────────────
+  { needsFrag:false, start:0, rooms:[
+    { // Room 0: enemy roams, passage right
+      map:[
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,1],
+        [1,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,1],
+        [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,1],
+        [1,1,0,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [1,1,0,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,0,1],
+        [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,1],
+        [1,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,1],
+        [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+      ],
+      sp:{x:1,y:6}, exits:{right:1}, enm:[{x:12,y:6}]
+    },
+    { // Room 1: key + exit + enemy
+      map:[
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,0,1],
+        [1,0,1,0,0,0,1,0,0,1,0,1,0,0,0,1,0,1,0,1],
+        [1,0,0,0,1,0,1,0,1,1,0,1,1,0,1,1,0,0,0,1],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [0,0,0,0,0,0,0,2,0,3,3,3,0,0,0,0,0,0,0,1],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,1,0,1,0,1,1,0,1,1,0,1,1,0,0,0,1],
+        [1,0,1,0,0,0,1,0,0,1,0,1,0,0,0,1,0,1,0,1],
+        [1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+      ],
+      sp:{x:1,y:6}, exits:{left:0}, enm:[{x:16,y:3}]
+    }
+  ]},
+
+  // ── LEVEL 3 ─ 3 rooms ─ fragment first ─ key ─ exit ──────────────
+  { needsFrag:true, start:0, rooms:[
+    { // Room 0: exit portal, passage right
+      map:[
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1],
+        [1,0,1,1,0,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1],
+        [1,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,1],
+        [1,0,0,0,1,0,1,1,1,0,1,0,1,1,1,0,1,0,0,1],
+        [1,0,1,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0],
+        [1,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0],
+        [1,0,1,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0],
+        [1,0,0,0,1,0,1,1,1,0,1,0,1,1,1,0,1,0,0,1],
+        [1,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,1],
+        [1,0,1,1,0,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1],
+        [1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+      ],
+      sp:{x:1,y:6}, exits:{right:1}, enm:[{x:13,y:3}]
+    },
+    { // Room 1: key (locked til frag), passage left+right
+      map:[
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,0,1,1,1,0,1,0,1,0,1,1,1,0,1,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,1,0,1,1,0,1,1,1,0,1,0,1,1,1,0,1,1,0,1],
+        [0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0],
+        [1,1,0,1,1,0,1,1,1,0,1,0,1,1,1,0,1,1,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,0,1,1,1,0,1,0,1,0,1,1,1,0,1,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+      ],
+      sp:{x:1,y:6}, exits:{left:0,right:2}, enm:[{x:10,y:9}]
+    },
+    { // Room 2: fragment here + 2 enemies
+      map:[
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,1,1,0,1,0,1,1,1,0,1,0,1,1,1,0,0,1],
+        [1,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,1],
+        [1,1,1,0,1,0,1,1,0,0,1,0,0,1,1,0,1,0,1,1],
+        [0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1],
+        [0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,1],
+        [0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1],
+        [1,1,1,0,1,0,1,1,0,0,1,0,0,1,1,0,1,0,1,1],
+        [1,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,1],
+        [1,0,1,1,1,0,1,0,1,1,1,0,1,0,1,1,1,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+      ],
+      sp:{x:1,y:6}, exits:{left:1}, enm:[{x:15,y:2},{x:5,y:9}]
+    }
+  ]}
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────
+let gs='title', lv=0, rm=0;
+let map2=[], px=1,py=6,ptx=1,pty=6,pmov=false,ppr=0;
+let hasKey=false,hasFrag=false,lives=3,inv=0;
+let enems=[],items=[];
+let fc=0,lmv=0;
+const MSPD=130;
+const inp={};
+
+// ── INPUT ─────────────────────────────────────────────────────────────
+document.addEventListener('keydown',e=>{
+  inp[e.key]=true;
+  if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();
+  anyKey();
+});
+document.addEventListener('keyup',e=>{ inp[e.key]=false; });
+cv.addEventListener('click',anyKey);
+
+function setupDpad(){
+  const map3={'bu':'ArrowUp','bd':'ArrowDown','bl':'ArrowLeft','br':'ArrowRight'};
+  Object.entries(map3).forEach(([id,key])=>{
+    const el=document.getElementById(id);
+    const p=()=>{ inp[key]=true; el.classList.add('pressed'); anyKey(); };
+    const r=()=>{ inp[key]=false; el.classList.remove('pressed'); };
+    el.addEventListener('pointerdown',p);
+    el.addEventListener('pointerup',r);
+    el.addEventListener('pointerleave',r);
+    el.addEventListener('pointercancel',r);
+  });
+}
+setupDpad();
+
+function anyKey(){
+  if(gs==='title') startGame();
+  else if(gs==='lc') nextLv();
+  else if(gs==='go'){ gs='title'; }
+}
+
+// ── GAME ──────────────────────────────────────────────────────────────
+function startGame(){
+  lv=0; lives=3; loadLv(); gs='playing';
+}
+
+function loadLv(){
+  hasKey=false; hasFrag=false;
+  loadRoom(LEVELS[lv].start);
+}
+
+function loadRoom(r){
+  rm=r;
+  const rd=LEVELS[lv].rooms[r];
+  map2=rd.map.map(row=>[...row]);
+  px=rd.sp.x; py=rd.sp.y; ptx=px; pty=py; pmov=false; ppr=0;
+
+  const spd=380-lv*60;
+  enems=(rd.enm||[]).map(e=>({
+    x:e.x,y:e.y,tx:e.x,ty:e.y,mov:false,pr:0,
+    tmr:Math.random()*spd,
+    spd:spd+Math.random()*120
+  }));
+
+  items=[];
+  for(let r2=0;r2<RW;r2++) for(let c=0;c<CL;c++){
+    if(map2[r2][c]===KY) items.push({x:c,y:r2,t:'key'});
+    if(map2[r2][c]===FR) items.push({x:c,y:r2,t:'frag'});
+  }
+}
+
+function nextLv(){
+  lv++;
+  if(lv>=LEVELS.length){
+    gs='win';
+    setTimeout(()=>{
+      sessionStorage.setItem('pixel_cheatcode','1');
+      window.location.href='index.html';
+    },2800);
+  } else {
+    loadLv(); gs='playing';
+  }
+}
+
+// ── UPDATE ────────────────────────────────────────────────────────────
+function update(dt){
+  if(gs!=='playing') return;
+  if(inv>0) inv--;
+
+  // Player
+  if(!pmov){
+    const now=performance.now();
+    if(now-lmv>MSPD){
+      let dx=0,dy=0;
+      if(inp['ArrowLeft']) dx=-1;
+      else if(inp['ArrowRight']) dx=1;
+      else if(inp['ArrowUp']) dy=-1;
+      else if(inp['ArrowDown']) dy=1;
+      if(dx||dy){
+        const nx=px+dx,ny=py+dy;
+        if(!tryExit(nx,ny)){
+          if(nx>=0&&nx<CL&&ny>=0&&ny<RW){
+            const t=map2[ny][nx];
+            if(t!==WL){
+              if(t===EX){ if(hasKey){gs='lc';} }
+              else { ptx=nx;pty=ny;pmov=true;ppr=0;lmv=now; }
+            }
+          }
+        } else { lmv=now; }
+      }
+    }
+  } else {
+    ppr+=dt/85;
+    if(ppr>=1){ px=ptx;py=pty;pmov=false;ppr=1; pickup(); }
+  }
+
+  // Enemies
+  enems.forEach(e=>{
+    if(!e.mov){
+      e.tmr+=dt;
+      if(e.tmr>e.spd){
+        e.tmr=0;
+        const dirs=[[0,-1],[0,1],[-1,0],[1,0]].sort(()=>Math.random()-0.5);
+        for(const[dx,dy] of dirs){
+          const nx=e.x+dx,ny=e.y+dy;
+          if(nx>0&&nx<CL-1&&ny>0&&ny<RW-1&&map2[ny][nx]!==WL&&map2[ny][nx]!==EX){
+            e.tx=nx;e.ty=ny;e.mov=true;e.pr=0;break;
+          }
+        }
+      }
+    } else {
+      e.pr+=dt/170;
+      if(e.pr>=1){e.x=e.tx;e.y=e.ty;e.mov=false;e.pr=1;}
+    }
+    // Hit
+    if(inv===0){
+      const ex2=lerp(e.x,e.tx,e.mov?ez(e.pr):1);
+      const ey2=lerp(e.y,e.ty,e.mov?ez(e.pr):1);
+      const ppx2=lerp(px,ptx,pmov?ez(ppr):1);
+      const ppy2=lerp(py,pty,pmov?ez(ppr):1);
+      if(Math.hypot(ex2-ppx2,ey2-ppy2)<0.78){
+        lives--; inv=110;
+        if(lives<=0){gs='go';}
+        else{const rd=LEVELS[lv].rooms[rm];px=rd.sp.x;py=rd.sp.y;ptx=px;pty=py;pmov=false;}
+      }
+    }
+  });
+}
+
+function tryExit(nx,ny){
+  const ex=LEVELS[lv].rooms[rm].exits||{};
+  if(nx<0&&ex.left!==undefined){
+    const cpy=py;
+    loadRoom(ex.left);
+    px=CL-2;py=cpy;ptx=px;pty=py;
+    return true;
+  }
+  if(nx>=CL&&ex.right!==undefined){
+    const cpy=py;
+    loadRoom(ex.right);
+    px=1;py=cpy;ptx=px;pty=py;
+    return true;
+  }
+  return false;
+}
+
+function pickup(){
+  for(let i=items.length-1;i>=0;i--){
+    const it=items[i];
+    if(it.x===px&&it.y===py){
+      if(it.t==='frag'){ hasFrag=true; items.splice(i,1); map2[it.y][it.x]=FL; }
+      if(it.t==='key'&&!(LEVELS[lv].needsFrag&&!hasFrag)){
+        hasKey=true; items.splice(i,1); map2[it.y][it.x]=FL;
+      }
+    }
+  }
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────
+const RED='#FF2D55',WHT='#f5f5f5',DIM='#444',BG='#0A0A0A',CYN='#44aaff';
+
+function render(){
+  cx.fillStyle=BG; cx.fillRect(0,0,cv.width,cv.height);
+  if(gs==='title') rTitle();
+  else if(gs==='playing'||gs==='lc'||gs==='go'){
+    rGame();
+    if(gs==='lc') rModal(lv<LEVELS.length-1?`NIVEAU ${lv+1} — OK`:'ACCÈS DÉVERROUILLÉ',lv<LEVELS.length-1?'appuie pour continuer':'redirection...');
+    if(gs==='go') rModal('GAME OVER','appuie pour recommencer');
+  }
+  else if(gs==='win') rWin();
+}
+
+function rTitle(){
+  // Grid bg
+  cx.strokeStyle='#111'; cx.lineWidth=0.5;
+  for(let x=0;x<cv.width;x+=TL){cx.beginPath();cx.moveTo(x,0);cx.lineTo(x,cv.height);cx.stroke();}
+  for(let y=0;y<cv.height;y+=TL){cx.beginPath();cx.moveTo(0,y);cx.lineTo(cv.width,y);cx.stroke();}
+
+  // Box
+  const bx=cv.width/2-230,by=cv.height/2-115;
+  cx.fillStyle='#0d0d0d'; cx.fillRect(bx,by,460,230);
+  cx.strokeStyle='#222'; cx.lineWidth=1; cx.strokeRect(bx,by,460,230);
+  cx.strokeStyle='#1a1a1a'; cx.strokeRect(bx+4,by+4,452,222);
+
+  cx.fillStyle=RED; cx.font=`bold 62px 'Courier New'`; cx.textAlign='center';
+  cx.fillText('GLITCH',cv.width/2,cv.height/2-28);
+
+  cx.fillStyle='#333'; cx.font=`11px 'Courier New'`;
+  cx.fillText('COLLECTION 02 · NIVEAUX SECRETS',cv.width/2,cv.height/2+5);
+
+  if(fc%50<35){
+    cx.fillStyle=WHT; cx.font=`12px 'Courier New'`;
+    cx.fillText('[ APPUIE SUR UNE TOUCHE ]',cv.width/2,cv.height/2+52);
+  }
+  cx.fillStyle='#2a2a2a'; cx.font=`10px 'Courier New'`;
+  cx.fillText('FLÈCHES · TROUVE LA CLÉ · ATTEINS LA SORTIE · 3 NIVEAUX',cv.width/2,cv.height/2+76);
+}
+
+function rGame(){
+  // Tiles
+  for(let r=0;r<RW;r++) for(let c=0;c<CL;c++){
+    const t=map2[r][c],x=c*TL,y=r*TL;
+    if(t===WL){
+      cx.fillStyle='#181818'; cx.fillRect(x,y,TL,TL);
+      cx.strokeStyle='#242424'; cx.lineWidth=0.5;
+      cx.strokeRect(x+0.5,y+0.5,TL-1,TL-1);
+    } else {
+      cx.fillStyle='#0d0d0d'; cx.fillRect(x,y,TL,TL);
+    }
+    if(t===EX){
+      cx.fillStyle='#0d0d0d'; cx.fillRect(x,y,TL,TL);
+      if(hasKey){
+        cx.fillStyle=fc%10<5?RED:'#ff5577';
+        cx.fillRect(x+3,y+3,TL-6,TL-6);
+        cx.fillStyle=fc%10<5?'rgba(255,255,255,0.9)':'rgba(255,255,255,0.4)';
+        cx.fillRect(x+9,y+9,TL-18,TL-18);
+      } else {
+        cx.strokeStyle='#2a2a2a'; cx.lineWidth=1.5;
+        cx.strokeRect(x+4,y+4,TL-8,TL-8);
+        cx.fillStyle='#141414'; cx.fillRect(x+4,y+4,TL-8,TL-8);
+      }
+    }
+  }
+
+  // Items
+  items.forEach(it=>{
+    const x=it.x*TL,y=it.y*TL;
+    if(it.t==='key'){
+      const locked=LEVELS[lv].needsFrag&&!hasFrag;
+      const p=Math.sin(fc*0.12)*2;
+      cx.fillStyle=locked?'#282828':WHT;
+      cx.save(); cx.translate(x+TL/2,y+TL/2); cx.rotate(Math.PI/4);
+      cx.fillRect(-6-p/2,-6-p/2,12+p,12+p); cx.restore();
+      if(locked){
+        cx.fillStyle='rgba(255,45,85,0.15)'; cx.fillRect(x,y,TL,TL);
+      }
+    }
+    if(it.t==='frag'){
+      const p=Math.sin(fc*0.14)*2;
+      cx.fillStyle=CYN;
+      cx.fillRect(x+TL/2-5-p/2,y+TL/2-5-p/2,10+p,10+p);
+      cx.fillStyle='rgba(68,170,255,0.1)'; cx.fillRect(x+1,y+1,TL-2,TL-2);
+    }
+  });
+
+  // Enemies
+  enems.forEach(e=>{
+    const ex2=(e.mov?lerp(e.x,e.tx,ez(e.pr)):e.x)*TL;
+    const ey2=(e.mov?lerp(e.y,e.ty,ez(e.pr)):e.y)*TL;
+    const gx=fc%3<1?(Math.random()*4-2):0;
+    cx.fillStyle=RED; cx.fillRect(ex2+4+gx,ey2+4,TL-8,TL-8);
+    cx.fillStyle=fc%6<3?'#ff7799':'#990022';
+    cx.fillRect(ex2+9+gx,ey2+9,TL-18,TL-18);
+  });
+
+  // Player
+  const ppx2=(pmov?lerp(px,ptx,ez(ppr)):px)*TL;
+  const ppy2=(pmov?lerp(py,pty,ez(ppr)):py)*TL;
+  if(inv===0||inv%8<4){
+    cx.fillStyle=RED; cx.fillRect(ppx2+5,ppy2+5,TL-10,TL-10);
+    cx.fillStyle='rgba(255,255,255,0.85)'; cx.fillRect(ppx2+7,ppy2+7,5,5);
+  }
+
+  // HUD
+  cx.fillStyle='rgba(8,8,8,0.94)'; cx.fillRect(0,0,cv.width,26);
+  cx.strokeStyle='#1a1a1a'; cx.lineWidth=1;
+  cx.beginPath();cx.moveTo(0,26);cx.lineTo(cv.width,26);cx.stroke();
+
+  cx.fillStyle=RED; cx.font=`bold 11px 'Courier New'`; cx.textAlign='left';
+  cx.fillText(`LVL ${lv+1}/3`,10,17);
+
+  cx.textAlign='center'; cx.fillStyle=RED;
+  cx.fillText('■'.repeat(lives)+'□'.repeat(3-lives),cv.width/2,17);
+
+  cx.textAlign='right';
+  let inv2='',ic=DIM;
+  if(hasKey){inv2='✦ CLÉ';ic=WHT;}
+  else if(hasFrag){inv2='◆ FRAG · TROUVE ✦';ic=CYN;}
+  else if(LEVELS[lv].needsFrag){inv2='TROUVE ◆';ic=DIM;}
+  else{inv2='TROUVE ✦';ic=DIM;}
+  cx.fillStyle=ic; cx.font=`11px 'Courier New'`;
+  cx.fillText(inv2,cv.width-10,17);
+}
+
+function rModal(title,sub){
+  cx.fillStyle='rgba(0,0,0,0.78)'; cx.fillRect(0,0,cv.width,cv.height);
+  const bx=cv.width/2-210,by=cv.height/2-65;
+  cx.fillStyle='#0d0d0d'; cx.fillRect(bx,by,420,130);
+  cx.strokeStyle='#333'; cx.lineWidth=1; cx.strokeRect(bx,by,420,130);
+  cx.fillStyle=RED; cx.font=`bold 26px 'Courier New'`; cx.textAlign='center';
+  cx.fillText(title,cv.width/2,cv.height/2-8);
+  if(fc%50<35){
+    cx.fillStyle=DIM; cx.font=`11px 'Courier New'`;
+    cx.fillText(sub,cv.width/2,cv.height/2+28);
+  }
+}
+
+function rWin(){
+  // Scan lines bg
+  for(let y=0;y<cv.height;y+=4){
+    cx.fillStyle='rgba(255,45,85,0.03)'; cx.fillRect(0,y,cv.width,2);
+  }
+  const bx=cv.width/2-230,by=cv.height/2-100;
+  cx.fillStyle='#0d0d0d'; cx.fillRect(bx,by,460,200);
+  cx.strokeStyle=RED; cx.lineWidth=1; cx.strokeRect(bx,by,460,200);
+  cx.strokeStyle='#330011'; cx.strokeRect(bx+4,by+4,452,192);
+
+  cx.fillStyle=RED; cx.font=`bold 42px 'Courier New'`; cx.textAlign='center';
+  cx.fillText('CHEAT CODE',cv.width/2,cv.height/2-18);
+  cx.fillStyle=WHT; cx.font=`15px 'Courier New'`;
+  cx.fillText('DÉVERROUILLÉ',cv.width/2,cv.height/2+14);
+  if(fc%40<26){
+    cx.fillStyle='#2a2a2a'; cx.font=`10px 'Courier New'`;
+    cx.fillText('redirection...',cv.width/2,cv.height/2+52);
+  }
+}
+
+function lerp(a,b,t){return a+(b-a)*t;}
+function ez(t){return t<0.5?2*t*t:-1+(4-2*t)*t;}
+
+// ── LOOP ──────────────────────────────────────────────────────────────
+let lt=0;
+function loop(t){
+  const dt=Math.min(t-lt,50); lt=t; fc++;
+  update(dt); render();
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(t=>{lt=t;requestAnimationFrame(loop);});
+
+})();
+</script>
+</body>
+</html>
