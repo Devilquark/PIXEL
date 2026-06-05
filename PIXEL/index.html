@@ -819,7 +819,7 @@ footer {
   font-size: 0.85rem; letter-spacing: 0.25em; text-transform: uppercase;
   color: var(--red); border: 1px solid var(--red);
   padding: 0.35rem 1rem; margin-bottom: 2.5rem;
-  animation: blink-badge 1.2s step-end infinite;
+  animation: blink-badge 2.2s step-end infinite;
 }
 @keyframes blink-badge {
   0%,100% { opacity:1; } 50% { opacity:0; }
@@ -1264,6 +1264,23 @@ footer {
 
       <div class="secret-divider"><span>▓</span></div>
 
+      <!-- Séquence Konami -->
+      <div class="konami-seq" id="konamiDisplay" style="margin:1.5rem auto 2rem;">
+        <div class="k-sym red">↑</div>
+        <div class="k-sym red">↑</div>
+        <div class="k-sym white">↓</div>
+        <div class="k-sym white">↓</div>
+        <div class="k-sym white">←</div>
+        <div class="k-sym white">→</div>
+        <div class="k-sym white">←</div>
+        <div class="k-sym white">→</div>
+        <div class="k-sym red">P</div>
+        <div class="k-sym red">I</div>
+        <div class="k-sym red">X</div>
+        <div class="k-sym red">E</div>
+        <div class="k-sym red">L</div>
+      </div>
+
       <!-- Product showcase -->
       <div class="secret-showcase">
         <div class="showcase-tabs">
@@ -1285,23 +1302,6 @@ footer {
           <div class="sz" onclick="selectSecretSize(this)">XL</div>
         </div>
         <button class="showcase-btn" onclick="addSecretToCart()">AJOUTER AU PANIER →</button>
-      </div>
-
-      <!-- Séquence Konami -->
-      <div class="konami-seq" id="konamiDisplay" style="margin:2rem auto;">
-        <div class="k-sym red">↑</div>
-        <div class="k-sym red">↑</div>
-        <div class="k-sym white">↓</div>
-        <div class="k-sym white">↓</div>
-        <div class="k-sym white">←</div>
-        <div class="k-sym white">→</div>
-        <div class="k-sym white">←</div>
-        <div class="k-sym white">→</div>
-        <div class="k-sym red">P</div>
-        <div class="k-sym red">I</div>
-        <div class="k-sym red">X</div>
-        <div class="k-sym red">E</div>
-        <div class="k-sym red">L</div>
       </div>
 
       <!-- Waitlist -->
