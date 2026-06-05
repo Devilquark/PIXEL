@@ -506,6 +506,8 @@ nav {
   transition:background 0.25s;
 }
 .coll-card:hover .coll-sq { background:var(--red); }
+.coll-sq--glitch { background:var(--black) !important; }
+.coll-card:hover .coll-sq--glitch { background:var(--violet) !important; }
 .coll-label {
   font-family:var(--mono); font-size:0.65rem;
   text-transform:uppercase; letter-spacing:0.15em;
@@ -1135,7 +1137,7 @@ footer {
       <a href="glitch-game.html" style="text-decoration:none;color:inherit;display:block;">
       <div class="coll-card">
         <div class="coll-num">02</div>
-        <div class="coll-sq" style="background:var(--violet)"></div>
+        <div class="coll-sq coll-sq--glitch"></div>
         <div class="coll-label">L'anomalie · Drop limité</div>
         <div class="coll-name">GLITCH</div>
         <p class="coll-desc">L'erreur comme esthétique. Pièces ultra-limitées, collector. La face underground de PIXEL.</p>
