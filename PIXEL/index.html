@@ -900,13 +900,10 @@ footer {
 .showcase-tabs { display:flex; gap:1px; background:#1a1a1a; margin-bottom:1px; }
 .s-tab { flex:1; background:#0f0f0f; padding:0.7rem; font-size:0.6rem; letter-spacing:0.15em; color:#444; border:none; cursor:pointer; font-family:var(--mono); text-transform:uppercase; transition:color 0.2s; }
 .s-tab.active,.s-tab:hover { color:var(--white); }
-.showcase-view { background:#0f0f0f; border:1px solid #1a1a1a; overflow:hidden; aspect-ratio:1; position:relative; cursor:zoom-in; }
+.showcase-view { background:#0f0f0f; border:1px solid #1a1a1a; overflow:hidden; aspect-ratio:1; position:relative; cursor:default; }
 .showcase-view img { width:100%; height:100%; object-fit:cover; display:block; transition:opacity 0.2s; }
-.showcase-zoom-icon { position:absolute; bottom:10px; right:10px; width:30px; height:30px; background:rgba(0,0,0,0.6); border:1px solid #333; display:flex; align-items:center; justify-content:center; font-size:14px; color:#555; pointer-events:none; }
-/* Lightbox zoom */
-#img-lightbox { display:none; position:fixed; inset:0; z-index:99999; background:rgba(0,0,0,0.95); align-items:center; justify-content:center; cursor:zoom-out; }
-#img-lightbox.open { display:flex; }
-#img-lightbox img { max-width:90vw; max-height:90vh; object-fit:contain; }
+.showcase-fiche-btn { display:block; width:100%; padding:0.65rem; background:transparent; border:1px solid #2a2a2a; font-family:var(--mono); font-size:0.58rem; letter-spacing:0.18em; text-transform:uppercase; color:#555; text-align:center; text-decoration:none; transition:all 0.2s; margin-bottom:0.8rem; }
+.showcase-fiche-btn:hover { border-color:#555; color:var(--white); }
 .showcase-meta { display:flex; align-items:center; justify-content:space-between; padding:0.8rem 0 0.5rem; }
 .showcase-price { font-size:1.1rem; color:var(--white); letter-spacing:0.05em; }
 .showcase-stock { font-size:0.55rem; color:var(--red); letter-spacing:0.1em; text-transform:uppercase; }
@@ -1295,9 +1292,8 @@ footer {
           <button class="s-tab" onclick="switchShowcase(this,'front')">FACE</button>
           <button class="s-tab" onclick="switchShowcase(this,'back')">DOS</button>
         </div>
-        <div class="showcase-view" onclick="openLightbox()">
+        <div class="showcase-view">
           <img id="showcaseImg" src="products/photos/cheatcode-lifestyle.png" alt="T-Shirt CHEAT CODE">
-          <div class="showcase-zoom-icon">⊕</div>
         </div>
         <div class="showcase-meta">
           <span class="showcase-price">35 €</span>
@@ -1310,6 +1306,7 @@ footer {
           <div class="sz" onclick="selectSecretSize(this)">XL</div>
         </div>
         <button class="showcase-btn" onclick="addSecretToCart()">AJOUTER AU PANIER →</button>
+        <a href="products/tshirt-cheatcode.html" class="showcase-fiche-btn">Voir la fiche produit →</a>
       </div>
 
       <!-- Waitlist -->
@@ -1328,11 +1325,6 @@ footer {
 
     </div>
   </div>
-</div>
-
-<!-- ─── LIGHTBOX ────────────────────────────────────────────── -->
-<div id="img-lightbox" onclick="closeLightbox()">
-  <img id="lightbox-img" src="" alt="PIXEL CHEAT CODE">
 </div>
 
 <!-- ─── TOAST ──────────────────────────────────────────────── -->
@@ -1640,15 +1632,6 @@ const showcaseImgs = {
   front: 'products/photos/cheatcode-front.png',
   back: 'products/photos/cheatcode-back-lifestyle.jpg'
 };
-function openLightbox() {
-  document.getElementById('lightbox-img').src = document.getElementById('showcaseImg').src;
-  document.getElementById('img-lightbox').classList.add('open');
-}
-function closeLightbox() {
-  document.getElementById('img-lightbox').classList.remove('open');
-}
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
-
 function switchShowcase(btn, view) {
   const img = document.getElementById('showcaseImg');
   img.style.opacity = '0';
