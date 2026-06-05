@@ -603,40 +603,44 @@ nav {
 #best-sellers { padding:5rem 2.5rem; border-top:1px solid var(--border); }
 .bs-grid {
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:1px; background:var(--border); border:1px solid var(--border);
+  grid-template-columns:repeat(4,1fr);
+  gap:1.5rem;
   margin-top:2.5rem;
 }
-.bs-card {
-  background:var(--bg);
-  padding:2rem 1.5rem 1.5rem;
+.bs-card { position:relative; cursor:pointer; }
+.bs-card-img {
+  aspect-ratio:1/1;
+  overflow:hidden;
   position:relative;
-  transition:background 0.2s;
+  margin-bottom:0.85rem;
 }
-.bs-card:hover { background:var(--off); }
+.bs-card-img svg { width:100%; height:100%; display:block; transition:transform 0.4s ease; }
+.bs-card:hover .bs-card-img svg { transform:scale(1.03); }
 .bs-badge {
-  position:absolute; top:1rem; left:1rem;
-  background:var(--white); color:var(--bg);
-  font-family:var(--mono); font-size:0.55rem;
-  letter-spacing:0.15em; padding:3px 7px;
-  text-transform:uppercase;
+  position:absolute; top:0.7rem; left:0.7rem;
+  font-family:var(--mono); font-size:0.48rem;
+  letter-spacing:0.14em; padding:3px 7px;
+  text-transform:uppercase; font-weight:700; z-index:1;
 }
-.bs-img {
-  display:flex; align-items:center; justify-content:center;
-  height:160px; margin-bottom:1.2rem;
-}
-.bs-rank {
-  font-family:var(--mono); font-size:0.6rem;
-  color:var(--gray); letter-spacing:0.2em;
-  margin-bottom:0.3rem;
+.bs-badge.bestseller { background:#FFD600; color:#000; }
+.bs-badge.new-drop { background:var(--red); color:#fff; }
+.bs-badge.limited { background:var(--violet); color:#fff; }
+.bs-coll {
+  font-family:var(--mono); font-size:0.52rem;
+  color:var(--gray); letter-spacing:0.16em;
+  text-transform:uppercase; margin-bottom:0.2rem;
 }
 .bs-name {
-  font-size:0.85rem; font-weight:500;
-  letter-spacing:0.05em; margin-bottom:0.2rem;
+  font-size:0.82rem; font-weight:500;
+  color:var(--black); margin-bottom:0.25rem;
+  letter-spacing:0.01em;
 }
 .bs-price {
-  font-family:var(--mono); font-size:0.8rem; color:var(--gray);
+  font-family:var(--mono); font-size:0.82rem;
+  font-weight:700; color:var(--black);
 }
+@media(max-width:900px){ .bs-grid{ grid-template-columns:repeat(2,1fr); } }
+@media(max-width:480px){ .bs-grid{ grid-template-columns:repeat(2,1fr); gap:1rem; } }
 
 /* ─── PHILOSOPHIE ───────────────────────────────────────────── */
 #philosophie {
@@ -1118,10 +1122,19 @@ footer {
   </div>
 </section>
 
+<!-- ─── BEST SELLERS ──────────────────────────────────────── -->
+<section id="best-sellers">
+  <div style="max-width:1200px;margin:0 auto;">
+    <p class="section-label">// 01</p>
+    <h2 class="section-title">Best sellers</h2>
+    <div class="bs-grid" id="bs-grid"></div>
+  </div>
+</section>
+
 <!-- ─── COLLECTIONS ────────────────────────────────────────── -->
 <section id="collections">
   <div style="max-width:1200px;margin:0 auto;">
-    <p class="section-label">// 01</p>
+    <p class="section-label">// 02</p>
     <h2 class="section-title">Collections streetwear gaming</h2>
     <div class="collections-grid">
 
@@ -1157,15 +1170,6 @@ footer {
     <div class="products-grid" id="products-grid">
       <!-- Produits générés en JS -->
     </div>
-  </div>
-</section>
-
-<!-- ─── BEST SELLERS ──────────────────────────────────────── -->
-<section id="best-sellers">
-  <div style="max-width:1200px;margin:0 auto;">
-    <p class="section-label">// 03</p>
-    <h2 class="section-title">Best sellers</h2>
-    <div class="bs-grid" id="bs-grid"></div>
   </div>
 </section>
 
@@ -1574,24 +1578,101 @@ function handleAdd(id) {
 renderProducts();
 
 // ── BEST SELLERS ─────────────────────────────────────────────
+function makeTshirtSVG(bg, shirt, square, pixels) {
+  return `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="300" fill="${bg}"/>
+    <path d="M93 78 L36 116 L62 126 L62 238 L238 238 L238 126 L264 116 L207 78 Q187 94 150 94 Q113 94 93 78Z" fill="${shirt}" opacity="0.92"/>
+    ${pixels}
+    <rect x="86" y="220" width="13" height="13" fill="${square}"/>
+  </svg>`;
+}
+
+const bsPixelOrigin = `<g transform="translate(126,106)">
+  <rect x="0" y="0" width="3" height="3" fill="#888" opacity="0.5"/>
+  <rect x="4" y="0" width="3" height="3" fill="#888" opacity="0.5"/>
+  <rect x="8" y="0" width="3" height="3" fill="#888" opacity="0.5"/>
+  <rect x="0" y="4" width="11" height="3" fill="#666" opacity="0.4"/>
+  <rect x="3" y="8" width="5" height="3" fill="#888" opacity="0.5"/>
+</g>`;
+
+const bsPixelRgb = `<g transform="translate(123,104)">
+  <rect x="0" y="0" width="4" height="4" fill="#FF2D55" opacity="0.7"/>
+  <rect x="6" y="0" width="4" height="4" fill="#00D4E8" opacity="0.7"/>
+  <rect x="12" y="0" width="4" height="4" fill="#7B2FBE" opacity="0.7"/>
+  <rect x="3" y="6" width="4" height="4" fill="#00D4E8" opacity="0.5"/>
+  <rect x="9" y="6" width="4" height="4" fill="#FF2D55" opacity="0.5"/>
+</g>`;
+
+const bsPixelGlitch = `<g transform="translate(120,104)">
+  <rect x="0" y="2" width="6" height="2" fill="#7B2FBE" opacity="0.8"/>
+  <rect x="8" y="0" width="10" height="2" fill="#7B2FBE" opacity="0.6"/>
+  <rect x="2" y="5" width="14" height="2" fill="#7B2FBE" opacity="0.5"/>
+  <rect x="0" y="8" width="8" height="2" fill="#7B2FBE" opacity="0.7"/>
+  <rect x="10" y="8" width="6" height="2" fill="#7B2FBE" opacity="0.4"/>
+</g>`;
+
+const bsPixelCap = `<g transform="translate(118,108)">
+  <path d="M0 8 Q16 0 32 8 L32 18 L0 18Z" fill="#888" opacity="0.5"/>
+  <rect x="0" y="18" width="32" height="6" fill="#666" opacity="0.4"/>
+  <rect x="28" y="20" width="8" height="4" fill="#555" opacity="0.4"/>
+  <rect x="12" y="8" width="6" height="6" fill="#888" opacity="0.3"/>
+</g>`;
+
 const bestSellers = [
-  { ...products.find(p => p.id === 'p3'), rank: '#1' },
-  { ...products.find(p => p.id === 'p1'), rank: '#2' },
-  { ...products.find(p => p.id === 'p5'), rank: '#3' },
-  { ...products.find(p => p.id === 'p2'), rank: '#4' },
+  { name:'T-Shirt ORIGIN 001', collection:'ORIGIN', price:35, badge:'bestseller', badgeLabel:'BESTSELLER',
+    svg: makeTshirtSVG('#F5F5F5','#1a1a1a','#FFFFFF',bsPixelOrigin) },
+  { name:'T-Shirt ORIGIN 002', collection:'ORIGIN', price:35, badge:'bestseller', badgeLabel:'BESTSELLER',
+    svg: makeTshirtSVG('#1a1a1a','#F5F5F5','#FF2D55',bsPixelOrigin) },
+  { name:'Hoodie ORIGIN', collection:'ORIGIN', price:65, badge:'',
+    svg: `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+      <rect width="300" height="300" fill="#F0F0F0"/>
+      <path d="M80 75 L25 120 L55 132 L55 245 L245 245 L245 132 L275 120 L220 75 Q195 60 150 58 Q105 60 80 75Z" fill="#222" opacity="0.88"/>
+      <path d="M80 75 Q105 60 150 58 Q195 60 220 75 L215 90 Q195 78 150 76 Q105 78 85 90Z" fill="#1a1a1a" opacity="0.9"/>
+      ${bsPixelOrigin}
+      <rect x="80" y="226" width="13" height="13" fill="#FFFFFF"/>
+    </svg>` },
+  { name:'T-Shirt RGB Edition', collection:'RGB EDITION', price:38, badge:'new-drop', badgeLabel:'NEW',
+    svg: makeTshirtSVG('#E8FEFF','#0A0A0A','#00D4E8',bsPixelRgb) },
+  { name:'Long Sleeve RGB', collection:'RGB EDITION', price:45, badge:'',
+    svg: `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+      <rect width="300" height="300" fill="#F5FEFF"/>
+      <path d="M93 78 L20 130 L50 140 L50 238 L250 238 L250 140 L280 130 L207 78 Q187 94 150 94 Q113 94 93 78Z" fill="#0A0A0A" opacity="0.9"/>
+      ${bsPixelRgb}
+      <rect x="80" y="220" width="13" height="13" fill="#00D4E8"/>
+    </svg>` },
+  { name:'T-Shirt GLITCH 001', collection:'GLITCH', price:40, badge:'limited', badgeLabel:'LIMITED',
+    svg: makeTshirtSVG('#0d0d14','#1a0a2a','#7B2FBE',bsPixelGlitch) },
+  { name:'Hoodie GLITCH', collection:'GLITCH', price:70, badge:'limited', badgeLabel:'LIMITED',
+    svg: `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+      <rect width="300" height="300" fill="#0a0a12"/>
+      <path d="M80 75 L25 120 L55 132 L55 245 L245 245 L245 132 L275 120 L220 75 Q195 60 150 58 Q105 60 80 75Z" fill="#1a0a2a" opacity="0.95"/>
+      <path d="M80 75 Q105 60 150 58 Q195 60 220 75 L215 90 Q195 78 150 76 Q105 78 85 90Z" fill="#12082a" opacity="0.95"/>
+      ${bsPixelGlitch}
+      <rect x="80" y="226" width="13" height="13" fill="#7B2FBE"/>
+    </svg>` },
+  { name:'Cap PIXEL Logo', collection:'PIXEL ESSENTIALS', price:25, badge:'',
+    svg: `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+      <rect width="300" height="300" fill="#F5F5F5"/>
+      <g transform="translate(80, 90)">
+        <path d="M0 50 Q70 10 140 50 L140 110 L0 110Z" fill="#1a1a1a" opacity="0.9"/>
+        <rect x="0" y="110" width="140" height="20" fill="#0a0a0a" opacity="0.85"/>
+        <rect x="120" y="114" width="35" height="16" fill="#0a0a0a" opacity="0.8" rx="2"/>
+        <rect x="55" y="40" width="20" height="20" fill="#333" opacity="0.4"/>
+        <rect x="59" y="44" width="12" height="12" fill="#FF2D55" opacity="0.5"/>
+      </g>
+      <rect x="86" y="220" width="13" height="13" fill="#FF2D55"/>
+    </svg>` },
 ];
 
 function renderBestSellers() {
   const grid = document.getElementById('bs-grid');
   grid.innerHTML = bestSellers.map(p => `
     <div class="bs-card">
-      <span class="bs-badge">Best seller</span>
-      <a href="${p.url}" style="display:block;text-decoration:none;color:inherit;">
-        <div class="bs-img">${p.svg}</div>
-        <div class="bs-rank">${p.rank} — ${p.collection}</div>
-        <div class="bs-name">${p.name}</div>
-        <div class="bs-price">${p.price} €</div>
-      </a>
+      ${p.badge ? `<span class="bs-badge ${p.badge}">${p.badgeLabel}</span>` : ''}
+      <div class="bs-card-img">${p.svg}</div>
+      <div class="bs-coll">${p.collection}</div>
+      <div class="bs-name">${p.name}</div>
+      <div class="bs-price">${p.price} €</div>
     </div>
   `).join('');
 }
