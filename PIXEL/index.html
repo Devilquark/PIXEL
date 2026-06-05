@@ -136,9 +136,11 @@ button { cursor:none; border:none; background:none; font-family:var(--sans); }
   width: 20px; height: 20px;
   transform: translate(-50%, -50%);
   transition: transform 0.08s ease;
+  color: #0A0A0A;
 }
 #cursor svg { width:16px; height:16px; }
 #cursor.hover { transform: translate(-50%, -50%) scale(1.5); }
+body.secret-open #cursor { color: #f5f5f5; }
 
 /* ─── LOADING SCREEN ────────────────────────────────────────── */
 #loader {
@@ -988,7 +990,7 @@ footer {
 <!-- ─── CUSTOM CURSOR ──────────────────────────────────────── -->
 <div id="cursor">
   <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="0" y="0" width="16" height="16" fill="#0A0A0A"/>
+    <rect x="0" y="0" width="16" height="16" fill="currentColor"/>
   </svg>
 </div>
 
@@ -1641,6 +1643,7 @@ document.addEventListener('keydown', e => {
     konamiPos++;
     if (konamiPos === KONAMI.length) {
       document.getElementById('konami-overlay').classList.add('show');
+      document.body.classList.add('secret-open');
       konamiPos = 0;
     }
   } else {
@@ -1649,6 +1652,7 @@ document.addEventListener('keydown', e => {
 });
 function closeKonami() {
   document.getElementById('konami-overlay').classList.remove('show');
+  document.body.classList.remove('secret-open');
 }
 // ── CHEAT CODE SHOWCASE ────────────────────────────────────
 const showcaseImgs = {
