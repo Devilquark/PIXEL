@@ -595,6 +595,45 @@ nav {
 }
 .size-btn:hover, .size-btn.active { background:var(--black); color:var(--white); border-color:var(--black); }
 
+/* ─── BEST SELLERS ──────────────────────────────────────────── */
+#best-sellers { padding:5rem 2.5rem; border-top:1px solid var(--border); }
+.bs-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:1px; background:var(--border); border:1px solid var(--border);
+  margin-top:2.5rem;
+}
+.bs-card {
+  background:var(--bg);
+  padding:2rem 1.5rem 1.5rem;
+  position:relative;
+  transition:background 0.2s;
+}
+.bs-card:hover { background:var(--off); }
+.bs-badge {
+  position:absolute; top:1rem; left:1rem;
+  background:var(--white); color:var(--bg);
+  font-family:var(--mono); font-size:0.55rem;
+  letter-spacing:0.15em; padding:3px 7px;
+  text-transform:uppercase;
+}
+.bs-img {
+  display:flex; align-items:center; justify-content:center;
+  height:160px; margin-bottom:1.2rem;
+}
+.bs-rank {
+  font-family:var(--mono); font-size:0.6rem;
+  color:var(--gray); letter-spacing:0.2em;
+  margin-bottom:0.3rem;
+}
+.bs-name {
+  font-size:0.85rem; font-weight:500;
+  letter-spacing:0.05em; margin-bottom:0.2rem;
+}
+.bs-price {
+  font-family:var(--mono); font-size:0.8rem; color:var(--gray);
+}
+
 /* ─── PHILOSOPHIE ───────────────────────────────────────────── */
 #philosophie {
   padding:5rem 2.5rem;
@@ -963,7 +1002,7 @@ footer {
   <div class="loader-screen">
     <div class="loader-line delay1">PIXEL OS v1.0 — BOOT SEQUENCE INIT...</div>
     <div class="loader-line green delay2">✓ PALETTE LOADED — 5 COLORS OK</div>
-    <div class="loader-line green delay3">✓ COLLECTIONS — ORIGIN · RGB · GLITCH · COLLAB</div>
+    <div class="loader-line green delay3">✓ COLLECTIONS — ORIGIN · GLITCH</div>
     <div class="loader-line delay4">⌛ LOADING PIXEL ART ENGINE...</div>
     <div class="loader-line green delay5">✓ EASTER EGGS ARMED — [↑↑↓↓←→←→BA]</div>
     <div class="loader-line red-t delay6">▶ SYSTEM READY</div>
@@ -1099,29 +1138,11 @@ footer {
 
       <div class="coll-card">
         <div class="coll-num">02</div>
-        <div class="coll-sq" style="background:var(--red)"></div>
-        <div class="coll-label">L'arcade</div>
-        <div class="coll-name">RGB</div>
-        <p class="coll-desc">Couleurs saturées, énergie arcade. La collection qui capte l'œil — mais toujours avec sobriété.</p>
-        <span class="coll-tag">T-shirts · Bombers · Sweats</span>
-      </div>
-
-      <div class="coll-card">
-        <div class="coll-num">03</div>
         <div class="coll-sq" style="background:var(--violet)"></div>
         <div class="coll-label">L'anomalie · Drop limité</div>
         <div class="coll-name">GLITCH</div>
         <p class="coll-desc">L'erreur comme esthétique. Pièces ultra-limitées, collector. La face underground de PIXEL.</p>
         <span class="coll-tag">Édition limitée · Collector</span>
-      </div>
-
-      <div class="coll-card">
-        <div class="coll-num">04</div>
-        <div class="coll-sq" style="background:var(--cyan)"></div>
-        <div class="coll-label">Drops artistiques</div>
-        <div class="coll-name">COLLAB</div>
-        <p class="coll-desc">Des artistes pixel art invités à signer une capsule exclusive. Co-signature, univers unique.</p>
-        <span class="coll-tag">Co-signé · Éphémère</span>
       </div>
 
     </div>
@@ -1136,6 +1157,15 @@ footer {
     <div class="products-grid" id="products-grid">
       <!-- Produits générés en JS -->
     </div>
+  </div>
+</section>
+
+<!-- ─── BEST SELLERS ──────────────────────────────────────── -->
+<section id="best-sellers">
+  <div style="max-width:1200px;margin:0 auto;">
+    <p class="section-label">// 03</p>
+    <h2 class="section-title">Best sellers</h2>
+    <div class="bs-grid" id="bs-grid"></div>
   </div>
 </section>
 
@@ -1278,14 +1308,17 @@ footer {
           <div class="k-sym white">→</div>
           <div class="k-sym white">←</div>
           <div class="k-sym white">→</div>
-          <div class="k-sym red">B</div>
-          <div class="k-sym red">A</div>
+          <div class="k-sym red">P</div>
+          <div class="k-sym red">I</div>
+          <div class="k-sym red">X</div>
+          <div class="k-sym red">E</div>
+          <div class="k-sym red">L</div>
         </div>
       </div>
 
       <!-- Titre -->
       <div class="secret-label">Collection secrète · Drop 01 · 2026</div>
-      <h2 class="secret-title">PIXEL<br><span>KONAMI</span></h2>
+      <h2 class="secret-title">PIXEL<br><span>CHEAT CODE</span></h2>
       <p class="secret-sub">Tu connais le code. Tu fais partie du jeu.</p>
 
       <div class="secret-divider"><span>▓</span></div>
@@ -1293,7 +1326,7 @@ footer {
       <!-- Description -->
       <p class="secret-desc">
         Certains portent un t-shirt. D'autres portent un cheat code.<br><br>
-        <strong>PIXEL KONAMI</strong> — La séquence légendaire ↑↑↓↓←→←→BA sérigraphiée en pixel art sous le col. Invisible à 99% des gens. Immédiatement reconnu par les 1% qui comptent. Édition limitée, non réassortie.
+        <strong>PIXEL CHEAT CODE</strong> — La séquence légendaire ↑↑↓↓←→←→PIXEL sérigraphiée en pixel art sous le col. Invisible à 99% des gens. Immédiatement reconnu par les 1% qui comptent. Édition limitée, non réassortie.
       </p>
 
       <!-- Teaser pièces -->
@@ -1503,18 +1536,19 @@ const products = [
     sizes:['S','M','L']
   },
   {
-    id:'p6', name:'T-Shirt KONAMI Code', collection:'KONAMI',
+    id:'p6', name:'T-Shirt CHEAT CODE', collection:'CHEAT CODE',
     price:35, badge:'ltd', badgeLabel:'Secret',
     url:'products/tshirt-konami.html',
     svg:`<svg width="60" height="68" viewBox="0 0 130 150" fill="none" style="image-rendering:pixelated;"><polygon points="38,18 24,12 8,24 16,30 14,130 116,130 114,30 122,24 106,12 92,18" fill="#111" stroke="#1e1e1e" stroke-width="1"/><rect x="47" y="32" width="3" height="2" fill="#FF2D55"/><rect x="45" y="34" width="7" height="2" fill="#FF2D55"/><rect x="47" y="36" width="3" height="2" fill="#FF2D55"/><rect x="56" y="32" width="3" height="2" fill="#FF2D55"/><rect x="54" y="34" width="7" height="2" fill="#FF2D55"/><rect x="56" y="36" width="3" height="2" fill="#FF2D55"/><rect x="65" y="32" width="3" height="2" fill="#666"/><rect x="63" y="34" width="7" height="2" fill="#666"/><rect x="74" y="32" width="3" height="2" fill="#666"/><rect x="72" y="34" width="7" height="2" fill="#666"/></svg>`,
-    desc:'↑↑↓↓←→←→BA sous le col · 30 unités · Portugal',
+    desc:'↑↑↓↓←→←→PIXEL sous le col · 30 unités · Portugal',
     sizes:['S','M','L','XL']
   }
 ];
 
 function renderProducts() {
   const grid = document.getElementById('products-grid');
-  grid.innerHTML = products.map(p => `
+  const visible = products.filter(p => p.collection === 'ORIGIN' || p.collection === 'GLITCH');
+  grid.innerHTML = visible.map(p => `
     <div class="product-card">
       <a href="${p.url}" style="display:block;text-decoration:none;color:inherit;">
         <div class="product-img">
@@ -1563,6 +1597,30 @@ function handleAdd(id) {
 
 renderProducts();
 
+// ── BEST SELLERS ─────────────────────────────────────────────
+const bestSellers = [
+  { ...products.find(p => p.id === 'p3'), rank: '#1' },
+  { ...products.find(p => p.id === 'p1'), rank: '#2' },
+  { ...products.find(p => p.id === 'p5'), rank: '#3' },
+  { ...products.find(p => p.id === 'p2'), rank: '#4' },
+];
+
+function renderBestSellers() {
+  const grid = document.getElementById('bs-grid');
+  grid.innerHTML = bestSellers.map(p => `
+    <div class="bs-card">
+      <span class="bs-badge">Best seller</span>
+      <a href="${p.url}" style="display:block;text-decoration:none;color:inherit;">
+        <div class="bs-img">${p.svg}</div>
+        <div class="bs-rank">${p.rank} — ${p.collection}</div>
+        <div class="bs-name">${p.name}</div>
+        <div class="bs-price">${p.price} €</div>
+      </a>
+    </div>
+  `).join('');
+}
+renderBestSellers();
+
 // ── NEWSLETTER ──────────────────────────────────────────────
 function submitNewsletter(e) {
   e.preventDefault();
@@ -1577,7 +1635,7 @@ function submitNewsletter(e) {
 }
 
 // ── KONAMI CODE ─────────────────────────────────────────────
-const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','p','i','x','e','l'];
 let konamiPos = 0;
 document.addEventListener('keydown', e => {
   if (e.key === KONAMI[konamiPos]) {
