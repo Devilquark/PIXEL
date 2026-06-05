@@ -1257,74 +1257,12 @@ footer {
       <!-- Badge clignotant -->
       <div class="secret-badge">▓ ACCÈS RESTREINT — COLLECTION CONFIDENTIELLE ▓</div>
 
-      <!-- Séquence Konami pixel art animée -->
-      <div class="konami-wrap">
-        <div class="konami-glow"></div>
-        <!-- T-shirt silhouette avec code Konami sérigraphié -->
-        <svg width="180" height="200" viewBox="0 0 90 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated; display:block; margin:0 auto 1.5rem;">
-          <!-- Corps t-shirt -->
-          <polygon points="28,14 18,10 8,18 14,22 12,80 78,80 76,22 82,18 72,10 62,14" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
-          <!-- Col -->
-          <polyline points="28,14 35,18 45,20 55,18 62,14" fill="none" stroke="#333" stroke-width="0.8"/>
-          <!-- Coutures -->
-          <line x1="28" y1="14" x2="27" y2="80" stroke="#222" stroke-width="0.5"/>
-          <line x1="62" y1="14" x2="63" y2="80" stroke="#222" stroke-width="0.5"/>
-          <!-- Pixel art Konami sous le col — couleurs DA -->
-          <!-- ↑ rouge -->
-          <rect x="30" y="22" width="2" height="2" fill="#FF2D55"/>
-          <rect x="28" y="24" width="6" height="2" fill="#FF2D55"/>
-          <rect x="30" y="26" width="2" height="2" fill="#FF2D55"/>
-          <!-- ↑ rouge -->
-          <rect x="38" y="22" width="2" height="2" fill="#FF2D55"/>
-          <rect x="36" y="24" width="6" height="2" fill="#FF2D55"/>
-          <rect x="38" y="26" width="2" height="2" fill="#FF2D55"/>
-          <!-- ↓ blanc -->
-          <rect x="46" y="22" width="2" height="2" fill="#888"/>
-          <rect x="44" y="24" width="6" height="2" fill="#888"/>
-          <rect x="46" y="26" width="2" height="2" fill="#888"/>
-          <!-- ↓ blanc -->
-          <rect x="54" y="22" width="2" height="2" fill="#888"/>
-          <rect x="52" y="24" width="6" height="2" fill="#888"/>
-          <rect x="54" y="26" width="2" height="2" fill="#888"/>
-          <!-- PIXEL vertical sur la manche gauche -->
-          <rect x="11" y="22" width="4" height="1" fill="#555"/>
-          <rect x="11" y="24" width="4" height="1" fill="#555"/>
-          <rect x="11" y="26" width="4" height="1" fill="#555"/>
-          <rect x="11" y="28" width="4" height="1" fill="#555"/>
-          <rect x="11" y="30" width="4" height="1" fill="#555"/>
-          <!-- Logo carré bas gauche -->
-          <rect x="20" y="72" width="6" height="6" fill="#0A0A0A" stroke="#444" stroke-width="0.3"/>
-        </svg>
-        <!-- La séquence en glyphes pixel -->
-        <div class="konami-seq" id="konamiDisplay">
-          <div class="k-sym red">↑</div>
-          <div class="k-sym red">↑</div>
-          <div class="k-sym white">↓</div>
-          <div class="k-sym white">↓</div>
-          <div class="k-sym white">←</div>
-          <div class="k-sym white">→</div>
-          <div class="k-sym white">←</div>
-          <div class="k-sym white">→</div>
-          <div class="k-sym red">P</div>
-          <div class="k-sym red">I</div>
-          <div class="k-sym red">X</div>
-          <div class="k-sym red">E</div>
-          <div class="k-sym red">L</div>
-        </div>
-      </div>
-
       <!-- Titre -->
       <div class="secret-label">Collection secrète · Drop 01 · 2026</div>
       <h2 class="secret-title">PIXEL<br><span>CHEAT CODE</span></h2>
       <p class="secret-sub">Tu connais le code. Tu fais partie du jeu.</p>
 
       <div class="secret-divider"><span>▓</span></div>
-
-      <!-- Description -->
-      <p class="secret-desc">
-        Certains portent un t-shirt. D'autres portent un cheat code.<br><br>
-        <strong>PIXEL CHEAT CODE</strong> — La séquence légendaire ↑↑↓↓←→←→PIXEL sérigraphiée en pixel art sous le col. Invisible à 99% des gens. Immédiatement reconnu par les 1% qui comptent. Édition limitée, non réassortie.
-      </p>
 
       <!-- Product showcase -->
       <div class="secret-showcase">
@@ -1347,6 +1285,23 @@ footer {
           <div class="sz" onclick="selectSecretSize(this)">XL</div>
         </div>
         <button class="showcase-btn" onclick="addSecretToCart()">AJOUTER AU PANIER →</button>
+      </div>
+
+      <!-- Séquence Konami -->
+      <div class="konami-seq" id="konamiDisplay" style="margin:2rem auto;">
+        <div class="k-sym red">↑</div>
+        <div class="k-sym red">↑</div>
+        <div class="k-sym white">↓</div>
+        <div class="k-sym white">↓</div>
+        <div class="k-sym white">←</div>
+        <div class="k-sym white">→</div>
+        <div class="k-sym white">←</div>
+        <div class="k-sym white">→</div>
+        <div class="k-sym red">P</div>
+        <div class="k-sym red">I</div>
+        <div class="k-sym red">X</div>
+        <div class="k-sym red">E</div>
+        <div class="k-sym red">L</div>
       </div>
 
       <!-- Waitlist -->
