@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PIXEL — PLAYER_PROFILE</title>
+<meta name="robots" content="noindex">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --black:  #0A0A0A;
+  --white:  #FFFFFF;
+  --off:    #F7F7F7;
+  --red:    #FF2D55;
+  --cyan:   #00D4E8;
+  --violet: #7B2FBE;
+  --gray:   #888;
+  --border: #E8E8E8;
+  --mono:   'Space Mono', monospace;
+  --sans:   'Inter', sans-serif;
+
+  /* gaming palette */
+  --g-bg:      #FFFFFF;
+  --g-panel:   #F7F7F7;
+  --g-border:  #E8E8E8;
+  --g-dim:     #888;
+  --g-text:    #333;
+  --g-bright:  #0A0A0A;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family: var(--sans);
+  background: var(--white);
+  color: var(--black);
+  cursor: none;
+  overflow-x: hidden;
+}
+a { text-decoration:none; color:inherit; }
+button { cursor:none; border:none; background:none; font-family:var(--sans); }
+
+/* ─── CURSOR ────────────────────────────────────────────────── */
+#cursor {
+  position:fixed; top:0; left:0; z-index:9999;
+  pointer-events:none;
+  width:20px; height:20px;
+  transform:translate(-50%,-50%);
+  transition:transform 0.08s ease;
+  color:#0A0A0A;
+}
+#cursor svg { width:16px; height:16px; }
+#cursor.hover { transform:translate(-50%,-50%); color:var(--red); }
+.profile-zone #cursor { color: var(--g-text); }
+
+/* ─── NAV ───────────────────────────────────────────────────── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:500;
+  background:rgba(255,255,255,0.95);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 2.5rem;
+  height:60px;
+}
+.nav-logo {
+  display:flex; align-items:center; gap:10px;
+  font-family:var(--mono); font-weight:700; font-size:1rem;
+}
+.nav-sq {
+  width:20px; height:20px;
+  background:var(--black);
+  flex-shrink:0; position:relative;
+}
+.nav-sq::after {
+  content:''; position:absolute; inset:3px;
+  background:var(--red); opacity:0; transition:opacity 0.2s;
+}
+.nav-logo:hover .nav-sq::after { opacity:1; }
+.nav-links {
+  display:flex; gap:2rem; align-items:center;
+}
+.nav-links a {
+  font-family:var(--mono); font-size:0.7rem;
+  text-transform:uppercase; letter-spacing:0.12em;
+  color:var(--gray); transition:color 0.2s;
+}
+.nav-links a:hover { color:var(--black); }
+.nav-right { display:flex; gap:0.5rem; align-items:center; }
+.login-btn {
+  width:38px; height:38px;
+  background:transparent; display:flex; align-items:center; justify-content:center;
+  color:var(--black); transition:color 0.2s;
+}
+.login-btn.active { color:var(--red); }
+.login-btn:hover { color:var(--red); }
+.cart-btn {
+  display:flex; align-items:center; gap:0.5rem;
+  background:var(--black); color:var(--white);
+  padding:0.5rem 1rem;
+  font-family:var(--mono); font-size:0.65rem;
+  text-transform:uppercase; letter-spacing:0.1em;
+}
+.cart-count {
+  background:var(--red); color:white;
+  border-radius:50%; width:16px; height:16px;
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size:0.6rem;
+}
+@media(max-width:768px) {
+  nav { padding:0 1.2rem; }
+  .nav-links { display:none; }
+}
+
+/* ─── PROFILE ZONE ──────────────────────────────────────────── */
+.profile-zone {
+  background:var(--white);
+  min-height:100vh;
+  padding-top:60px;
+  color:var(--black);
+  font-family:var(--mono);
+  position:relative;
+  overflow:hidden;
+}
+
+/* scanlines — desactivees sur fond blanc */
+
+.profile-inner {
+  max-width:1000px; margin:0 auto;
+  padding:3rem 2rem 6rem;
+  position:relative; z-index:2;
+}
+
+/* ─── PAGE HEADER ───────────────────────────────────────────── */
+.pg-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:2.5rem;
+  padding-bottom:1rem;
+  border-bottom:1px solid var(--g-border);
+}
+.pg-title {
+  font-size:0.65rem;
+  color:var(--g-dim);
+  letter-spacing:0.2em;
+}
+.pg-title span {
+  color:var(--red);
+}
+.pg-status {
+  font-size:0.6rem;
+  color:var(--cyan);
+  display:flex; align-items:center; gap:0.5rem;
+}
+.pg-status::before {
+  content:'';
+  width:6px; height:6px;
+  background:var(--cyan);
+  border-radius:50%;
+  animation:blink 1.2s step-start infinite;
+}
+@keyframes blink { 50% { opacity:0; } }
+
+/* ─── PLAYER CARD ───────────────────────────────────────────── */
+.player-card {
+  display:grid; grid-template-columns:140px 1fr;
+  gap:2rem;
+  background:var(--g-panel);
+  border:1px solid var(--g-border);
+  padding:2rem;
+  margin-bottom:2rem;
+}
+@media(max-width:600px) {
+  .player-card { grid-template-columns:1fr; }
+}
+.player-avatar {
+  display:flex; flex-direction:column; align-items:center; gap:0.8rem;
+}
+.avatar-frame {
+  width:100px; height:100px;
+  border:2px solid var(--g-border);
+  background:var(--g-panel);
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+}
+.avatar-frame::after {
+  content:'';
+  position:absolute; inset:0;
+  border:1px solid var(--red);
+  opacity:0.3;
+  transform:translate(3px,3px);
+}
+.avatar-label {
+  font-size:0.5rem;
+  color:var(--g-dim);
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+}
+.player-info {}
+.player-name {
+  font-size:1rem; color:var(--g-bright);
+  letter-spacing:0.1em;
+  margin-bottom:0.4rem;
+}
+.player-rank-line {
+  font-size:0.55rem; color:var(--g-dim);
+  letter-spacing:0.15em;
+  margin-bottom:1.2rem;
+}
+.player-rank-line span { color:var(--red); }
+
+.xp-label {
+  font-size:0.5rem; color:var(--g-dim);
+  letter-spacing:0.15em;
+  margin-bottom:0.4rem;
+  display:flex; justify-content:space-between;
+}
+.xp-label .xp-val { color:var(--cyan); }
+.xp-bar-track {
+  height:8px; background:#E8E8E8;
+  border:1px solid var(--g-border);
+  margin-bottom:1.4rem;
+}
+.xp-bar-fill {
+  height:100%;
+  background: linear-gradient(90deg, var(--red), var(--violet));
+  transition:width 1.2s ease;
+  position:relative;
+}
+.xp-bar-fill::after {
+  content:'';
+  position:absolute; right:0; top:0; bottom:0;
+  width:3px;
+  background:white;
+  opacity:0.8;
+  animation:pulse-bar 1s ease-in-out infinite alternate;
+}
+@keyframes pulse-bar { from { opacity:0.3; } to { opacity:1; } }
+
+.player-meta {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:0.4rem 2rem;
+}
+.meta-row {
+  font-size:0.5rem;
+  display:flex; gap:0.5rem;
+}
+.meta-key { color:var(--g-dim); letter-spacing:0.1em; }
+.meta-val { color:var(--g-bright); }
+.meta-val.highlight { color:var(--red); }
+
+/* ─── SECTION HEADER ────────────────────────────────────────── */
+.section-hd {
+  font-size:0.55rem;
+  color:var(--g-dim);
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  margin-bottom:1rem;
+  display:flex; align-items:center; gap:1rem;
+}
+.section-hd::after {
+  content:'';
+  flex:1; height:1px;
+  background:var(--g-border);
+}
+.section-hd .count {
+  color:var(--cyan); font-size:0.45rem;
+}
+
+/* ─── STATS GRID ─────────────────────────────────────────────── */
+.stats-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:var(--g-border);
+  border:1px solid var(--g-border);
+  margin-bottom:2rem;
+}
+@media(max-width:600px) { .stats-grid { grid-template-columns:1fr 1fr; } }
+.stat-cell {
+  background:var(--g-panel);
+  padding:1.2rem 1rem;
+}
+.stat-key {
+  font-size:0.45rem; color:var(--g-dim);
+  letter-spacing:0.15em; margin-bottom:0.5rem;
+}
+.stat-val {
+  font-size:1.1rem; color:var(--g-bright);
+}
+.stat-val.red { color:var(--red); }
+.stat-val.cyan { color:var(--cyan); }
+.stat-val.violet { color:var(--violet); }
+
+/* ─── ACHIEVEMENTS ───────────────────────────────────────────── */
+.achievements {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:1rem;
+  margin-bottom:2rem;
+}
+@media(max-width:600px) { .achievements { grid-template-columns:1fr 1fr; } }
+.ach-card {
+  background:var(--g-panel);
+  border:1px solid var(--g-border);
+  padding:1rem;
+  position:relative;
+  transition:border-color 0.2s;
+}
+.ach-card.unlocked { border-color:#333; }
+.ach-card.locked {
+  opacity:0.35;
+  filter:grayscale(1);
+}
+.ach-card.unlocked:hover { border-color:var(--red); }
+.ach-icon {
+  font-size:1.4rem; margin-bottom:0.6rem;
+  display:block;
+}
+.ach-name {
+  font-size:0.5rem; color:var(--g-bright);
+  letter-spacing:0.1em; margin-bottom:0.3rem;
+}
+.ach-desc {
+  font-size:0.4rem; color:var(--g-dim);
+  line-height:1.6;
+}
+.ach-badge {
+  position:absolute; top:0.6rem; right:0.6rem;
+  font-size:0.35rem; color:var(--cyan);
+  letter-spacing:0.1em;
+}
+.ach-card.locked .ach-badge { color:var(--g-dim); }
+
+/* ─── QUEST LOG ──────────────────────────────────────────────── */
+.quest-log {
+  background:var(--g-panel);
+  border:1px solid var(--g-border);
+  margin-bottom:2rem;
+  overflow:hidden;
+}
+.quest-header {
+  background:var(--g-panel);
+  padding:0.8rem 1.2rem;
+  font-size:0.45rem; color:var(--g-dim);
+  letter-spacing:0.2em;
+  display:grid; grid-template-columns:80px 1fr auto auto auto;
+  gap:1rem;
+}
+@media(max-width:600px) { .quest-header { display:none; } }
+.quest-row {
+  padding:0.8rem 1.2rem;
+  font-size:0.5rem;
+  border-top:1px solid var(--g-border);
+  display:grid; grid-template-columns:80px 1fr auto auto auto;
+  gap:1rem;
+  align-items:center;
+  transition:background 0.15s;
+}
+.quest-row:hover { background:#F0F0F0; }
+.quest-id { color:var(--g-dim); font-size:0.45rem; }
+.quest-name { color:var(--g-bright); }
+.quest-coll { color:var(--violet); font-size:0.45rem; }
+.quest-price { color:var(--g-text); }
+.quest-status {
+  font-size:0.45rem;
+  padding:0.2rem 0.5rem;
+  letter-spacing:0.1em;
+}
+.quest-status.done {
+  color:#4caf50; border:1px solid #4caf50;
+}
+.quest-status.progress {
+  color:var(--cyan); border:1px solid var(--cyan);
+  animation:blink 1.5s step-start infinite;
+}
+.quest-empty {
+  padding:2.5rem;
+  text-align:center;
+  font-size:0.55rem; color:var(--g-dim);
+  letter-spacing:0.1em;
+  line-height:2;
+}
+.quest-empty .prompt {
+  color:var(--red); font-size:0.5rem; display:block; margin-top:0.5rem;
+}
+
+/* ─── SETTINGS ───────────────────────────────────────────────── */
+.settings-grid {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:1rem;
+  margin-bottom:2rem;
+}
+@media(max-width:600px) { .settings-grid { grid-template-columns:1fr; } }
+.setting-row {
+  background:var(--g-panel);
+  border:1px solid var(--g-border);
+  padding:1rem 1.2rem;
+  display:flex; align-items:center; justify-content:space-between;
+  transition:border-color 0.2s;
+}
+.setting-row:hover { border-color:var(--g-dim); }
+.setting-row button {
+  font-family:var(--mono);
+  font-size:0.45rem; color:var(--g-dim);
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  padding:0.3rem 0.6rem;
+  border:1px solid var(--g-border);
+  cursor:none;
+  transition:color 0.2s, border-color 0.2s;
+}
+.setting-row button:hover { color:var(--red); border-color:var(--red); }
+.setting-key { font-size:0.45rem; color:var(--g-dim); letter-spacing:0.15em; }
+.setting-val { font-size:0.5rem; color:var(--g-bright); margin-top:0.2rem; }
+
+/* ─── FOOTER ─────────────────────────────────────────────────── */
+.profile-footer {
+  text-align:center;
+  font-size:0.45rem; color:var(--g-dim);
+  letter-spacing:0.15em;
+  padding-top:2rem;
+  border-top:1px solid var(--g-border);
+}
+.profile-footer a { color:var(--g-dim); text-decoration:none; }
+.profile-footer a:hover { color:var(--red); }
+
+/* ─── BLINKING CURSOR text ───────────────────────────────────── */
+.blink { animation:blink 1s step-start infinite; }
+
+/* ─── AVATAR EDIT ─────────────────────────────────────────────── */
+.avatar-frame {
+  position:relative;
+  cursor:none;
+}
+.avatar-edit-overlay {
+  position:absolute; inset:0;
+  background:rgba(0,0,0,0.55);
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; transition:opacity 0.2s;
+  font-family:var(--mono); font-size:0.4rem;
+  color:#fff; letter-spacing:0.1em;
+  flex-direction:column; gap:0.3rem;
+}
+.avatar-frame:hover .avatar-edit-overlay { opacity:1; }
+.avatar-edit-overlay span { font-size:1.2rem; }
+
+/* ─── PSEUDO EDIT ─────────────────────────────────────────────── */
+.player-name-wrap {
+  display:flex; align-items:center; gap:0.7rem;
+  margin-bottom:0.4rem;
+}
+.edit-pseudo-btn {
+  font-family:var(--mono); font-size:0.4rem;
+  color:var(--g-dim); letter-spacing:0.1em;
+  padding:0.2rem 0.4rem;
+  border:1px solid var(--g-border);
+  cursor:none; transition:color 0.2s, border-color 0.2s;
+}
+.edit-pseudo-btn:hover { color:var(--red); border-color:var(--red); }
+.pseudo-input {
+  font-family:var(--mono); font-size:1rem;
+  color:var(--g-bright); background:transparent;
+  border:none; border-bottom:2px solid var(--red);
+  outline:none; letter-spacing:0.1em;
+  width:200px; cursor:none;
+}
+
+/* ─── AVATAR PICKER MODAL ─────────────────────────────────────── */
+#avatarModal {
+  display:none;
+  position:fixed; inset:0; z-index:1000;
+  background:rgba(0,0,0,0.7);
+  align-items:center; justify-content:center;
+}
+#avatarModal.open { display:flex; }
+.avatar-modal-box {
+  background:#fff;
+  border:1px solid var(--border);
+  padding:2rem;
+  max-width:480px; width:90%;
+}
+.avatar-modal-title {
+  font-family:var(--mono); font-size:0.55rem;
+  color:var(--g-dim); letter-spacing:0.2em;
+  margin-bottom:1.5rem;
+}
+.avatar-modal-title span { color:var(--red); }
+.avatar-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:1rem; margin-bottom:1.5rem;
+}
+.avatar-option {
+  border:2px solid var(--border);
+  background:var(--g-panel);
+  display:flex; flex-direction:column; align-items:center;
+  padding:0.8rem 0.4rem 0.5rem;
+  cursor:none; transition:border-color 0.2s;
+  position:relative;
+}
+.avatar-option:hover { border-color:var(--red); }
+.avatar-option.selected { border-color:var(--red); }
+.avatar-option.selected::after {
+  content:'✓'; position:absolute; top:4px; right:6px;
+  font-size:0.5rem; color:var(--red); font-family:var(--mono);
+}
+.avatar-option-label {
+  font-family:var(--mono); font-size:0.38rem;
+  color:var(--g-dim); letter-spacing:0.1em; margin-top:0.4rem;
+}
+.avatar-modal-close {
+  font-family:var(--mono); font-size:0.45rem;
+  color:var(--g-dim); letter-spacing:0.1em;
+  padding:0.5rem 1rem; border:1px solid var(--border);
+  cursor:none; transition:all 0.2s;
+}
+.avatar-modal-close:hover { color:var(--red); border-color:var(--red); }
+
+/* upload card */
+.avatar-upload-card {
+  border:2px dashed var(--border);
+  background:var(--g-panel);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:0.8rem 0.4rem;
+  cursor:none; transition:border-color 0.2s;
+  min-height:100px; position:relative;
+}
+.avatar-upload-card:hover { border-color:var(--red); }
+.avatar-upload-card.has-photo { border-style:solid; border-color:var(--red); }
+.avatar-upload-card.has-photo::after {
+  content:'✓'; position:absolute; top:4px; right:6px;
+  font-size:0.5rem; color:var(--red); font-family:var(--mono);
+}
+.upload-icon { font-size:1.4rem; margin-bottom:0.3rem; }
+.upload-text {
+  font-family:var(--mono); font-size:0.38rem;
+  color:var(--g-dim); letter-spacing:0.1em; text-align:center;
+}
+.upload-preview {
+  width:56px; height:56px;
+  object-fit:cover; display:block;
+  margin-bottom:0.3rem;
+}
+.upload-error {
+  font-family:var(--mono); font-size:0.4rem;
+  color:var(--red); letter-spacing:0.08em;
+  margin-top:0.5rem; display:none;
+}
+.upload-error.show { display:block; }
+
+</style>
+</head>
+<body>
+
+<!-- ─── CURSOR ───────────────────────────────────────────────── -->
+<div id="cursor">
+  <svg viewBox="0 0 16 16" fill="currentColor">
+    <rect x="0" y="0" width="16" height="16"/>
+  </svg>
+</div>
+
+<!-- ─── NAV ─────────────────────────────────────────────────── -->
+<nav>
+  <a href="/" class="nav-logo">
+    <div class="nav-sq"></div>
+    PIXEL
+  </a>
+  <div class="nav-links">
+    <a href="/#collections">Collections</a>
+    <a href="/#boutique">T-Shirts</a>
+    <a href="/#boutique">Pulls</a>
+    <a href="/#philosophie">ADN</a>
+  </div>
+  <div class="nav-right">
+    <a href="/" style="font-family:var(--sans);font-size:0.72rem;letter-spacing:0.12em;color:#888;text-decoration:none;margin-right:0.5rem;transition:color 0.2s;" onmouseover="this.style.color='#0A0A0A'" onmouseout="this.style.color='#888'">← RETOUR</a>
+    <a href="profil.html" class="login-btn active" title="Mon profil">
+      <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="6" y="1" width="6" height="1" fill="currentColor"/>
+        <rect x="5" y="2" width="8" height="1" fill="currentColor"/>
+        <rect x="5" y="3" width="8" height="3" fill="currentColor"/>
+        <rect x="5" y="6" width="8" height="1" fill="currentColor"/>
+        <rect x="6" y="7" width="6" height="1" fill="currentColor"/>
+        <rect x="3" y="9"  width="12" height="1" fill="currentColor"/>
+        <rect x="2" y="10" width="14" height="1" fill="currentColor"/>
+        <rect x="2" y="11" width="14" height="4" fill="currentColor"/>
+        <rect x="2" y="15" width="5"  height="1" fill="currentColor"/>
+        <rect x="11" y="15" width="5" height="1" fill="currentColor"/>
+        <rect x="2" y="16" width="4"  height="1" fill="currentColor"/>
+        <rect x="12" y="16" width="4" height="1" fill="currentColor"/>
+      </svg>
+    </a>
+    <button class="cart-btn" onclick="window.location='/'">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <rect x="1" y="4" width="12" height="9" stroke="white" stroke-width="1.2"/>
+        <path d="M4.5 4V3a2.5 2.5 0 015 0v1" stroke="white" stroke-width="1.2"/>
+      </svg>
+      Panier <span class="cart-count" id="cart-count">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ─── PROFILE ZONE ────────────────────────────────────────── -->
+<div class="profile-zone" id="profileZone">
+<div class="profile-inner">
+
+  <!-- PAGE HEADER -->
+  <div class="pg-header">
+    <div class="pg-title">// <span>PLAYER</span>_PROFILE</div>
+    <div class="pg-status">SESSION ACTIVE</div>
+  </div>
+
+  <!-- PLAYER CARD -->
+  <div class="player-card">
+    <div class="player-avatar">
+      <div class="avatar-frame" onclick="openAvatarModal()" id="mainAvatarFrame">
+        <div id="mainAvatarSvg"></div>
+        <div class="avatar-edit-overlay">
+          <span>✏</span>CHANGER
+        </div>
+      </div>
+      <div class="avatar-label" id="avatarLabel">SKIN_01</div>
+    </div>
+
+    <div class="player-info">
+      <div class="player-name-wrap">
+        <div class="player-name" id="playerName">PLAYER_01</div>
+        <button class="edit-pseudo-btn" onclick="editPseudo()">✏ EDIT</button>
+      </div>
+      <div class="player-rank-line">LVL <span id="playerLvl">01</span> — <span id="playerRankName">NEWBIE</span></div>
+
+      <div class="xp-label">
+        <span>EXPERIENCE</span>
+        <span class="xp-val"><span id="xpCur">0</span> / <span id="xpMax">100</span> XP</span>
+      </div>
+      <div class="xp-bar-track">
+        <div class="xp-bar-fill" id="xpBar" style="width:0%"></div>
+      </div>
+
+      <div class="player-meta">
+        <div class="meta-row"><span class="meta-key">RANG&nbsp;&nbsp;&nbsp;&nbsp;:</span><span class="meta-val highlight" id="playerRank">NEWBIE</span></div>
+        <div class="meta-row"><span class="meta-key">COMMANDES :</span><span class="meta-val" id="playerOrders">0</span></div>
+        <div class="meta-row"><span class="meta-key">MEMBRE&nbsp;&nbsp;:</span><span class="meta-val">2026</span></div>
+        <div class="meta-row"><span class="meta-key">NEXT LVL&nbsp;:</span><span class="meta-val" id="xpNext">+100 XP</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="section-hd">STATS <span class="count">06 VARIABLES</span></div>
+  <div class="stats-grid">
+    <div class="stat-cell">
+      <div class="stat-key">COMMANDES</div>
+      <div class="stat-val red" id="statOrders">0</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-key">POINTS XP</div>
+      <div class="stat-val cyan" id="statXP">0</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-key">PIECES ACHETEES</div>
+      <div class="stat-val" id="statItems">0</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-key">RANG ACTUEL</div>
+      <div class="stat-val violet" id="statRank">NEWBIE</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-key">ACHIEV. DEBLOQUEES</div>
+      <div class="stat-val" id="statAch">0/6</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-key">EASTER EGGS</div>
+      <div class="stat-val" id="statEgg">?</div>
+    </div>
+  </div>
+
+  <!-- ACHIEVEMENTS -->
+  <div class="section-hd">ACHIEVEMENTS <span class="count" id="achCount">0/6 UNLOCKED</span></div>
+  <div class="achievements" id="achievementsGrid">
+    <!-- populated by JS -->
+  </div>
+
+  <!-- QUEST LOG -->
+  <div class="section-hd">QUETES COMPLETEES <span class="count">HISTORIQUE</span></div>
+  <div class="quest-log">
+    <div class="quest-header">
+      <span>ID</span><span>ARTICLE</span><span>COLLECTION</span><span>PRIX</span><span>STATUT</span>
+    </div>
+    <div id="questList">
+      <div class="quest-empty">
+        <span>// AUCUNE QUETE ENREGISTREE</span>
+        <span class="prompt">&gt; Passe ta premiere commande pour debuter l'aventure _<span class="blink">|</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="section-hd">PARAMETRES <span class="count">ACCOUNT</span></div>
+  <div class="settings-grid">
+    <div class="setting-row">
+      <div>
+        <div class="setting-key">EMAIL</div>
+        <div class="setting-val" id="settingEmail">—</div>
+      </div>
+      <button onclick="editEmail()">MODIFIER</button>
+    </div>
+    <div class="setting-row">
+      <div>
+        <div class="setting-key">MOT DE PASSE</div>
+        <div class="setting-val">••••••••</div>
+      </div>
+      <button onclick="editPass()">MODIFIER</button>
+    </div>
+    <div class="setting-row">
+      <div>
+        <div class="setting-key">NOTIFICATIONS</div>
+        <div class="setting-val" id="settingNotif">DROPS + RESTOCKS</div>
+      </div>
+      <button onclick="editNotif()">GERER</button>
+    </div>
+    <div class="setting-row">
+      <div>
+        <div class="setting-key">SESSION</div>
+        <div class="setting-val">ACTIVE</div>
+      </div>
+      <button onclick="handleLogout()" style="color:#FF2D55;border-color:#FF2D55;">DECONNECTER</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="profile-footer">
+    <a href="/">← RETOUR A L'AVENTURE</a>
+    &nbsp;&nbsp;//&nbsp;&nbsp;
+    PIXEL © 2026
+    &nbsp;&nbsp;//&nbsp;&nbsp;
+    <a href="#">CONDITIONS</a>
+    &nbsp;·&nbsp;
+    <a href="#">CONFIDENTIALITE</a>
+  </div>
+
+</div>
+</div><!-- /profile-zone -->
+
+<!-- ─── AVATAR MODAL ────────────────────────────────────────── -->
+<div id="avatarModal">
+  <div class="avatar-modal-box">
+    <div class="avatar-modal-title">// CHOISIR <span>SKIN</span></div>
+    <div class="avatar-grid" id="avatarPickerGrid"></div>
+    <div class="upload-error" id="uploadError"></div>
+    <button class="avatar-modal-close" onclick="closeAvatarModal()">← ANNULER</button>
+  </div>
+</div>
+<input type="file" id="photoInput" accept="image/jpeg,image/png,image/webp"
+  style="display:none" onchange="handlePhotoUpload(this)">
+
+<script>
+/* ─── CURSOR ─────────────────────────────────────────────────── */
+const cur = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px';
+  cur.style.top  = e.clientY + 'px';
+});
+document.querySelectorAll('a,button,[onclick]').forEach(el => {
+  el.addEventListener('mouseenter', () => cur.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cur.classList.remove('hover'));
+});
+
+/* ─── AVATARS ────────────────────────────────────────────────── */
+const AVATARS = [
+  { label:'SKIN_01', hair:'#cccccc', shirt:'#0A0A0A', logo:'#FF2D55', skin:'#d4a574' },
+  { label:'ORIGIN',  hair:'#F4C542', shirt:'#FFFFFF', logo:'#0A0A0A', skin:'#d4a574' },
+  { label:'OVERRIDE',hair:'#FF2D55', shirt:'#7B2FBE', logo:'#FF2D55', skin:'#d4a574' },
+  { label:'GLITCH',  hair:'#00D4E8', shirt:'#1a1a1a', logo:'#00D4E8', skin:'#c8956c' },
+  { label:'DARK',    hair:'#0A0A0A', shirt:'#222',    logo:'#7B2FBE', skin:'#b07d50' },
+  { label:'LEGEND',  hair:'#FFD700', shirt:'#0A0A0A', logo:'#FFD700', skin:'#f0c080' },
+];
+
+function buildAvatarSVG(av, size) {
+  const s = size || 72;
+  const sh = av.shirt === '#FFFFFF' ? '#ddd' : av.shirt; // collar slightly different
+  return `<svg viewBox="0 0 32 32" width="${s}" height="${s}" shape-rendering="crispEdges">
+    <rect x="10" y="4" width="12" height="2" fill="${av.hair}"/>
+    <rect x="9"  y="6" width="14" height="1" fill="${av.hair}"/>
+    <rect x="9"  y="7" width="14" height="8" fill="${av.skin}"/>
+    <rect x="11" y="10" width="2" height="2" fill="#0A0A0A"/>
+    <rect x="19" y="10" width="2" height="2" fill="#0A0A0A"/>
+    <rect x="12" y="10" width="1" height="1" fill="#fff"/>
+    <rect x="20" y="10" width="1" height="1" fill="#fff"/>
+    <rect x="15" y="12" width="2" height="1" fill="${av.skin === '#d4a574' ? '#b8865a' : '#9a6b3a'}"/>
+    <rect x="12" y="14" width="8" height="1" fill="#8B4513"/>
+    <rect x="13" y="13" width="6" height="1" fill="${av.skin}"/>
+    <rect x="14" y="15" width="4" height="2" fill="${av.skin}"/>
+    <rect x="8"  y="17" width="16" height="10" fill="${av.shirt}"/>
+    <rect x="12" y="17" width="8"  height="2"  fill="${sh}"/>
+    <rect x="5"  y="17" width="4"  height="7"  fill="${av.shirt}"/>
+    <rect x="23" y="17" width="4"  height="7"  fill="${av.shirt}"/>
+    <rect x="5"  y="24" width="3"  height="4"  fill="${av.skin}"/>
+    <rect x="24" y="24" width="3"  height="4"  fill="${av.skin}"/>
+    <rect x="14" y="20" width="4" height="4" fill="${av.logo}"/>
+    <rect x="15" y="21" width="2" height="2" fill="${av.shirt}"/>
+  </svg>`;
+}
+
+let currentAvatarIdx = parseInt(localStorage.getItem('pixel_avatar') || '0');
+// -1 = custom photo
+let customPhoto = localStorage.getItem('pixel_custom_avatar') || null;
+if (customPhoto) currentAvatarIdx = -1;
+
+function renderMainAvatar() {
+  const wrap = document.getElementById('mainAvatarSvg');
+  const label = document.getElementById('avatarLabel');
+  if (currentAvatarIdx === -1 && customPhoto) {
+    wrap.innerHTML = `<img src="${customPhoto}" width="72" height="72"
+      style="object-fit:cover;display:block;image-rendering:auto;">`;
+    label.textContent = 'CUSTOM';
+  } else {
+    wrap.innerHTML = buildAvatarSVG(AVATARS[currentAvatarIdx] || AVATARS[0], 72);
+    label.textContent = (AVATARS[currentAvatarIdx] || AVATARS[0]).label;
+  }
+}
+renderMainAvatar();
+
+function openAvatarModal() {
+  const grid = document.getElementById('avatarPickerGrid');
+  grid.innerHTML = '';
+  document.getElementById('uploadError').classList.remove('show');
+
+  // carte upload en premier
+  const uploadCard = document.createElement('div');
+  const hasPhoto = !!customPhoto;
+  uploadCard.className = 'avatar-upload-card' + (hasPhoto ? ' has-photo' : '') +
+    (currentAvatarIdx === -1 ? ' selected' : '');
+  if (hasPhoto) {
+    uploadCard.innerHTML = `<img src="${customPhoto}" class="upload-preview">
+      <div class="upload-text">MA PHOTO<br>CHANGER</div>`;
+  } else {
+    uploadCard.innerHTML = `<div class="upload-icon">📁</div>
+      <div class="upload-text">IMPORTER<br>MA PHOTO</div>`;
+  }
+  uploadCard.addEventListener('click', () => document.getElementById('photoInput').click());
+  uploadCard.addEventListener('mouseenter', () => cur.classList.add('hover'));
+  uploadCard.addEventListener('mouseleave', () => cur.classList.remove('hover'));
+  grid.appendChild(uploadCard);
+
+  // skins pixel art
+  AVATARS.forEach((av, i) => {
+    const el = document.createElement('div');
+    el.className = 'avatar-option' + (i === currentAvatarIdx ? ' selected' : '');
+    el.innerHTML = buildAvatarSVG(av, 56) + `<div class="avatar-option-label">${av.label}</div>`;
+    el.addEventListener('click', () => selectAvatar(i));
+    el.addEventListener('mouseenter', () => cur.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cur.classList.remove('hover'));
+    grid.appendChild(el);
+  });
+  document.getElementById('avatarModal').classList.add('open');
+}
+
+function selectAvatar(idx) {
+  currentAvatarIdx = idx;
+  localStorage.setItem('pixel_avatar', idx);
+  renderMainAvatar();
+  closeAvatarModal();
+}
+
+function closeAvatarModal() {
+  document.getElementById('avatarModal').classList.remove('open');
+  document.getElementById('photoInput').value = '';
+}
+
+document.getElementById('avatarModal').addEventListener('click', function(e) {
+  if (e.target === this) closeAvatarModal();
+});
+
+/* ─── PHOTO UPLOAD ───────────────────────────────────────────── */
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+const MAX_BYTES     = 3 * 1024 * 1024; // 3 Mo
+const OUT_SIZE      = 100;             // px carre
+const OUT_QUALITY   = 0.75;
+
+function showUploadError(msg) {
+  const el = document.getElementById('uploadError');
+  el.textContent = '⚠ ' + msg;
+  el.classList.add('show');
+}
+
+function handlePhotoUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  // type
+  if (!ALLOWED_TYPES.includes(file.type)) {
+    showUploadError('FORMAT INVALIDE — JPG / PNG / WEBP UNIQUEMENT');
+    return;
+  }
+  // taille
+  if (file.size > MAX_BYTES) {
+    showUploadError('FICHIER TROP LOURD — MAX 3 Mo');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      // crop carre centre + resize 100x100
+      const canvas = document.createElement('canvas');
+      canvas.width  = OUT_SIZE;
+      canvas.height = OUT_SIZE;
+      const ctx = canvas.getContext('2d');
+
+      const side = Math.min(img.width, img.height);
+      const sx   = (img.width  - side) / 2;
+      const sy   = (img.height - side) / 2;
+      ctx.drawImage(img, sx, sy, side, side, 0, 0, OUT_SIZE, OUT_SIZE);
+
+      const dataURL = canvas.toDataURL('image/jpeg', OUT_QUALITY);
+
+      // verif taille finale (~50 Ko max)
+      const approxKB = Math.round(dataURL.length * 0.75 / 1024);
+      if (approxKB > 80) {
+        // recompresse a 0.5
+        const dataURL2 = canvas.toDataURL('image/jpeg', 0.5);
+        customPhoto = dataURL2;
+      } else {
+        customPhoto = dataURL;
+      }
+
+      try {
+        localStorage.setItem('pixel_custom_avatar', customPhoto);
+        localStorage.setItem('pixel_avatar', '-1');
+      } catch(err) {
+        showUploadError('STOCKAGE PLEIN — IMPOSSIBLE DE SAUVEGARDER');
+        return;
+      }
+      currentAvatarIdx = -1;
+      renderMainAvatar();
+      closeAvatarModal();
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ─── PSEUDO EDIT ────────────────────────────────────────────── */
+function editPseudo() {
+  const nameEl = document.getElementById('playerName');
+  const current = nameEl.textContent;
+  const input = document.createElement('input');
+  input.className = 'pseudo-input';
+  input.value = current;
+  input.maxLength = 16;
+  nameEl.replaceWith(input);
+  input.focus();
+  input.select();
+
+  function savePseudo() {
+    const val = input.value.trim().toUpperCase().replace(/[^A-Z0-9_\-]/g, '') || 'PLAYER_01';
+    const newEl = document.createElement('div');
+    newEl.className = 'player-name';
+    newEl.id = 'playerName';
+    newEl.textContent = val;
+    input.replaceWith(newEl);
+    localStorage.setItem('pixel_username', val);
+  }
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') savePseudo();
+    if (e.key === 'Escape') {
+      const newEl = document.createElement('div');
+      newEl.className = 'player-name';
+      newEl.id = 'playerName';
+      newEl.textContent = current;
+      input.replaceWith(newEl);
+    }
+  });
+  input.addEventListener('blur', savePseudo);
+}
+
+/* ─── SESSION GUARD ──────────────────────────────────────────── */
+(function() {
+  const s = localStorage.getItem('pixel_session') || sessionStorage.getItem('pixel_session');
+  if (!s) window.location.href = 'login.html?redirect=profil';
+})();
+
+/* ─── CART COUNT ─────────────────────────────────────────────── */
+function loadCart() {
+  try {
+    const cart = JSON.parse(localStorage.getItem('pixel_cart') || '[]');
+    const total = cart.reduce((s, i) => s + (i.qty || 1), 0);
+    document.getElementById('cart-count').textContent = total;
+    return cart;
+  } catch(e) { return []; }
+}
+loadCart();
+
+/* ─── GAME DATA ──────────────────────────────────────────────── */
+const RANKS = [
+  { lvl:1, name:'NEWBIE',       xpMin:0,    xpMax:100  },
+  { lvl:2, name:'PLAYER',       xpMin:100,  xpMax:300  },
+  { lvl:3, name:'VETERAN',      xpMin:300,  xpMax:600  },
+  { lvl:4, name:'ELITE',        xpMin:600,  xpMax:1000 },
+  { lvl:5, name:'LEGEND',       xpMin:1000, xpMax:1000 },
+];
+
+function getRank(xp) {
+  for (let i = RANKS.length - 1; i >= 0; i--) {
+    if (xp >= RANKS[i].xpMin) return RANKS[i];
+  }
+  return RANKS[0];
+}
+
+/* demo orders — in a real build, fetch from backend */
+const DEMO_ORDERS = JSON.parse(localStorage.getItem('pixel_orders') || '[]');
+
+/* XP = 10 pts per euro spent (demo) */
+const totalSpent = DEMO_ORDERS.reduce((s, o) => s + (o.price || 0), 0);
+const totalXP = totalSpent * 10;
+const rankData = getRank(totalXP);
+const nextRankData = RANKS.find(r => r.lvl === rankData.lvl + 1) || rankData;
+const xpInLevel = totalXP - rankData.xpMin;
+const xpSpan    = nextRankData.xpMin - rankData.xpMin || 1;
+const xpPct     = Math.min(100, Math.round((xpInLevel / xpSpan) * 100));
+
+/* load saved pseudo */
+const savedUsername = localStorage.getItem('pixel_username');
+if (savedUsername) document.getElementById('playerName').textContent = savedUsername;
+
+/* populate player card */
+document.getElementById('playerLvl').textContent       = String(rankData.lvl).padStart(2,'0');
+document.getElementById('playerRankName').textContent  = rankData.name;
+document.getElementById('playerRank').textContent      = rankData.name;
+document.getElementById('playerOrders').textContent    = DEMO_ORDERS.length;
+document.getElementById('xpCur').textContent           = totalXP;
+document.getElementById('xpMax').textContent           = nextRankData.xpMin || totalXP;
+document.getElementById('xpNext').textContent          = rankData.lvl < 5
+  ? `+${nextRankData.xpMin - totalXP} XP`
+  : 'MAX LEVEL';
+
+/* animate XP bar */
+setTimeout(() => {
+  document.getElementById('xpBar').style.width = xpPct + '%';
+}, 400);
+
+/* populate stats */
+document.getElementById('statOrders').textContent = DEMO_ORDERS.length;
+document.getElementById('statXP').textContent     = totalXP;
+document.getElementById('statItems').textContent  = DEMO_ORDERS.reduce((s,o)=>s+(o.qty||1),0);
+document.getElementById('statRank').textContent   = rankData.name;
+
+/* easter eggs stat */
+const gotCheat  = !!sessionStorage.getItem('pixel_cheatcode');
+const gotSecret = !!sessionStorage.getItem('pixel_open_secret');
+const eggsFound = (gotCheat ? 1 : 0) + (gotSecret ? 1 : 0);
+document.getElementById('statEgg').textContent = eggsFound + '/2';
+
+/* ─── ACHIEVEMENTS ───────────────────────────────────────────── */
+const hasOrders     = DEMO_ORDERS.length > 0;
+const hasOverride   = DEMO_ORDERS.some(o => o.collection === 'OVERRIDE');
+const hasGlitch     = !!sessionStorage.getItem('pixel_game_win');
+
+const ACHIEVEMENTS = [
+  {
+    id:'first_blood',
+    icon:'🎮',
+    name:'FIRST BLOOD',
+    desc:'Premiere commande passee',
+    unlocked: hasOrders,
+  },
+  {
+    id:'vault',
+    icon:'🔒',
+    name:'VAULT LOCKED',
+    desc:'Paiement securise effectue',
+    unlocked: hasOrders,
+  },
+  {
+    id:'cheatcode',
+    icon:'⚡',
+    name:'CHEAT CODE',
+    desc:'Code Konami debloque',
+    unlocked: gotCheat,
+  },
+  {
+    id:'secret',
+    icon:'🕵️',
+    name:'WINK CULTURE',
+    desc:'Page secrete decouverte',
+    unlocked: gotSecret,
+  },
+  {
+    id:'override',
+    icon:'💜',
+    name:'OVERRIDE HUNTER',
+    desc:'Piece OVERRIDE acquise',
+    unlocked: hasOverride,
+  },
+  {
+    id:'glitch',
+    icon:'👾',
+    name:'GLITCH MASTER',
+    desc:'Mini-jeu OVERRIDE complete',
+    unlocked: hasGlitch,
+  },
+];
+
+const unlockedCount = ACHIEVEMENTS.filter(a => a.unlocked).length;
+document.getElementById('achCount').textContent = unlockedCount + '/6 UNLOCKED';
+document.getElementById('statAch').textContent  = unlockedCount + '/6';
+
+const grid = document.getElementById('achievementsGrid');
+ACHIEVEMENTS.forEach(a => {
+  const el = document.createElement('div');
+  el.className = 'ach-card ' + (a.unlocked ? 'unlocked' : 'locked');
+  el.innerHTML = `
+    <span class="ach-icon">${a.icon}</span>
+    <div class="ach-name">${a.name}</div>
+    <div class="ach-desc">${a.desc}</div>
+    <div class="ach-badge">${a.unlocked ? 'UNLOCKED' : 'LOCKED'}</div>
+  `;
+  grid.appendChild(el);
+  el.addEventListener('mouseenter', () => cur.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cur.classList.remove('hover'));
+});
+
+/* ─── QUEST LOG ──────────────────────────────────────────────── */
+if (DEMO_ORDERS.length > 0) {
+  const ql = document.getElementById('questList');
+  ql.innerHTML = '';
+  DEMO_ORDERS.forEach((o, i) => {
+    const row = document.createElement('div');
+    row.className = 'quest-row';
+    const statusCls = o.status === 'LIVRE' ? 'done' : 'progress';
+    const statusTxt = o.status === 'LIVRE' ? '&#10003; LIVRE' : '&#9654; EN COURS';
+    row.innerHTML = `
+      <span class="quest-id">CMD_${String(i+1).padStart(3,'0')}</span>
+      <span class="quest-name">${o.name}</span>
+      <span class="quest-coll">${o.collection || '—'}</span>
+      <span class="quest-price">${o.price}€</span>
+      <span class="quest-status ${statusCls}">${statusTxt}</span>
+    `;
+    ql.appendChild(row);
+  });
+}
+
+/* ─── SETTINGS ───────────────────────────────────────────────── */
+const savedEmail = localStorage.getItem('pixel_email') || '—';
+document.getElementById('settingEmail').textContent = savedEmail;
+
+function editEmail() {
+  const e = prompt('Nouvel email :');
+  if (e && e.includes('@')) {
+    localStorage.setItem('pixel_email', e);
+    document.getElementById('settingEmail').textContent = e;
+  }
+}
+function editPass() {
+  alert('Un email de reinitialisation vous sera envoye.\n[FEATURE EN COURS]');
+}
+function editNotif() {
+  const pref = confirm('Recevoir les alertes DROP et RESTOCK ?\n[OK = OUI  /  ANNULER = NON]');
+  document.getElementById('settingNotif').textContent = pref ? 'DROPS + RESTOCKS' : 'DESACTIVES';
+  localStorage.setItem('pixel_notif', pref ? '1' : '0');
+}
+function handleLogout() {
+  if (confirm('Deconnecter cette session ?')) {
+    sessionStorage.clear();
+    window.location.href = '/';
+  }
+}
+</script>
+
+</body>
+</html>
