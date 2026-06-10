@@ -278,7 +278,7 @@ nav {
 
 /* ─── CART DRAWER ───────────────────────────────────────────── */
 #cart-drawer {
-  position: fixed; top:0; right:0; bottom:0; z-index:800;
+  position: fixed; top:0; right:0; bottom:0; z-index:9995;
   width: 400px; max-width:100vw;
   background: var(--white);
   border-left: 1px solid var(--border);
@@ -344,7 +344,7 @@ nav {
 }
 .btn-checkout:hover { background:var(--red); }
 .cart-overlay {
-  position:fixed; inset:0; z-index:799;
+  position:fixed; inset:0; z-index:9994;
   background:rgba(0,0,0,0.3);
   opacity:0; pointer-events:none;
   transition: opacity 0.35s;
@@ -1577,19 +1577,19 @@ async function handleCheckout() {
       price: i.price,
       quantity: i.qty,
     }));
-    const res = await fetch('/.netlify/functions/create-checkout', {
+    const res = await fetch('/api/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items }),
+      body: JSON.stringify({ items: cart, origin: window.location.href }),
     });
     const data = await res.json();
     if (data.url) {
       window.location.href = data.url;
     } else {
-      throw new Error(data.error || 'Erreur inconnue');
+      throw new Error(data.error || 'Stripe indisponible');
     }
   } catch (err) {
-    showToast('Erreur paiement : ' + err.message);
+    showToast('// ERREUR : ' + err.message);
     btn.textContent = 'Passer commande →';
     btn.disabled = false;
   }
