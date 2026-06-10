@@ -139,7 +139,7 @@ button { cursor:none; border:none; background:none; font-family:var(--sans); }
   color: #0A0A0A;
 }
 #cursor svg { width:16px; height:16px; }
-#cursor.hover { transform: translate(-50%, -50%) scale(1.5); }
+#cursor.hover { transform: translate(-50%, -50%); color: var(--red); }
 body.secret-open #cursor { color: #f5f5f5; }
 
 /* ─── LOADING SCREEN ────────────────────────────────────────── */
@@ -442,14 +442,20 @@ nav {
 
 /* ─── HERO BOTTOM STRIP ─────────────────────────────────────── */
 .hero-strip {
-  display:flex; overflow:hidden;
+  overflow:hidden;
   border-top:1px solid var(--border);
-  height:48px; align-items:center;
+  height:48px; display:flex; align-items:center;
+}
+.hero-strip-track {
+  display:flex;
+  width:max-content;
+  animation: marquee 25s linear infinite;
 }
 .hero-strip-inner {
   display:flex; gap:3rem;
   white-space:nowrap;
-  animation: marquee 20s linear infinite;
+  flex-shrink:0;
+  padding-right:3rem;
 }
 @keyframes marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
 .hero-strip span {
@@ -476,11 +482,12 @@ nav {
 #collections { padding:5rem 2.5rem; border-top:1px solid var(--border); }
 .collections-grid {
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  grid-template-columns:repeat(3,1fr);
   gap:1px;
   background:var(--border);
   border:1px solid var(--border);
   margin-top:0;
+  overflow:hidden;
 }
 .coll-card {
   background:var(--white);
@@ -488,6 +495,8 @@ nav {
   position:relative; overflow:hidden;
   transition:background 0.25s;
   cursor:none;
+  height:100%;
+  box-sizing:border-box;
 }
 .coll-card:hover { background:var(--black); }
 .coll-card:hover .coll-name,
@@ -508,6 +517,8 @@ nav {
 .coll-card:hover .coll-sq { background:var(--red); }
 .coll-sq--glitch { background:var(--black) !important; }
 .coll-card:hover .coll-sq--glitch { background:var(--violet) !important; }
+.coll-sq--glitch3 { background:var(--black) !important; }
+.coll-card:hover .coll-sq--glitch3 { background:var(--red) !important; }
 .coll-label {
   font-family:var(--mono); font-size:0.65rem;
   text-transform:uppercase; letter-spacing:0.15em;
@@ -1017,9 +1028,9 @@ footer {
   <div class="loader-screen">
     <div class="loader-line delay1">PIXEL OS v1.0 — BOOT SEQUENCE INIT...</div>
     <div class="loader-line green delay2">✓ PALETTE LOADED — 5 COLORS OK</div>
-    <div class="loader-line green delay3">✓ COLLECTIONS — ORIGIN · GLITCH</div>
+    <div class="loader-line green delay3">✓ COLLECTIONS — ORIGIN · OVERRIDE · GLITCH</div>
     <div class="loader-line delay4">⌛ LOADING PIXEL ART ENGINE...</div>
-    <div class="loader-line green delay5">✓ EASTER EGGS ARMED — [↑↑↓↓←→←→BA]</div>
+    <div class="loader-line green delay5">✓ EASTER EGGS ARMED — [↑↑↓↓←→←→PIXEL]</div>
     <div class="loader-line red-t delay6">▶ SYSTEM READY</div>
     <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
     <div class="loader-logo">PIXEL</div>
@@ -1070,7 +1081,7 @@ footer {
   </div>
   <div class="nav-right">
     <!-- Login pixel art icon -->
-    <button class="login-btn" title="Mon compte">
+    <a href="profil.html" class="login-btn" title="Mon profil">
       <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
         <!-- Tête pixel -->
         <rect x="6" y="1" width="6" height="1" fill="var(--black)"/>
@@ -1087,7 +1098,7 @@ footer {
         <rect x="2" y="16" width="4"  height="1" fill="var(--black)"/>
         <rect x="12" y="16" width="4" height="1" fill="var(--black)"/>
       </svg>
-    </button>
+    </a>
     <button class="cart-btn" onclick="toggleCart()">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
         <rect x="1" y="4" width="12" height="9" stroke="white" stroke-width="1.2"/>
@@ -1107,26 +1118,48 @@ footer {
         <div class="hero-logo-mark" role="img" aria-label="Logo PIXEL — carré noir"></div>
         <h1 class="hero-title" aria-label="PIXEL — marque streetwear gaming pixel art">PIXEL</h1>
       </div>
-      <p class="hero-tagline">No noise. For those who understand.</p>
+      <p class="hero-tagline">The Hidden Tribute.</p>
       <p class="sr-only">Streetwear gaming et pixel art fabriqué au Portugal. Designs discrets pour initiés — t-shirts, pulls et drops limités.</p>
     </div>
   </div>
   <div class="hero-strip">
-    <div class="hero-strip-inner">
-      <span class="red">▓</span><span>ORIGIN</span>
-      <span class="red">▓</span><span>RGB</span>
-      <span class="red">▓</span><span>GLITCH</span>
-      <span class="red">▓</span><span>MADE IN FRANCE</span>
-      <span class="red">▓</span><span>WINK CULTURE</span>
-      <span class="red">▓</span><span>8-BIT STYLE</span>
-      <span class="red">▓</span><span>100% REAL</span>
-      <span class="red">▓</span><span>ORIGIN</span>
-      <span class="red">▓</span><span>RGB</span>
-      <span class="red">▓</span><span>GLITCH</span>
-      <span class="red">▓</span><span>MADE IN FRANCE</span>
-      <span class="red">▓</span><span>WINK CULTURE</span>
-      <span class="red">▓</span><span>8-BIT STYLE</span>
-      <span class="red">▓</span><span>100% REAL</span>
+    <div class="hero-strip-track">
+      <div class="hero-strip-inner">
+        <span class="red">▓</span><span>8-BIT STYLE</span>
+        <span class="red">▓</span><span>100% REAL</span>
+        <span class="red">▓</span><span>ORIGIN</span>
+        <span class="red">▓</span><span>RGB</span>
+        <span class="red">▓</span><span>OVERRIDE</span>
+        <span class="red">▓</span><span>MADE IN FRANCE</span>
+        <span class="red">▓</span><span>WINK CULTURE</span>
+      </div>
+      <div class="hero-strip-inner" aria-hidden="true">
+        <span class="red">▓</span><span>8-BIT STYLE</span>
+        <span class="red">▓</span><span>100% REAL</span>
+        <span class="red">▓</span><span>ORIGIN</span>
+        <span class="red">▓</span><span>RGB</span>
+        <span class="red">▓</span><span>OVERRIDE</span>
+        <span class="red">▓</span><span>MADE IN FRANCE</span>
+        <span class="red">▓</span><span>WINK CULTURE</span>
+      </div>
+      <div class="hero-strip-inner" aria-hidden="true">
+        <span class="red">▓</span><span>8-BIT STYLE</span>
+        <span class="red">▓</span><span>100% REAL</span>
+        <span class="red">▓</span><span>ORIGIN</span>
+        <span class="red">▓</span><span>RGB</span>
+        <span class="red">▓</span><span>OVERRIDE</span>
+        <span class="red">▓</span><span>MADE IN FRANCE</span>
+        <span class="red">▓</span><span>WINK CULTURE</span>
+      </div>
+      <div class="hero-strip-inner" aria-hidden="true">
+        <span class="red">▓</span><span>8-BIT STYLE</span>
+        <span class="red">▓</span><span>100% REAL</span>
+        <span class="red">▓</span><span>ORIGIN</span>
+        <span class="red">▓</span><span>RGB</span>
+        <span class="red">▓</span><span>OVERRIDE</span>
+        <span class="red">▓</span><span>MADE IN FRANCE</span>
+        <span class="red">▓</span><span>WINK CULTURE</span>
+      </div>
     </div>
   </div>
 </section>
@@ -1151,7 +1184,7 @@ footer {
         <div class="coll-sq"></div>
         <div class="coll-label">Le fondamental</div>
         <div class="coll-name">ORIGIN</div>
-        <p class="coll-desc">Noir et blanc. Épuré. Intemporel. Des designs haute densité pour ceux qui savent regarder.</p>
+        <p class="coll-desc">L'épure. Intemporel. Le gaming qui se devine — des designs haute densité pour ceux qui savent regarder.</p>
         <span class="coll-tag">T-shirts · Pulls · Pantalons</span>
       </div>
 
@@ -1159,12 +1192,21 @@ footer {
       <div class="coll-card">
         <div class="coll-num">02</div>
         <div class="coll-sq coll-sq--glitch"></div>
-        <div class="coll-label">L'anomalie · Drop limité</div>
-        <div class="coll-name">GLITCH</div>
-        <p class="coll-desc">L'erreur comme esthétique. Pièces ultra-limitées, collector. La face underground de PIXEL.</p>
-        <span class="coll-tag">Édition limitée · Collector</span>
+        <div class="coll-label">La corruption · Pièce unique</div>
+        <div class="coll-name">OVERRIDE</div>
+        <p class="coll-desc">Chaque pièce porte une corruption unique — jamais deux fois le même rendu.</p>
+        <span class="coll-tag">Édition unique · Numérotée</span>
       </div>
       </a>
+
+      <div class="coll-card">
+        <div class="coll-num">03</div>
+        <div class="coll-sq coll-sq--glitch3"></div>
+        <div class="coll-label">L'anomalie · Underground</div>
+        <div class="coll-name">GLITCH</div>
+        <p class="coll-desc">L'erreur comme esthétique. Drops ultra-limités, collector. La face underground de PIXEL.</p>
+        <span class="coll-tag">Drops limités · Collector</span>
+      </div>
 
     </div>
   </div>
@@ -1241,6 +1283,64 @@ footer {
 </section>
 
 <!-- ─── NEWSLETTER ─────────────────────────────────────────── -->
+<section id="reassurance" style="padding:3rem 2.5rem;border-top:1px solid var(--border);">
+  <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center;">
+
+    <div>
+      <svg viewBox="0 0 80 70" width="64" height="56" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:0.8rem;">
+        <rect x="10" y="10" width="42" height="28" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
+        <rect x="10" y="17" width="42" height="8" fill="currentColor"/>
+        <rect x="16" y="30" width="12" height="3" rx="1" fill="currentColor"/>
+        <rect x="42" y="24" width="16" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M45 24 v-4 a5 5 0 0 1 10 0 v4" fill="none" stroke="currentColor" stroke-width="2"/>
+        <circle cx="50" cy="30" r="2" fill="currentColor"/>
+        <line x1="50" y1="32" x2="50" y2="34" stroke="currentColor" stroke-width="1.5"/>
+      </svg>
+      <div style="font-family:'Space Mono',monospace;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;margin-bottom:0.3rem;">🔒 VAULT LOCKED</div>
+      <div style="font-size:0.75rem;color:var(--gray);">Paiement 100% sécurisé</div>
+    </div>
+
+    <div>
+      <svg viewBox="0 0 80 70" width="64" height="56" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:0.8rem;">
+        <rect x="12" y="18" width="32" height="22" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M44 24 l12 0 l8 10 l0 8 l-20 0 z" fill="none" stroke="currentColor" stroke-width="2"/>
+        <circle cx="24" cy="42" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+        <circle cx="54" cy="42" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+        <line x1="6" y1="26" x2="0" y2="26" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <line x1="6" y1="32" x2="-2" y2="32" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <rect x="18" y="22" width="14" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      </svg>
+      <div style="font-family:'Space Mono',monospace;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;margin-bottom:0.3rem;">📦 TRACKED QUEST</div>
+      <div style="font-size:0.75rem;color:var(--gray);">Livraison suivie Portugal → France</div>
+    </div>
+
+    <div>
+      <svg viewBox="0 0 80 70" width="64" height="56" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:0.8rem;">
+        <path d="M28 30 a18 18 0 0 0 28 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+        <polygon points="28,30 20,40 36,40" fill="currentColor"/>
+        <circle cx="58" cy="22" r="11" fill="none" stroke="currentColor" stroke-width="2"/>
+        <polyline points="52,22 57,27 65,15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div style="font-family:'Space Mono',monospace;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;margin-bottom:0.3rem;">↩️ RAGEQUIT ACCEPTED</div>
+      <div style="font-size:0.75rem;color:var(--gray);">Retours acceptés sous 14 jours</div>
+    </div>
+
+    <div>
+      <svg viewBox="0 0 80 70" width="64" height="56" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:0.8rem;">
+        <circle cx="40" cy="24" r="12" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M26 24 a14 14 0 0 1 28 0" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <rect x="18" y="22" width="6" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+        <rect x="56" y="22" width="6" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+        <line x1="40" y1="36" x2="40" y2="46" stroke="currentColor" stroke-width="2"/>
+        <line x1="34" y1="46" x2="46" y2="46" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <div style="font-family:'Space Mono',monospace;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;margin-bottom:0.3rem;">🎮 HELP RESPAWN</div>
+      <div style="font-size:0.75rem;color:var(--gray);">Service client disponible</div>
+    </div>
+
+  </div>
+</section>
+
 <section id="newsletter">
   <p class="section-label">// 04</p>
   <h2>Accès anticipé aux drops gaming &amp; pixel art</h2>
@@ -1257,7 +1357,7 @@ footer {
 
 <!-- ─── SEO TEXT BLOCK (indexable, invisible visuellement) ────── -->
 <div class="sr-only" aria-hidden="true">
-  <p>PIXEL est une marque française de streetwear gaming et pixel art. Nos t-shirts, pulls et pièces en édition limitée sont fabriqués au Portugal avec des matières premium. Chaque design pixel art est placé discrètement : sous le col, sous la manche ou à l'ourlet — visible uniquement pour les initiés. Collections disponibles : ORIGIN (noir et blanc), RGB (couleurs arcade), GLITCH (drops collector) et COLLAB (artistes pixel art invités). Retro gaming, wink culture, gaming streetwear — PIXEL est la marque pour ceux qui savent regarder.</p>
+  <p>PIXEL est une marque française de streetwear gaming et pixel art. Nos t-shirts, pulls et pièces en édition limitée sont fabriqués au Portugal avec des matières premium. Chaque design pixel art est placé discrètement : sous le col, sous la manche ou à l'ourlet — visible uniquement pour les initiés. Collections disponibles : ORIGIN (noir et blanc), RGB (couleurs arcade), OVERRIDE (drops collector) et COLLAB (artistes pixel art invités). Retro gaming, wink culture, gaming streetwear — PIXEL est la marque pour ceux qui savent regarder.</p>
 </div>
 
 <!-- ─── PAGE SECRÈTE KONAMI ────────────────────────────────── -->
@@ -1307,7 +1407,7 @@ footer {
           <button class="s-tab" onclick="switchShowcase(this,'front')">FACE</button>
           <button class="s-tab" onclick="switchShowcase(this,'back')">DOS</button>
         </div>
-        <a class="showcase-view" href="products/tshirt-cheatcode.html">
+        <a class="showcase-view" href="products/tshirt-cheatcode.html?secret=1">
           <img id="showcaseImg" src="products/photos/cheatcode-lifestyle.png" alt="T-Shirt CHEAT CODE">
         </a>
         <div class="showcase-meta">
@@ -1321,7 +1421,7 @@ footer {
           <div class="sz" onclick="selectSecretSize(this)">XL</div>
         </div>
         <button class="showcase-btn" onclick="addSecretToCart()">AJOUTER AU PANIER →</button>
-        <a href="products/tshirt-cheatcode.html" class="showcase-fiche-btn">Voir la fiche produit →</a>
+        <a href="products/tshirt-cheatcode.html?secret=1" class="showcase-fiche-btn">Voir la fiche produit →</a>
       </div>
 
       <!-- Waitlist -->
@@ -1361,7 +1461,17 @@ document.addEventListener('mouseover', e => {
   }
 });
 
-// ── CHEATCODE UNLOCK (via jeu GLITCH) ──────────────────────
+// ── CHEATCODE UNLOCK (via jeu OVERRIDE) ──────────────────────
+// ── RETOUR DEPUIS PAGE SECRÈTE ────────────────────────────
+if (sessionStorage.getItem('pixel_open_secret')) {
+  sessionStorage.removeItem('pixel_open_secret');
+  sessionStorage.setItem('pixel_booted', '1');
+  const loader = document.getElementById('loader');
+  if (loader) loader.remove();
+  document.getElementById('konami-overlay').classList.add('show');
+  document.body.classList.add('secret-open');
+}
+
 if (sessionStorage.getItem('pixel_cheatcode')) {
   sessionStorage.removeItem('pixel_cheatcode');
   sessionStorage.setItem('pixel_booted', '1'); // skip loader
@@ -1374,23 +1484,32 @@ if (sessionStorage.getItem('pixel_cheatcode')) {
 }
 
 // ── LOADER ─────────────────────────────────────────────────
-window.addEventListener('load', () => {
+function dismissLoader() {
   const loader = document.getElementById('loader');
+  if (!loader) return;
+  loader.classList.add('hide');
+  setTimeout(() => { if (loader.parentNode) loader.remove(); }, 700);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const loader = document.getElementById('loader');
+  if (!loader) return;
   if (sessionStorage.getItem('pixel_booted')) {
-    // Déjà vu cette session — on supprime le loader instantanément
+    // Déjà vu cette session — supprime le loader instantanément
     loader.remove();
   } else {
-    // Première visite de la session — on affiche et on marque
+    // Première visite — animation complète puis disparition
     sessionStorage.setItem('pixel_booted', '1');
-    setTimeout(() => {
-      loader.classList.add('hide');
-      setTimeout(() => loader.remove(), 700);
-    }, 4000);
+    setTimeout(dismissLoader, 4000);
   }
+  // Filet de sécurité : si loader encore là après 6s, on force la suppression
+  setTimeout(() => { if (document.getElementById('loader')) dismissLoader(); }, 6000);
 });
 
 // ── CART ───────────────────────────────────────────────────
-let cart = [];
+let cart = JSON.parse(localStorage.getItem('pixel_cart') || '[]');
+
+function saveCart() { localStorage.setItem('pixel_cart', JSON.stringify(cart)); }
 
 function toggleCart() {
   document.getElementById('cart-drawer').classList.toggle('open');
@@ -1404,6 +1523,7 @@ function addToCart(id, name, price, collection, emoji, selectedSize) {
   } else {
     cart.push({ id, name, price, collection, emoji, size: selectedSize, qty: 1 });
   }
+  saveCart();
   updateCart();
   showToast(`${name} (${selectedSize}) ajouté`);
   toggleCart();
@@ -1411,6 +1531,7 @@ function addToCart(id, name, price, collection, emoji, selectedSize) {
 
 function removeFromCart(id, size) {
   cart = cart.filter(i => !(i.id === id && i.size === size));
+  saveCart();
   updateCart();
 }
 
@@ -1516,7 +1637,7 @@ const products = [
     sizes:['XS','S','M','L','XL']
   },
   {
-    id:'p5', name:'T-Shirt GLITCH Anomalie', collection:'GLITCH',
+    id:'p5', name:'T-Shirt OVERRIDE Anomalie', collection:'OVERRIDE',
     price:35, badge:'ltd', badgeLabel:'23 restants',
     url:'products/tshirt-glitch.html',
     svg:`<svg width="60" height="68" viewBox="0 0 130 150" fill="none" style="image-rendering:pixelated;"><polygon points="38,18 24,12 8,24 16,30 14,130 116,130 114,30 122,24 106,12 92,18" fill="#0d0d0d" stroke="rgba(123,47,190,.4)" stroke-width="1"/><rect x="52" y="32" width="26" height="2" fill="#7B2FBE" opacity=".9"/><rect x="55" y="34" width="18" height="2" fill="#FF2D55" opacity=".8"/><rect x="50" y="36" width="30" height="2" fill="#7B2FBE" opacity=".9"/><rect x="52" y="38" width="12" height="2" fill="#FF2D55" opacity=".7"/><rect x="66" y="38" width="14" height="2" fill="#7B2FBE" opacity=".9"/></svg>`,
@@ -1535,7 +1656,7 @@ const products = [
 
 function renderProducts() {
   const grid = document.getElementById('products-grid');
-  const visible = products.filter(p => p.collection === 'ORIGIN' || p.collection === 'GLITCH');
+  const visible = products.filter(p => p.collection === 'ORIGIN' || p.collection === 'OVERRIDE');
   grid.innerHTML = visible.map(p => `
     <div class="product-card">
       <a href="${p.url}" style="display:block;text-decoration:none;color:inherit;">
@@ -1584,6 +1705,7 @@ function handleAdd(id) {
 }
 
 renderProducts();
+updateCart();
 
 // ── BEST SELLERS ─────────────────────────────────────────────
 // t-shirt flottant centré dans un cadre light-gray — style photo produit
@@ -1642,4 +1764,90 @@ const bestSellers = [
       <rect x="84" y="210" width="11" height="11" fill="#FFFFFF"/>
     </svg>` },
   { name:'T-Shirt RGB Edition', collection:'RGB EDITION', price:38, badge:'new-drop', badgeLabel:'NEW',
-    svg: makeTshirtSVG('#E6FEFF','#0A0A0A','#00
+    svg: makeTshirtSVG('#E6FEFF','#0A0A0A','#00D4E8',bsPixelRgb) },
+  { name:'T-Shirt RGB Dark', collection:'RGB EDITION', price:38, badge:'bestseller', badgeLabel:'BESTSELLER',
+    svg: makeTshirtSVG('#0a0a14','#E6FEFF','#FF2D55',bsPixelRgb) },
+  { name:'T-Shirt OVERRIDE Violet', collection:'OVERRIDE', price:38, badge:'limited', badgeLabel:'LIMITED',
+    svg: makeTshirtSVG('#F8EDFF','#0A0A0A','#7B2FBE',bsPixelGlitch) },
+  { name:'T-Shirt OVERRIDE Dark', collection:'OVERRIDE', price:38, badge:'new-drop', badgeLabel:'NEW',
+    svg: makeTshirtSVG('#110016','#F8EDFF','#7B2FBE',bsPixelGlitch) },
+  { name:'Casquette PIXEL Origin', collection:'ORIGIN', price:28, badge:'new-drop', badgeLabel:'NEW',
+    svg: makeTshirtSVG('#F0F0F0','#1a1a1a','#FF2D55',bsPixelCap) }
+];
+
+function renderBestSellers() {
+  const grid = document.getElementById('bs-grid');
+  if (!grid) return;
+  grid.innerHTML = bestSellers.map(p => `
+    <div class="bs-card">
+      <div class="bs-card-img">
+        ${p.badge ? `<span class="bs-badge ${p.badge}">${p.badgeLabel}</span>` : ''}
+        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#f5f5f5;">
+          ${p.svg}
+        </div>
+      </div>
+      <div class="bs-card-coll">${p.collection}</div>
+      <div class="bs-card-name">${p.name}</div>
+      <div class="bs-card-price">${p.price} €</div>
+    </div>
+  `).join('');
+}
+
+renderBestSellers();
+
+// ── KONAMI CODE ─────────────────────────────────────────────
+const konamiSeq = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','p','i','x','e','l'];
+let konamiPos = 0;
+
+document.addEventListener('keydown', e => {
+  const key = e.key.toLowerCase() === konamiSeq[konamiPos].toLowerCase() || e.key === konamiSeq[konamiPos];
+  if (key) {
+    konamiPos++;
+    if (konamiPos === konamiSeq.length) {
+      konamiPos = 0;
+      document.getElementById('konami-overlay').classList.add('show');
+      document.body.classList.add('secret-open');
+    }
+  } else {
+    konamiPos = 0;
+    if (e.key === konamiSeq[0]) konamiPos = 1;
+  }
+});
+
+// ── SECRET PAGE FUNCTIONS ───────────────────────────────────
+function closeKonami() {
+  document.getElementById('konami-overlay').classList.remove('show');
+  document.body.classList.remove('secret-open');
+}
+
+function switchShowcase(btn, view) {
+  document.querySelectorAll('.s-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const img = document.getElementById('showcaseImg');
+  const map = {
+    lifestyle: 'products/photos/cheatcode-lifestyle.png',
+    front: 'products/photos/cheatcode-front.png',
+    back: 'products/photos/cheatcode-back.png'
+  };
+  img.style.opacity = '0';
+  setTimeout(() => {
+    img.src = map[view] || map.lifestyle;
+    img.style.opacity = '1';
+  }, 150);
+}
+
+function selectSecretSize(el) {
+  document.querySelectorAll('#secret-sizes .sz').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function addSecretToCart() {
+  const active = document.querySelector('#secret-sizes .sz.active');
+  const size = active ? active.textContent : 'M';
+  addToCart('secret-cheatcode', 'T-Shirt CHEAT CODE', 35, 'CHEAT CODE',
+    `<img src="products/photos/cheatcode-front.png" style="width:100%;height:100%;object-fit:cover;" alt="T-Shirt CHEAT CODE">`, size);
+}
+
+</script>
+</body>
+</html>
