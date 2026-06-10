@@ -98,7 +98,7 @@ body::before {
 
 /* ─── STATUS LINE ──────────────────────────────────────────── */
 .status {
-  font-size: 0.5rem;
+  font-size: 0.75rem;
   color: var(--gray);
   letter-spacing: 0.25em;
   text-transform: uppercase;
@@ -106,7 +106,7 @@ body::before {
 }
 .status .dot {
   display: inline-block;
-  width: 5px; height: 5px;
+  width: 6px; height: 6px;
   background: var(--red);
   border-radius: 50%;
   margin-right: 0.5rem;
@@ -118,43 +118,10 @@ body::before {
   50%       { opacity: 0.3; transform: scale(0.6); }
 }
 
-/* ─── LOADING BAR ──────────────────────────────────────────── */
-.load-wrap {
-  margin-bottom: 0.6rem;
-}
-.load-track {
-  height: 4px;
-  background: var(--dim);
-  position: relative;
-  overflow: hidden;
-}
-.load-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--red), #FF6B8A);
-  width: 0%;
-  animation: loadProgress 12s cubic-bezier(0.4,0,0.2,1) forwards;
-}
-@keyframes loadProgress {
-  0%   { width: 0%; }
-  15%  { width: 23%; }
-  30%  { width: 41%; }
-  50%  { width: 58%; }
-  70%  { width: 74%; }
-  88%  { width: 89%; }
-  100% { width: 89%; } /* volontairement bloqué à 89% */
-}
-.load-pct {
-  font-size: 0.42rem;
-  color: var(--gray);
-  letter-spacing: 0.2em;
-  margin-top: 0.5rem;
-  text-align: right;
-}
-
 /* ─── TAGLINE ──────────────────────────────────────────────── */
 .tagline {
-  font-size: 0.55rem;
-  color: #555;
+  font-size: 0.85rem;
+  color: #666;
   letter-spacing: 0.2em;
   margin: 2rem 0 2.5rem;
   font-style: italic;
@@ -162,10 +129,10 @@ body::before {
 
 /* ─── WAITLIST FORM ────────────────────────────────────────── */
 .form-label {
-  font-size: 0.45rem;
+  font-size: 0.7rem;
   color: var(--gray);
-  letter-spacing: 0.2em;
-  margin-bottom: 0.7rem;
+  letter-spacing: 0.15em;
+  margin-bottom: 0.9rem;
   display: block;
 }
 .form-row {
@@ -182,20 +149,20 @@ body::before {
   outline: none;
   color: var(--white);
   font-family: var(--mono);
-  font-size: 0.6rem;
-  padding: 0.85rem 1rem;
+  font-size: 0.8rem;
+  padding: 1rem 1.1rem;
   letter-spacing: 0.05em;
   cursor: none;
 }
-.form-input::placeholder { color: #333; }
+.form-input::placeholder { color: #444; }
 .form-btn {
   background: var(--white);
   color: var(--black);
   border: none;
   font-family: var(--mono);
-  font-size: 0.5rem;
-  letter-spacing: 0.15em;
-  padding: 0.85rem 1.2rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  padding: 1rem 1.4rem;
   cursor: none;
   transition: background 0.2s, color 0.2s;
   white-space: nowrap;
@@ -203,10 +170,10 @@ body::before {
 .form-btn:hover { background: var(--red); color: var(--white); }
 
 .form-feedback {
-  font-size: 0.42rem;
-  letter-spacing: 0.12em;
-  margin-top: 0.6rem;
-  min-height: 1rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  margin-top: 0.8rem;
+  min-height: 1.2rem;
 }
 .form-feedback.ok  { color: #4CAF50; }
 .form-feedback.err { color: var(--red); }
@@ -214,8 +181,8 @@ body::before {
 /* ─── COUNTER ──────────────────────────────────────────────── */
 .counter {
   margin-top: 1.5rem;
-  font-size: 0.4rem;
-  color: #333;
+  font-size: 0.65rem;
+  color: #555;
   letter-spacing: 0.15em;
 }
 .counter span { color: var(--red); }
@@ -224,9 +191,9 @@ body::before {
 #secret {
   display: none;
   margin-top: 2.5rem;
-  padding: 1.2rem;
+  padding: 1.4rem;
   border: 1px solid var(--red);
-  font-size: 0.45rem;
+  font-size: 0.7rem;
   color: var(--red);
   letter-spacing: 0.15em;
   line-height: 2;
@@ -239,8 +206,8 @@ body::before {
 .teaser-footer {
   position: fixed; bottom: 1.5rem; left:0; right:0;
   text-align: center;
-  font-size: 0.38rem;
-  color: #2a2a2a;
+  font-size: 0.6rem;
+  color: #333;
   letter-spacing: 0.2em;
   z-index: 1;
 }
@@ -289,14 +256,6 @@ body::before {
     SOMETHING IS LOADING
   </div>
 
-  <!-- LOADING BAR -->
-  <div class="load-wrap">
-    <div class="load-track">
-      <div class="load-fill"></div>
-    </div>
-    <div class="load-pct" id="loadPct">0%</div>
-  </div>
-
   <!-- TAGLINE -->
   <div class="tagline">The Hidden Tribute.</div>
 
@@ -340,33 +299,6 @@ document.addEventListener('mousemove', e => {
 document.querySelectorAll('a,button,input').forEach(el => {
   el.addEventListener('mouseenter', () => cur.classList.add('hover'));
   el.addEventListener('mouseleave', () => cur.classList.remove('hover'));
-});
-
-/* ─── LOADING % COUNTER ───────────────────────────────────────── */
-const pctEl = document.getElementById('loadPct');
-const steps = [
-  [0,   0.3, 0],
-  [400, 2,   23],
-  [2400,3,   41],
-  [5400,3,   58],
-  [8400,2.5, 74],
-  [10900,2,  89],
-];
-let pctNow = 0;
-steps.forEach(([delay, dur, target]) => {
-  setTimeout(() => {
-    const start = pctNow;
-    const startTime = Date.now();
-    const ms = dur * 1000;
-    function tick() {
-      const t = Math.min(1, (Date.now() - startTime) / ms);
-      const ease = t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
-      pctNow = Math.round(start + (target - start) * ease);
-      pctEl.textContent = pctNow + '%';
-      if (t < 1) requestAnimationFrame(tick);
-    }
-    tick();
-  }, delay);
 });
 
 /* ─── LOGO CLICK (glitch) ─────────────────────────────────────── */
