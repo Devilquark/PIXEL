@@ -980,8 +980,10 @@ function editPseudo() {
 
 /* ─── SESSION GUARD ──────────────────────────────────────────── */
 (function() {
-  const s = localStorage.getItem('pixel_session') || sessionStorage.getItem('pixel_session');
-  if (!s) window.location.href = 'login.html?redirect=profil';
+  // Auto-crée une session si absente — pas de login requis
+  if (!localStorage.getItem('pixel_session')) {
+    localStorage.setItem('pixel_session', 'guest_' + Date.now());
+  }
 })();
 
 /* ─── CART COUNT ─────────────────────────────────────────────── */
