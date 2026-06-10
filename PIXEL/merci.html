@@ -3,116 +3,349 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Merci — PIXEL</title>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FPDNCCEV63"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-FPDNCCEV63');
-  </script>
+  <title>Commande confirmée — PIXEL</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --bg: #0a0a0a;
-      --white: #f5f5f5;
-      --gray: #888;
-      --red: #FF2D55;
-      --mono: 'Courier New', monospace;
+      --black: #0A0A0A;
+      --white: #F5F5F0;
+      --red: #E8153A;
+      --green: #00FF88;
+      --grey: #1A1A1A;
+      --grey2: #2A2A2A;
+      --muted: #888;
+      --mono: 'Share Tech Mono', monospace;
+      --sans: 'Space Grotesk', sans-serif;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: var(--bg);
+
+    html, body {
+      height: 100%;
+      background: var(--black);
       color: var(--white);
-      font-family: var(--mono);
+      font-family: var(--sans);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 4px
+      );
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 2.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(12px);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 0.7rem;
+      text-decoration: none; color: var(--white);
+    }
+    .nav-logo .px-square {
+      width: 22px; height: 22px;
+      background: var(--red);
+      clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+    }
+    .nav-logo span { font-family: var(--mono); font-size: 1.1rem; letter-spacing: 0.15em; }
+
+    main {
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      padding: 2rem;
+      padding: 8rem 1.5rem 4rem;
+      position: relative; z-index: 1;
     }
-    .pixel-check {
-      display: grid;
-      grid-template-columns: repeat(7, 10px);
-      grid-template-rows: repeat(7, 10px);
+
+    .confirm-card {
+      max-width: 560px;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Pixel checkmark */
+    .px-check {
+      display: inline-grid;
+      grid-template-columns: repeat(9, 18px);
+      grid-template-rows: repeat(9, 18px);
       gap: 2px;
       margin-bottom: 2.5rem;
+      animation: flicker 4s infinite;
     }
-    .pixel-check .px { width: 10px; height: 10px; background: transparent; }
-    .pixel-check .on { background: var(--red); }
+    .px-check span { display: block; border-radius: 2px; background: transparent; }
+    .px-check span.on  { background: var(--green); }
+    .px-check span.dim { background: rgba(0, 255, 136, 0.25); }
+
+    @keyframes flicker {
+      0%, 95%, 100% { opacity: 1; }
+      96% { opacity: 0.4; }
+      97% { opacity: 1; }
+      98% { opacity: 0.6; }
+    }
+
+    .status-line {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--green);
+      letter-spacing: 0.15em;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .status-line::before, .status-line::after {
+      content: ''; display: block; height: 1px; width: 40px;
+      background: var(--green); opacity: 0.4;
+    }
+
     h1 {
-      font-size: clamp(1.5rem, 4vw, 2.5rem);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
       margin-bottom: 1rem;
     }
-    .sub {
-      font-size: 0.8rem;
-      color: var(--gray);
-      letter-spacing: 0.1em;
-      line-height: 1.8;
-      margin-bottom: 2.5rem;
-      max-width: 400px;
-    }
-    .sub span { color: var(--white); }
-    .btn {
-      display: inline-block;
-      padding: 0.9rem 2.5rem;
-      background: var(--white);
-      color: var(--bg);
-      text-decoration: none;
+    h1 .accent { color: var(--green); }
+
+    .subtitle {
       font-family: var(--mono);
       font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      transition: background 0.2s;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
     }
-    .btn:hover { background: var(--red); color: var(--white); }
-    .logo {
-      position: fixed;
-      top: 2rem;
-      left: 2rem;
-      font-size: 0.9rem;
-      letter-spacing: 0.3em;
-      font-weight: 700;
-      text-decoration: none;
-      color: var(--white);
+
+    .order-box {
+      background: var(--grey);
+      border: 1px solid var(--grey2);
+      border-radius: 4px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: left;
     }
-    .logo::before {
-      content: '■ ';
-      color: var(--white);
+    .order-box-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      margin-bottom: 1rem;
+    }
+    .order-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--grey2);
+      font-size: 0.85rem;
+    }
+    .order-row:last-child { border-bottom: none; }
+    .order-row .key { color: var(--muted); font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; }
+    .order-row .val { font-weight: 600; }
+    .order-row .val.green { color: var(--green); }
+    .order-row .val.mono  { font-family: var(--mono); font-size: 0.7rem; }
+
+    .next-steps {
+      display: flex; flex-direction: column; gap: 0.75rem;
+      margin-bottom: 2.5rem;
+    }
+    .step {
+      display: flex; align-items: flex-start; gap: 1rem;
+      background: var(--grey);
+      border: 1px solid var(--grey2);
+      border-radius: 4px;
+      padding: 1rem 1.2rem;
+      text-align: left;
+    }
+    .step-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .step-text { font-size: 0.82rem; line-height: 1.5; }
+    .step-text strong { display: block; margin-bottom: 0.2rem; font-size: 0.88rem; }
+    .step-text span { color: var(--muted); }
+
+    .cta-group { display: flex; flex-direction: column; gap: 0.8rem; }
+    .btn-primary {
+      display: block;
+      background: var(--red); color: var(--white);
+      font-family: var(--mono); font-size: 0.78rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      text-decoration: none; padding: 1rem 2rem; border-radius: 3px;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn-secondary {
+      display: block; background: transparent; color: var(--muted);
+      font-family: var(--mono); font-size: 0.7rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      text-decoration: none; padding: 0.8rem 2rem;
+      border: 1px solid var(--grey2); border-radius: 3px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-secondary:hover { color: var(--white); border-color: rgba(255,255,255,0.3); }
+
+    .session-id {
+      font-family: var(--mono); font-size: 0.6rem;
+      color: rgba(255,255,255,0.12); margin-top: 2rem; word-break: break-all;
+    }
+
+    /* Confetti */
+    .confetti { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .confetti span {
+      position: absolute; width: 6px; height: 6px; border-radius: 1px;
+      animation: fall linear infinite; opacity: 0;
+    }
+    @keyframes fall {
+      0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 1rem 1.2rem; }
+      h1 { font-size: 1.8rem; }
+      .px-check { grid-template-columns: repeat(9, 14px); grid-template-rows: repeat(9, 14px); }
     }
   </style>
 </head>
 <body>
-  <a href="/" class="logo">PIXEL</a>
 
-  <!-- Coche pixel art -->
-  <div class="pixel-check">
-    <!-- Rangée 1 -->
-    <div class="px"></div><div class="px"></div><div class="px"></div><div class="px"></div><div class="px"></div><div class="px on"></div><div class="px"></div>
-    <!-- Rangée 2 -->
-    <div class="px"></div><div class="px"></div><div class="px"></div><div class="px"></div><div class="px on"></div><div class="px on"></div><div class="px"></div>
-    <!-- Rangée 3 -->
-    <div class="px"></div><div class="px on"></div><div class="px"></div><div class="px on"></div><div class="px on"></div><div class="px"></div><div class="px"></div>
-    <!-- Rangée 4 -->
-    <div class="px"></div><div class="px on"></div><div class="px on"></div><div class="px on"></div><div class="px"></div><div class="px"></div><div class="px"></div>
-    <!-- Rangée 5 -->
-    <div class="px"></div><div class="px"></div><div class="px on"></div><div class="px"></div><div class="px"></div><div class="px"></div><div class="px"></div>
-    <!-- Rangée 6 -->
-    <div class="px"></div><div class="px"></div><div class="px"></div><div class="px"></div><div class="px"></div><div class="px"></div><div class="px"></div>
-    <!-- Rangée 7 -->
-    <div class="px"></div><div class="px"></div><div class="px"></div><div class="px"></div><div class="px"></div><div class="px"></div><div class="px"></div>
+<div class="confetti" id="confetti"></div>
+
+<nav>
+  <a class="nav-logo" href="/">
+    <div class="px-square"></div>
+    <span>PIXEL</span>
+  </a>
+</nav>
+
+<main>
+  <div class="confirm-card">
+
+    <div class="px-check" id="px-check"></div>
+
+    <div class="status-line">COMMANDE CONFIRMÉE</div>
+
+    <h1>NIVEAU <span class="accent">DÉBLOQUÉ</span></h1>
+    <p class="subtitle">
+      Ta commande a bien été enregistrée.<br>
+      Un email de confirmation arrive dans ta boîte.
+    </p>
+
+    <div class="order-box">
+      <div class="order-box-label">// Récapitulatif</div>
+      <div class="order-row">
+        <span class="key">STATUT</span>
+        <span class="val green">✓ PAYÉ</span>
+      </div>
+      <div class="order-row">
+        <span class="key">MARQUE</span>
+        <span class="val">PIXEL · Édition limitée</span>
+      </div>
+      <div class="order-row">
+        <span class="key">EXPÉDITION</span>
+        <span class="val">2–4 jours ouvrés</span>
+      </div>
+      <div class="order-row" id="session-row" style="display:none">
+        <span class="key">N° COMMANDE</span>
+        <span class="val mono" id="order-ref">—</span>
+      </div>
+    </div>
+
+    <div class="next-steps">
+      <div class="step">
+        <div class="step-icon">📧</div>
+        <div class="step-text">
+          <strong>Email de confirmation</strong>
+          <span>Vérifie ta boîte (et tes spams) — le récap Stripe arrive dans quelques minutes.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-icon">📦</div>
+        <div class="step-text">
+          <strong>Expédition sous 2–3 jours ouvrés</strong>
+          <span>Tu recevras un numéro de suivi dès que ton colis part.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-icon">🔒</div>
+        <div class="step-text">
+          <strong>Retours gratuits sous 30 jours</strong>
+          <span>Article non porté avec étiquette. Remboursement sous 5–7 jours ouvrés.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-group">
+      <a href="/products/tshirt-cheatcode.html" class="btn-primary">RETOUR À LA BOUTIQUE →</a>
+      <a href="/" class="btn-secondary">← Accueil PIXEL</a>
+    </div>
+
+    <div class="session-id" id="full-session"></div>
+
   </div>
+</main>
 
-  <h1>Commande confirmée</h1>
-  <p class="sub">
-    Merci pour ta commande.<br>
-    <span>Un email de confirmation</span> t'a été envoyé.<br>
-    Livraison sous <span>48h</span> depuis le Portugal.
-  </p>
-  <a href="/" class="btn">Retour à la boutique</a>
+<script>
+  // Pixel checkmark 9×9
+  var pattern = [
+    [0,0,0,0,0,0,0,2,0],
+    [0,0,0,0,0,0,2,1,0],
+    [0,0,0,0,0,2,1,1,0],
+    [0,2,0,0,2,1,1,0,0],
+    [0,1,2,2,1,1,0,0,0],
+    [0,1,1,1,1,0,0,0,0],
+    [0,0,1,1,0,0,0,0,0],
+    [0,0,1,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0],
+  ];
+  var grid = document.getElementById('px-check');
+  pattern.forEach(function(row) {
+    row.forEach(function(cell) {
+      var s = document.createElement('span');
+      if (cell === 1) s.classList.add('on');
+      if (cell === 2) s.classList.add('dim');
+      grid.appendChild(s);
+    });
+  });
+
+  // Session ID
+  var params = new URLSearchParams(window.location.search);
+  var sid = params.get('session_id');
+  if (sid) {
+    var shortRef = sid.split('_').pop().slice(-8).toUpperCase();
+    document.getElementById('order-ref').textContent = '#' + shortRef;
+    document.getElementById('session-row').style.display = 'flex';
+    document.getElementById('full-session').textContent = 'ref: ' + sid;
+  }
+
+  // Confetti
+  var colors = ['#E8153A', '#00FF88', '#F5F5F0', '#FF6B35', '#FFD700'];
+  var container = document.getElementById('confetti');
+  for (var i = 0; i < 40; i++) {
+    (function() {
+      var s = document.createElement('span');
+      s.style.left = Math.random() * 100 + 'vw';
+      s.style.background = colors[Math.floor(Math.random() * colors.length)];
+      s.style.animationDuration = (2 + Math.random() * 4) + 's';
+      s.style.animationDelay = (Math.random() * 3) + 's';
+      s.style.width = s.style.height = (4 + Math.random() * 6) + 'px';
+      container.appendChild(s);
+    })();
+  }
+
+  // Vider le panier après achat
+  localStorage.removeItem('pixel_cart');
+</script>
+
 </body>
 </html>
