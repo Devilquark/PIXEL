@@ -71,13 +71,19 @@ body::before {
 }
 
 /* ─── LOGO ─────────────────────────────────────────────────── */
-.logo-mark {
-  width: 28px; height: 28px;
-  background: var(--white);
-  display: inline-block;
-  margin-bottom: 1.2rem;
-  position: relative;
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 1.8rem;
   cursor: none;
+}
+.logo-mark {
+  width: 26px; height: 26px;
+  background: var(--white);
+  flex-shrink: 0;
+  position: relative;
 }
 .logo-mark::after {
   content: '';
@@ -92,14 +98,13 @@ body::before {
   font-size: 2rem;
   font-weight: 700;
   letter-spacing: 0.3em;
-  margin-bottom: 0.5rem;
-  display: block;
+  display: inline;
 }
 
 /* ─── STATUS LINE ──────────────────────────────────────────── */
 .status {
   font-size: 0.75rem;
-  color: var(--gray);
+  color: #888;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   margin-bottom: 2.5rem;
@@ -121,7 +126,7 @@ body::before {
 /* ─── TAGLINE ──────────────────────────────────────────────── */
 .tagline {
   font-size: 0.85rem;
-  color: #666;
+  color: #999;
   letter-spacing: 0.2em;
   margin: 2rem 0 2.5rem;
   font-style: italic;
@@ -130,7 +135,7 @@ body::before {
 /* ─── WAITLIST FORM ────────────────────────────────────────── */
 .form-label {
   font-size: 0.7rem;
-  color: var(--gray);
+  color: #888;
   letter-spacing: 0.15em;
   margin-bottom: 0.9rem;
   display: block;
@@ -154,7 +159,7 @@ body::before {
   letter-spacing: 0.05em;
   cursor: none;
 }
-.form-input::placeholder { color: #444; }
+.form-input::placeholder { color: #666; }
 .form-btn {
   background: var(--white);
   color: var(--black);
@@ -182,7 +187,7 @@ body::before {
 .counter {
   margin-top: 1.5rem;
   font-size: 0.65rem;
-  color: #555;
+  color: #888;
   letter-spacing: 0.15em;
 }
 .counter span { color: var(--red); }
@@ -207,7 +212,7 @@ body::before {
   position: fixed; bottom: 1.5rem; left:0; right:0;
   text-align: center;
   font-size: 0.6rem;
-  color: #333;
+  color: #555;
   letter-spacing: 0.2em;
   z-index: 1;
 }
@@ -247,8 +252,10 @@ body::before {
 <div class="stage">
 
   <!-- LOGO -->
-  <div class="logo-mark" id="logoMark" onclick="logoClick()"></div>
-  <span class="logo-text glitch-text" id="logoWord" data-text="PIXEL">PIXEL</span>
+  <div class="logo-wrap" onclick="logoClick()">
+    <div class="logo-mark" id="logoMark"></div>
+    <span class="logo-text glitch-text" id="logoWord" data-text="PIXEL">PIXEL</span>
+  </div>
 
   <!-- STATUS -->
   <div class="status">
