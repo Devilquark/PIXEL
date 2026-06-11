@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ADN — PIXEL | Marque de Streetwear Gaming</title>
+<meta name="description" content="PIXEL est une marque de streetwear née de la culture gaming et du pixel art. Des vêtements pour ceux qui ont grandi avec un écran. Discret. Élégant. Référencé.">
+<meta name="keywords" content="streetwear gaming, marque gaming française, vêtements pixel art, mode gaming, t-shirt gaming, streetwear discret, culture digitale">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://pixelwear.fr/adn.html">
+
+<!-- Open Graph -->
+<meta property="og:title" content="ADN — PIXEL | Marque de Streetwear Gaming">
+<meta property="og:description" content="Une marque née de la culture gaming. Discrète. Élégante. Pour ceux qui ont grandi avec un écran.">
+<meta property="og:url" content="https://pixelwear.fr/adn.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PIXEL">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --black:  #0A0A0A;
+  --white:  #FFFFFF;
+  --off:    #F7F7F7;
+  --red:    #FF2D55;
+  --gray:   #888;
+  --border: #E8E8E8;
+  --mono:   'Space Mono', monospace;
+  --sans:   'Inter', sans-serif;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family: var(--sans);
+  background: var(--white);
+  color: var(--black);
+  cursor: none;
+  overflow-x: hidden;
+}
+a { text-decoration:none; color:inherit; }
+button { cursor:none; border:none; background:none; font-family:var(--sans); }
+
+/* ─── CURSOR ─────────────────────────────────────────────── */
+#cursor {
+  position:fixed; top:0; left:0; z-index:9999;
+  pointer-events:none;
+  width:20px; height:20px;
+  transform:translate(-50%,-50%);
+  transition:transform 0.08s ease;
+  color:#0A0A0A;
+}
+#cursor svg { width:16px; height:16px; }
+#cursor.hover { color:var(--red); }
+
+/* ─── NAV ────────────────────────────────────────────────── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:500;
+  background:rgba(255,255,255,0.95);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 2.5rem;
+  height:60px;
+}
+.nav-logo {
+  display:flex; align-items:center; gap:10px;
+  font-family:var(--mono); font-weight:700; font-size:1rem;
+}
+.nav-sq {
+  width:16px; height:16px;
+  background:var(--black);
+  flex-shrink:0;
+  transition:background 0.2s;
+}
+.nav-logo:hover .nav-sq { background:var(--red); }
+.nav-links {
+  display:flex; gap:2rem; align-items:center;
+}
+.nav-links a {
+  font-family:var(--mono); font-size:0.7rem;
+  text-transform:uppercase; letter-spacing:0.12em;
+  color:var(--gray); transition:color 0.2s;
+}
+.nav-links a:hover, .nav-links a.active { color:var(--black); }
+.nav-right { display:flex; gap:0.5rem; align-items:center; }
+.cart-btn {
+  display:flex; align-items:center; gap:0.5rem;
+  background:var(--black); color:var(--white);
+  padding:0.5rem 1rem;
+  font-family:var(--mono); font-size:0.65rem;
+  text-transform:uppercase; letter-spacing:0.1em;
+  transition:background 0.2s;
+}
+.cart-btn:hover { background:#333; }
+.cart-count {
+  background:var(--red); color:white;
+  border-radius:50%; width:16px; height:16px;
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size:0.6rem;
+}
+@media(max-width:768px) {
+  nav { padding:0 1.2rem; }
+  .nav-links { display:none; }
+}
+
+/* ─── HERO ───────────────────────────────────────────────── */
+.hero {
+  padding-top:60px;
+  min-height:100vh;
+  display:flex; flex-direction:column; justify-content:center;
+  padding-left:max(2.5rem, 8vw);
+  padding-right:max(2.5rem, 8vw);
+  border-bottom:1px solid var(--border);
+  position:relative;
+  overflow:hidden;
+}
+.hero-eyebrow {
+  font-family:var(--mono); font-size:0.6rem;
+  color:var(--gray); letter-spacing:0.25em;
+  text-transform:uppercase;
+  margin-bottom:2rem;
+}
+.hero-eyebrow span { color:var(--red); }
+.hero-title {
+  font-family:var(--mono); font-weight:700;
+  font-size:clamp(2rem, 6vw, 5.5rem);
+  line-height:1.05;
+  letter-spacing:-0.02em;
+  max-width:14ch;
+  margin-bottom:2.5rem;
+}
+.hero-title em {
+  font-style:normal;
+  color:var(--red);
+}
+.hero-sub {
+  font-family:var(--sans); font-size:clamp(1rem, 1.5vw, 1.2rem);
+  font-weight:300; line-height:1.7;
+  color:#444;
+  max-width:54ch;
+  margin-bottom:3rem;
+}
+.hero-cta {
+  display:inline-flex; align-items:center; gap:0.8rem;
+  background:var(--black); color:var(--white);
+  font-family:var(--mono); font-size:0.65rem;
+  text-transform:uppercase; letter-spacing:0.15em;
+  padding:0.9rem 1.8rem;
+  transition:background 0.2s;
+}
+.hero-cta:hover { background:#333; }
+.hero-bg-num {
+  position:absolute; right:6vw; bottom:4rem;
+  font-family:var(--mono); font-size:clamp(6rem, 18vw, 16rem);
+  font-weight:700; color:var(--border);
+  line-height:1; user-select:none; pointer-events:none;
+  letter-spacing:-0.04em;
+}
+
+/* ─── SECTIONS ───────────────────────────────────────────── */
+.section {
+  padding:7rem max(2.5rem, 8vw);
+  border-bottom:1px solid var(--border);
+}
+.section:nth-child(even) { background:var(--off); }
+.section-inner {
+  max-width:1200px; margin:0 auto;
+  display:grid; grid-template-columns:1fr 2fr;
+  gap:4rem; align-items:start;
+}
+@media(max-width:768px) {
+  .section-inner { grid-template-columns:1fr; gap:2rem; }
+}
+.section-label {
+  font-family:var(--mono); font-size:0.55rem;
+  color:var(--gray); letter-spacing:0.2em;
+  text-transform:uppercase;
+  padding-top:0.3rem;
+  display:flex; flex-direction:column; gap:0.4rem;
+}
+.section-label .num { color:var(--red); font-size:0.7rem; }
+.section-body {}
+.section-h2 {
+  font-family:var(--mono); font-weight:700;
+  font-size:clamp(1.4rem, 3vw, 2.4rem);
+  line-height:1.2;
+  letter-spacing:-0.01em;
+  margin-bottom:1.6rem;
+}
+.section-h2 em { font-style:normal; color:var(--red); }
+.section-p {
+  font-family:var(--sans); font-size:1.05rem;
+  font-weight:300; line-height:1.8; color:#333;
+  margin-bottom:1.4rem;
+  max-width:68ch;
+}
+.section-p:last-of-type { margin-bottom:0; }
+
+/* ─── MANIFESTO STRIP ────────────────────────────────────── */
+.manifesto {
+  padding:5rem max(2.5rem, 8vw);
+  background:var(--black);
+  color:var(--white);
+  border-bottom:1px solid #222;
+}
+.manifesto-inner {
+  max-width:1200px; margin:0 auto;
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:3rem;
+}
+@media(max-width:768px) {
+  .manifesto-inner { grid-template-columns:1fr; gap:2rem; }
+}
+.manifesto-item {}
+.manifesto-icon {
+  width:12px; height:12px;
+  background:var(--red);
+  margin-bottom:1.4rem;
+}
+.manifesto-title {
+  font-family:var(--mono); font-size:0.65rem;
+  letter-spacing:0.18em; text-transform:uppercase;
+  margin-bottom:0.8rem; color:var(--white);
+}
+.manifesto-text {
+  font-family:var(--sans); font-size:0.92rem;
+  font-weight:300; line-height:1.7; color:#aaa;
+}
+
+/* ─── COLLECTIONS TEASER ─────────────────────────────────── */
+.collections-teaser {
+  padding:7rem max(2.5rem, 8vw);
+  border-bottom:1px solid var(--border);
+}
+.collections-inner { max-width:1200px; margin:0 auto; }
+.ct-header {
+  display:flex; align-items:flex-end; justify-content:space-between;
+  margin-bottom:3rem;
+}
+@media(max-width:768px) { .ct-header { flex-direction:column; align-items:flex-start; gap:1rem; } }
+.ct-title {
+  font-family:var(--mono); font-weight:700;
+  font-size:clamp(1.2rem, 2.5vw, 2rem);
+  letter-spacing:-0.01em;
+}
+.ct-link {
+  font-family:var(--mono); font-size:0.6rem;
+  letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--gray); transition:color 0.2s;
+  display:flex; align-items:center; gap:0.5rem;
+}
+.ct-link:hover { color:var(--black); }
+.ct-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:1px; background:var(--border);
+  border:1px solid var(--border);
+}
+@media(max-width:600px) { .ct-grid { grid-template-columns:1fr; } }
+.ct-card {
+  background:var(--white);
+  padding:2.5rem 2rem;
+  transition:background 0.2s;
+}
+.ct-card:hover { background:var(--off); }
+.ct-card-tag {
+  font-family:var(--mono); font-size:0.45rem;
+  color:var(--gray); letter-spacing:0.2em;
+  text-transform:uppercase; margin-bottom:1rem;
+}
+.ct-card-name {
+  font-family:var(--mono); font-weight:700;
+  font-size:1rem; margin-bottom:0.6rem;
+}
+.ct-card-desc {
+  font-family:var(--sans); font-size:0.88rem;
+  font-weight:300; color:#555; line-height:1.6;
+  margin-bottom:1.5rem;
+}
+.ct-card-cta {
+  font-family:var(--mono); font-size:0.5rem;
+  letter-spacing:0.15em; text-transform:uppercase;
+  color:var(--red);
+}
+
+/* ─── FOOTER ──────────────────────────────────────────────── */
+footer {
+  padding:3rem max(2.5rem, 8vw);
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:1rem;
+}
+.footer-copy {
+  font-family:var(--mono); font-size:0.55rem;
+  color:var(--gray); letter-spacing:0.12em;
+}
+.footer-links {
+  display:flex; gap:1.5rem;
+}
+.footer-links a {
+  font-family:var(--mono); font-size:0.5rem;
+  color:var(--gray); letter-spacing:0.1em;
+  text-transform:uppercase; transition:color 0.2s;
+}
+.footer-links a:hover { color:var(--black); }
+</style>
+
+<!-- Schema.org structured data pour SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Brand",
+  "name": "PIXEL",
+  "description": "Marque de streetwear née de la culture gaming et du pixel art. Des vêtements discrets et élégants pour ceux qui ont grandi avec un écran.",
+  "url": "https://pixelwear.fr",
+  "foundingDate": "2026",
+  "founder": { "@type": "Person", "name": "Jonathan Ricou" },
+  "sameAs": ["https://pixelwear.fr"]
+}
+</script>
+</head>
+<body>
+
+<!-- ─── CURSOR ─────────────────────────────────────────── -->
+<div id="cursor">
+  <svg viewBox="0 0 16 16" fill="currentColor">
+    <rect x="0" y="0" width="16" height="16"/>
+  </svg>
+</div>
+
+<!-- ─── NAV ───────────────────────────────────────────── -->
+<nav>
+  <a href="/" class="nav-logo">
+    <div class="nav-sq"></div>
+    PIXEL
+  </a>
+  <div class="nav-links">
+    <a href="/#collections">Collections</a>
+    <a href="/#boutique">T-Shirts</a>
+    <a href="/#boutique">Pulls</a>
+    <a href="/adn.html" class="active">ADN</a>
+  </div>
+  <div class="nav-right">
+    <a href="/profil.html" style="font-family:var(--mono);font-size:0.65rem;letter-spacing:0.12em;color:var(--gray);text-transform:uppercase;transition:color 0.2s;margin-right:0.5rem;" onmouseover="this.style.color='#0A0A0A'" onmouseout="this.style.color='#888'">PROFIL</a>
+    <button class="cart-btn" onclick="window.location='/'">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <rect x="1" y="4" width="12" height="9" stroke="white" stroke-width="1.2"/>
+        <path d="M4.5 4V3a2.5 2.5 0 015 0v1" stroke="white" stroke-width="1.2"/>
+      </svg>
+      Panier <span class="cart-count" id="cart-count">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ─── HERO ───────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-eyebrow">// <span>ADN</span> — L'IDENTITE PIXEL</div>
+  <h1 class="hero-title">UNE MARQUE NEE DE <em>L'ECRAN.</em></h1>
+  <p class="hero-sub">
+    PIXEL ne vient pas du monde de la mode. Elle vient de là où tu as passé des nuits entières — les jeux vidéo, les pixels, les heures devant un moniteur. Une culture qui méritait d'exister sur un vêtement.
+  </p>
+  <a href="/#boutique" class="hero-cta">VOIR LES COLLECTIONS →</a>
+  <div class="hero-bg-num" aria-hidden="true">PX</div>
+</section>
+
+<!-- ─── SECTION 1 : ORIGINE ───────────────────────────── -->
+<section class="section" id="origine">
+  <div class="section-inner">
+    <div class="section-label">
+      <span class="num">01</span>
+      ORIGINE
+    </div>
+    <div class="section-body">
+      <h2 class="section-h2">LA CULTURE <em>GAMING</em> COMME POINT DE DEPART</h2>
+      <p class="section-p">
+        Tout commence avec un pixel. L'unité minimale de l'image numérique — carrée, nette, sans compromis. C'est l'ADN visuel d'une génération entière, celle qui a grandi entre les consoles, les écrans basse résolution et les heures de jeu qui se transformaient en nuits.
+      </p>
+      <p class="section-p">
+        PIXEL récupère cette esthétique non pas pour en faire une nostalgie kitch, mais pour la distiller. Les références sont là pour ceux qui les connaissent. Pour les autres, c'est simplement un vêtement bien fait, sobre, avec quelque chose d'indéfinissable qui attire l'œil.
+      </p>
+      <p class="section-p">
+        Le vêtement comme inside joke. Le vêtement comme signal discret entre ceux qui savent.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MANIFESTO ──────────────────────────────────────── -->
+<div class="manifesto" aria-label="Principes de la marque PIXEL">
+  <div class="manifesto-inner">
+    <div class="manifesto-item">
+      <div class="manifesto-icon"></div>
+      <div class="manifesto-title">DISCRET</div>
+      <p class="manifesto-text">Pas de logo massif. Pas de streetwear qui crie. Les références sont là pour ceux qui regardent vraiment.</p>
+    </div>
+    <div class="manifesto-item">
+      <div class="manifesto-icon"></div>
+      <div class="manifesto-title">ELEGANT</div>
+      <p class="manifesto-text">La culture gaming mérite mieux que le t-shirt imprimé bas de gamme. Chez PIXEL, la qualité du vêtement est le respect de la culture qu'il porte.</p>
+    </div>
+    <div class="manifesto-item">
+      <div class="manifesto-icon"></div>
+      <div class="manifesto-title">REFERENCE</div>
+      <p class="manifesto-text">Chaque collection parte d'un concept précis — un code, un glitch, une mécanique de jeu. Rien n'est aléatoire. Tout se lit à plusieurs niveaux.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SECTION 2 : PHILOSOPHIE ───────────────────────── -->
+<section class="section" id="philosophie">
+  <div class="section-inner">
+    <div class="section-label">
+      <span class="num">02</span>
+      PHILOSOPHIE
+    </div>
+    <div class="section-body">
+      <h2 class="section-h2">MOINS DE BRUIT. <em>PLUS DE SENS.</em></h2>
+      <p class="section-p">
+        Le streetwear actuel est saturé. Logos énormes, collaborations forcées, drops marketing vides de fond. PIXEL prend le contre-pied : les motifs sont petits, les messages codés, les couleurs retenues. Ce que tu portes doit pouvoir se lire en surface — ou en profondeur, selon qui tu es.
+      </p>
+      <p class="section-p">
+        C'est l'esthétique du pixel art appliquée à la mode : chaque élément a sa place, chaque détail est intentionnel, rien n'est là par hasard. Et comme dans un bon jeu, tu découvres la profondeur du design au fur et à mesure.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SECTION 3 : APPROCHE ───────────────────────────── -->
+<section class="section" id="approche">
+  <div class="section-inner">
+    <div class="section-label">
+      <span class="num">03</span>
+      APPROCHE
+    </div>
+    <div class="section-body">
+      <h2 class="section-h2">DES DROPS, PAS <em>DES COLLECTIONS.</em></h2>
+      <p class="section-p">
+        PIXEL ne cherche pas à remplir un catalogue. Chaque pièce est pensée autour d'un univers cohérent — une collection, un concept, une palette. Quand une collection est épuisée, elle ne revient pas. Comme un level qu'on ne peut jouer qu'une fois.
+      </p>
+      <p class="section-p">
+        Ce modèle tient à une conviction simple : un vêtement qui a de la valeur est rare. Et la rareté, en gaming comme en mode, c'est ce qui rend quelque chose digne d'être obtenu.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── COLLECTIONS TEASER ─────────────────────────────── -->
+<div class="collections-teaser">
+  <div class="collections-inner">
+    <div class="ct-header">
+      <div class="ct-title">LES COLLECTIONS</div>
+      <a href="/#boutique" class="ct-link">VOIR TOUT →</a>
+    </div>
+    <div class="ct-grid">
+      <article class="ct-card">
+        <div class="ct-card-tag">Collection 01</div>
+        <div class="ct-card-name">ORIGIN</div>
+        <p class="ct-card-desc">L'essentialisme poussé à l'extrême. Noir, blanc, le carré PIXEL. Le point de départ.</p>
+        <div class="ct-card-cta">DÉCOUVRIR →</div>
+      </article>
+      <article class="ct-card">
+        <div class="ct-card-tag">Collection 02</div>
+        <div class="ct-card-name">OVERRIDE</div>
+        <p class="ct-card-desc">Quand le système se réécrit lui-même. Glitch, erreur volontaire, esthétique du bug maîtrisé.</p>
+        <div class="ct-card-cta">DÉCOUVRIR →</div>
+      </article>
+      <article class="ct-card">
+        <div class="ct-card-tag">Collection 03</div>
+        <div class="ct-card-name">CHEAT CODE</div>
+        <p class="ct-card-desc">Pour ceux qui ont trouvé la commande secrète. Une pièce qui ne s'obtient pas facilement.</p>
+        <div class="ct-card-cta">DÉCOUVRIR →</div>
+      </article>
+    </div>
+  </div>
+</div>
+
+<!-- ─── FOOTER ──────────────────────────────────────────── -->
+<footer>
+  <div class="footer-copy">PIXEL © 2026 — STREETWEAR / DIGITAL CULTURE</div>
+  <div class="footer-links">
+    <a href="/legal/mentions-legales.html">Mentions légales</a>
+    <a href="/legal/cgv.html">CGV</a>
+    <a href="/legal/politique-confidentialite.html">Confidentialité</a>
+  </div>
+</footer>
+
+<script>
+/* ─── CURSOR ─────────────────────────────────────────── */
+const cur = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px';
+  cur.style.top  = e.clientY + 'px';
+});
+document.querySelectorAll('a,button,[onclick]').forEach(el => {
+  el.addEventListener('mouseenter', () => cur.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cur.classList.remove('hover'));
+});
+
+/* ─── CART COUNT ─────────────────────────────────────── */
+(function() {
+  try {
+    const cart  = JSON.parse(localStorage.getItem('pixel_cart') || '[]');
+    const total = cart.reduce((s,i) => s + (i.qty||1), 0);
+    document.getElementById('cart-count').textContent = total;
+  } catch(e) {}
+})();
+
+/* ─── SCROLL ANIMATIONS ──────────────────────────────── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.section, .manifesto-item, .ct-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(24px)';
+  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>

@@ -1833,36 +1833,3 @@ document.addEventListener('keydown', e => {
 function closeKonami() {
   document.getElementById('konami-overlay').classList.remove('show');
   document.body.classList.remove('secret-open');
-}
-
-function switchShowcase(btn, view) {
-  document.querySelectorAll('.s-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  const img = document.getElementById('showcaseImg');
-  const map = {
-    lifestyle: 'products/photos/cheatcode-lifestyle.png',
-    front: 'products/photos/cheatcode-front.png',
-    back: 'products/photos/cheatcode-back.png'
-  };
-  img.style.opacity = '0';
-  setTimeout(() => {
-    img.src = map[view] || map.lifestyle;
-    img.style.opacity = '1';
-  }, 150);
-}
-
-function selectSecretSize(el) {
-  document.querySelectorAll('#secret-sizes .sz').forEach(s => s.classList.remove('active'));
-  el.classList.add('active');
-}
-
-function addSecretToCart() {
-  const active = document.querySelector('#secret-sizes .sz.active');
-  const size = active ? active.textContent : 'M';
-  addToCart('secret-cheatcode', 'T-Shirt CHEAT CODE', 35, 'CHEAT CODE',
-    `<img src="products/photos/cheatcode-front.png" style="width:100%;height:100%;object-fit:cover;" alt="T-Shirt CHEAT CODE">`, size);
-}
-
-</script>
-</body>
-</html>
