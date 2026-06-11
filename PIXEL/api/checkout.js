@@ -2,10 +2,17 @@ const Stripe = require('stripe');
 
 // Catalogue produits autorisés (prix en centimes)
 const CATALOG = {
-  'T-Shirt CHEAT CODE':  { price: 3500, image: 'https://pixelwear.fr/products/photos/cheatcode-front.png' },
-  'T-Shirt ORIGIN 01':   { price: 3500, image: 'https://pixelwear.fr/products/photos/origin-front.png' },
-  'T-Shirt NEW GAME':    { price: 3500, image: 'https://pixelwear.fr/products/photos/newgame-front.png' },
-  'T-Shirt PLAYER ONE':  { price: 3500, image: 'https://pixelwear.fr/products/photos/playerone-front.png' },
+  'T-Shirt CHEAT CODE':      { price: 3500, image: 'https://pixelwear.fr/products/photos/cheatcode-front.png' },
+  'T-Shirt ORIGIN Noir':     { price: 3500, image: 'https://pixelwear.fr/products/photos/origin-front.png' },
+  'T-Shirt ORIGIN Blanc':    { price: 3500, image: 'https://pixelwear.fr/products/photos/origin-blanc-front.png' },
+  'Pull ORIGIN Ghost':       { price: 7000, image: 'https://pixelwear.fr/products/photos/pull-origin-front.png' },
+  'T-Shirt ORIGIN 001':      { price: 3500, image: 'https://pixelwear.fr/products/photos/origin-front.png' },
+  'T-Shirt ORIGIN 002':      { price: 3500, image: 'https://pixelwear.fr/products/photos/origin-blanc-front.png' },
+  'Hoodie ORIGIN':           { price: 6500, image: 'https://pixelwear.fr/products/photos/pull-origin-front.png' },
+  'Casquette PIXEL Origin':  { price: 2800, image: 'https://pixelwear.fr/products/photos/origin-front.png' },
+  'T-Shirt ORIGIN 01':       { price: 3500, image: 'https://pixelwear.fr/products/photos/origin-front.png' },
+  'T-Shirt NEW GAME':        { price: 3500, image: 'https://pixelwear.fr/products/photos/newgame-front.png' },
+  'T-Shirt PLAYER ONE':      { price: 3500, image: 'https://pixelwear.fr/products/photos/playerone-front.png' },
 };
 
 module.exports = async (req, res) => {
