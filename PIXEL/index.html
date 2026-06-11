@@ -1818,6 +1818,10 @@ document.addEventListener('keydown', e => {
       konamiPos = 0;
       document.getElementById('konami-overlay').classList.add('show');
       document.body.classList.add('secret-open');
+      // XP bonus une seule fois
+      if (!localStorage.getItem('pixel_bonus_cheatcode')) {
+        localStorage.setItem('pixel_bonus_cheatcode', '1');
+      }
     }
   } else {
     konamiPos = 0;

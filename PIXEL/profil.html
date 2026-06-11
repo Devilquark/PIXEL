@@ -997,58 +997,88 @@ function loadCart() {
 loadCart();
 
 /* ─── GAME DATA ──────────────────────────────────────────────── */
-const RANKS = [
-  { lvl:1, name:'NEWBIE',       xpMin:0,    xpMax:100  },
-  { lvl:2, name:'PLAYER',       xpMin:100,  xpMax:300  },
-  { lvl:3, name:'VETERAN',      xpMin:300,  xpMax:600  },
-  { lvl:4, name:'ELITE',        xpMin:600,  xpMax:1000 },
-  { lvl:5, name:'LEGEND',       xpMin:1000, xpMax:1000 },
-];
+function getRankName(level) {
+  if (level >= 100) return 'THE GOAT';
+  if (level >= 91)  return 'MYTHIC';
+  if (level >= 81)  return 'MASTER';
+  if (level >= 71)  return 'LEGEND';
+  if (level >= 61)  return 'EXPERT';
+  if (level >= 51)  return 'ELITE';
+  if (level >= 41)  return 'PRO';
+  if (level >= 31)  return 'VETERAN';
+  if (level >= 21)  return 'PLAYER';
+  if (level >= 11)  return 'ROOKIE';
+  return 'NEWBIE';
+}
 
-function getRank(xp) {
-  for (let i = RANKS.length - 1; i >= 0; i--) {
-    if (xp >= RANKS[i].xpMin) return RANKS[i];
+/* XP requis pour passer du niveau n au niveau n+1 */
+function xpForLevel(n) {
+  return 100 + (n - 1) * 20;
+}
+
+function getLevelData(xp) {
+  let level = 1;
+  let cumXP = 0;
+  while (level < 100) {
+    const needed = xpForLevel(level);
+    if (xp < cumXP + needed) break;
+    cumXP += needed;
+    level++;
   }
-  return RANKS[0];
+  const name     = getRankName(level);
+  const xpInLvl  = xp - cumXP;
+  const xpNeeded = level < 100 ? xpForLevel(level) : 0;
+  const pct      = level < 100 ? Math.min(100, Math.round((xpInLvl / xpNeeded) * 100)) : 100;
+  const xpToNext = level < 100 ? xpNeeded - xpInLvl : 0;
+  return { level, name, xpInLvl, xpNeeded, pct, xpToNext };
 }
 
 /* demo orders — in a real build, fetch from backend */
 const DEMO_ORDERS = JSON.parse(localStorage.getItem('pixel_orders') || '[]');
 
-/* XP = 10 pts per euro spent (demo) */
-const totalSpent = DEMO_ORDERS.reduce((s, o) => s + (o.price || 0), 0);
-const totalXP = totalSpent * 10;
-const rankData = getRank(totalXP);
-const nextRankData = RANKS.find(r => r.lvl === rankData.lvl + 1) || rankData;
-const xpInLevel = totalXP - rankData.xpMin;
-const xpSpan    = nextRankData.xpMin - rankData.xpMin || 1;
-const xpPct     = Math.min(100, Math.round((xpInLevel / xpSpan) * 100));
+/* ── XP PAR TYPE DE PRODUIT ──────────────────────────────────── */
+function getProductXP(item) {
+  const name = (item.name || item.id || '').toLowerCase();
+  if (name.includes('pull') || name.includes('hoodie') || name.includes('sweat')) return 150;
+  if (name.includes('chaussette') || name.includes('sock')) return 50;
+  return 100; // t-shirt par défaut
+}
+
+/* XP commandes */
+const orderXP = DEMO_ORDERS.reduce((s, o) => s + getProductXP(o) * (o.qty || 1), 0);
+
+/* XP bonus une seule fois */
+const bonusMinigame  = localStorage.getItem('pixel_bonus_minigame')  ? 100 : 0;
+const bonusCheatcode = localStorage.getItem('pixel_bonus_cheatcode') ? 100 : 0;
+
+const totalXP = orderXP + bonusMinigame + bonusCheatcode;
+const lvlData = getLevelData(totalXP);
 
 /* load saved pseudo */
 const savedUsername = localStorage.getItem('pixel_username');
 if (savedUsername) document.getElementById('playerName').textContent = savedUsername;
 
 /* populate player card */
-document.getElementById('playerLvl').textContent       = String(rankData.lvl).padStart(2,'0');
-document.getElementById('playerRankName').textContent  = rankData.name;
-document.getElementById('playerRank').textContent      = rankData.name;
+document.getElementById('playerLvl').textContent       = String(lvlData.level).padStart(2,'0');
+document.getElementById('playerRankName').textContent  = lvlData.name;
+document.getElementById('playerRank').textContent      = lvlData.name;
 document.getElementById('playerOrders').textContent    = DEMO_ORDERS.length;
-document.getElementById('xpCur').textContent           = totalXP;
-document.getElementById('xpMax').textContent           = nextRankData.xpMin || totalXP;
-document.getElementById('xpNext').textContent          = rankData.lvl < 5
-  ? `+${nextRankData.xpMin - totalXP} XP`
-  : 'MAX LEVEL';
+document.getElementById('xpCur').textContent           = lvlData.xpInLvl;
+document.getElementById('xpMax').textContent           = lvlData.level < 100 ? lvlData.xpNeeded : totalXP;
+document.getElementById('xpNext').textContent          = lvlData.level < 100
+  ? `+${lvlData.xpToNext} XP`
+  : 'MAX LEVEL — THE GOAT';
 
 /* animate XP bar */
 setTimeout(() => {
-  document.getElementById('xpBar').style.width = xpPct + '%';
+  document.getElementById('xpBar').style.width = lvlData.pct + '%';
 }, 400);
 
 /* populate stats */
 document.getElementById('statOrders').textContent = DEMO_ORDERS.length;
 document.getElementById('statXP').textContent     = totalXP;
 document.getElementById('statItems').textContent  = DEMO_ORDERS.reduce((s,o)=>s+(o.qty||1),0);
-document.getElementById('statRank').textContent   = rankData.name;
+document.getElementById('statRank').textContent   = lvlData.name;
 
 /* easter eggs stat */
 const gotCheat  = !!sessionStorage.getItem('pixel_cheatcode');
