@@ -222,20 +222,12 @@ nav {
   font-family: var(--mono); font-weight:700; font-size:1rem;
 }
 .nav-sq {
-  width: 20px; height: 20px;
+  width: 16px; height: 16px;
   background: var(--black);
   flex-shrink: 0;
-  position: relative;
+  transition: background 0.2s;
 }
-.nav-sq::after {
-  content:'';
-  position:absolute;
-  inset:3px;
-  background: var(--red);
-  opacity:0;
-  transition: opacity 0.2s;
-}
-.nav-logo:hover .nav-sq::after { opacity:1; }
+.nav-logo:hover .nav-sq { background: var(--red); }
 .nav-links {
   display: flex; gap:2rem; align-items:center;
 }
