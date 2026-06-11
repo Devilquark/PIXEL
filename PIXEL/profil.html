@@ -563,14 +563,20 @@ nav {
   max-width:400px;
 }
 .login-pixel-sq {
-  width:20px; height:20px;
+  width:14px; height:14px;
   background:var(--red);
-  margin:0 auto 2rem;
+  flex-shrink:0;
+}
+.login-title-row {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin-bottom:0.4rem;
 }
 .login-title {
   font-size:1rem;
   letter-spacing:0.15em;
-  margin-bottom:0.4rem;
 }
 .login-sub {
   font-size:0.45rem;
@@ -600,6 +606,48 @@ nav {
   transition:background 0.2s;
 }
 .google-btn:hover { background:#333; }
+
+.login-divider {
+  display:flex; align-items:center; gap:1rem;
+  margin:1.5rem 0;
+  font-size:0.38rem; color:#aaa; letter-spacing:0.15em;
+}
+.login-divider::before,.login-divider::after {
+  content:''; flex:1; height:1px; background:#ddd;
+}
+.email-form { display:flex; flex-direction:column; gap:0.6rem; }
+.email-form input {
+  font-family:var(--mono); font-size:0.5rem; letter-spacing:0.1em;
+  padding:0.75rem 1rem;
+  border:1px solid #ddd; background:#fff; color:var(--black);
+  outline:none; cursor:text;
+  transition:border-color 0.2s;
+}
+.email-form input:focus { border-color:var(--black); }
+.email-form input::placeholder { color:#bbb; }
+.email-submit-btn {
+  font-family:var(--mono); font-size:0.5rem; letter-spacing:0.15em;
+  background:var(--black); color:var(--white);
+  border:none; padding:0.9rem; cursor:none;
+  transition:background 0.2s;
+}
+.email-submit-btn:hover { background:#333; }
+.login-toggle {
+  margin-top:0.8rem; font-size:0.4rem; color:#888; letter-spacing:0.1em;
+}
+.login-toggle span {
+  color:var(--black); text-decoration:underline; cursor:pointer;
+}
+.login-toggle span:hover { color:var(--red); }
+.login-error {
+  font-size:0.42rem; color:var(--red); letter-spacing:0.08em;
+  margin-top:0.3rem; min-height:1rem;
+}
+.forgot-pwd {
+  font-size:0.38rem; color:#aaa; letter-spacing:0.1em;
+  cursor:pointer; margin-top:0.2rem; text-align:right;
+}
+.forgot-pwd:hover { color:var(--red); }
 
 </style>
 </head>
@@ -655,8 +703,10 @@ nav {
 <!-- ─── LOGIN OVERLAY ────────────────────────────────────────── -->
 <div id="loginOverlay">
   <div class="login-box">
-    <div class="login-pixel-sq"></div>
-    <div class="login-title">PIXEL</div>
+    <div class="login-title-row">
+      <div class="login-pixel-sq"></div>
+      <div class="login-title">PIXEL</div>
+    </div>
     <div class="login-sub">// PLAYER_PROFILE</div>
     <div class="login-hint">
       CONNECTE-TOI POUR ACCEDER A TON PROFIL<br>
@@ -671,6 +721,20 @@ nav {
       </svg>
       CONTINUER AVEC GOOGLE
     </button>
+
+    <div class="login-divider">OU</div>
+
+    <!-- Formulaire email -->
+    <div class="email-form">
+      <input type="email" id="emailInput" placeholder="ton@email.com" autocomplete="email">
+      <input type="password" id="passwordInput" placeholder="mot de passe" autocomplete="current-password">
+      <div class="login-error" id="loginError"></div>
+      <button class="email-submit-btn" id="emailSubmitBtn" onclick="handleEmailAuth()">SE CONNECTER →</button>
+      <div class="forgot-pwd" onclick="handleForgotPassword()">Mot de passe oublié ?</div>
+    </div>
+    <div class="login-toggle" id="loginToggle">
+      Pas encore de compte ? <span onclick="toggleAuthMode()">Créer un compte</span>
+    </div>
   </div>
 </div>
 
@@ -1105,11 +1169,101 @@ function getLevelData(xp) {
 function getProductXP(item) {
   const name = (item.name || item.id || '').toLowerCase();
   if (name.includes('pull') || name.includes('hoodie') || name.includes('sweat')) return 150;
-  if (name.includes('chaussette') || name.includes('sock')) return 50;
+  if (name.includes('cheat') || name.includes('secret')) return 200;
   return 100;
 }
 
-/* ─── FIREBASE ───────────────────────────────────────────────── */
+function computeTotalXP() {
+  const orders = JSON.parse(localStorage.getItem('pixel_orders') || '[]');
+  let xp = orders.reduce((s, o) => {
+    const items = Array.isArray(o.items) ? o.items : (o.name ? [o] : []);
+    return s + items.reduce((sx, i) => sx + getProductXP(i), 0);
+  }, 0);
+  if (localStorage.getItem('pixel_bonus_minigame'))  xp += 50;
+  if (localStorage.getItem('pixel_bonus_cheatcode')) xp += 100;
+  return xp;
+}
+
+/* ─── ACHIEVEMENTS ─────────────────────────────────────────── */
+const ACHIEVEMENTS = [
+  { id:'first_order',  label:'FIRST BLOOD',   desc:'Premiere commande passee',     icon:'🎮', check:(o,b,xp)=> o >= 1 },
+  { id:'three_orders', label:'COLLECTOR',     desc:'3 commandes au compteur',      icon:'👕', check:(o,b,xp)=> o >= 3 },
+  { id:'cheatcode',    label:'CHEAT CODE',    desc:'Code Konami decouvert',        icon:'🕹️', check:(o,b,xp)=> b.cheat },
+  { id:'minigame',     label:'GLITCH RUNNER', desc:'Mini-jeu termine',             icon:'⚡', check:(o,b,xp)=> b.mini },
+  { id:'og_player',    label:'OG PLAYER',     desc:'Inscrit des le lancement',     icon:'⭐', check:(o,b,xp)=> true },
+  { id:'xp_500',       label:'XP GRINDER',    desc:'500 XP cumules',               icon:'🔥', check:(o,b,xp)=> xp >= 500 },
+];
+
+function renderAchievements(orderCount, bonuses, totalXP) {
+  const grid = document.getElementById('achievementsGrid');
+  let unlocked = 0;
+  grid.innerHTML = ACHIEVEMENTS.map(a => {
+    const ok = a.check(orderCount, bonuses, totalXP);
+    if (ok) unlocked++;
+    return `<div class="ach-card ${ok ? 'unlocked' : 'locked'}">
+      <div class="ach-badge">${a.icon}</div>
+      <div class="ach-name">${a.label}</div>
+      <div class="ach-desc">${a.desc}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('achCount').textContent = unlocked + '/6 UNLOCKED';
+  document.getElementById('statAch').textContent  = unlocked + '/6';
+}
+
+/* ─── RENDER PROFILE ────────────────────────────────────────── */
+function renderProfile(user, firestoreData) {
+  const username = firestoreData?.username || localStorage.getItem('pixel_username') || user.displayName?.toUpperCase().replace(/\s+/g,'_') || 'PLAYER_01';
+  const orders   = JSON.parse(localStorage.getItem('pixel_orders') || '[]');
+  const totalXP  = computeTotalXP();
+  const lvData   = getLevelData(totalXP);
+  const bonuses  = {
+    cheat: !!(firestoreData?.bonus_cheatcode || localStorage.getItem('pixel_bonus_cheatcode')),
+    mini:  !!(firestoreData?.bonus_minigame  || localStorage.getItem('pixel_bonus_minigame')),
+  };
+
+  document.getElementById('playerName').textContent     = username;
+  document.getElementById('playerLvl').textContent      = String(lvData.level).padStart(2,'0');
+  document.getElementById('playerRankName').textContent = lvData.name;
+  document.getElementById('playerRank').textContent     = lvData.name;
+  document.getElementById('xpCur').textContent          = lvData.xpInLvl;
+  document.getElementById('xpMax').textContent          = lvData.xpNeeded || lvData.xpInLvl;
+  document.getElementById('xpBar').style.width          = lvData.pct + '%';
+  document.getElementById('xpNext').textContent         = lvData.xpToNext > 0 ? '+' + lvData.xpToNext + ' XP' : 'MAX';
+  document.getElementById('statOrders').textContent     = orders.length;
+  document.getElementById('statXP').textContent         = totalXP;
+  document.getElementById('statItems').textContent      = orders.reduce((s,o) => s + (Array.isArray(o.items) ? o.items.length : 1), 0);
+  document.getElementById('statRank').textContent       = lvData.name;
+  document.getElementById('playerOrders').textContent   = orders.length;
+  document.getElementById('statEgg').textContent        = (bonuses.cheat || bonuses.mini) ? '1/2' : '0/2';
+  document.getElementById('settingEmail').textContent   = user.email || '—';
+
+  renderQuestLog(orders);
+  renderAchievements(orders.length, bonuses, totalXP);
+}
+
+function renderQuestLog(orders) {
+  const el = document.getElementById('questList');
+  if (!orders.length) {
+    el.innerHTML = `<div class="quest-empty">
+      <span>// AUCUNE QUETE ENREGISTREE</span>
+      <span class="prompt">&gt; Passe ta premiere commande pour debuter l'aventure _<span class="blink">|</span></span>
+    </div>`;
+    return;
+  }
+  el.innerHTML = orders.map((o, i) => {
+    const items = Array.isArray(o.items) ? o.items : [{ name: o.name || 'Article', collection: o.collection || 'PIXEL', price: o.price || 0 }];
+    return items.map(item => `
+      <div class="quest-row">
+        <span>#${String(i+1).padStart(3,'0')}</span>
+        <span>${item.name || 'Article'}</span>
+        <span>${item.collection || 'PIXEL'}</span>
+        <span>${item.price || 0} €</span>
+        <span style="color:#4caf50">LIVRÉ</span>
+      </div>`).join('');
+  }).join('');
+}
+
+/* ─── FIREBASE ──────────────────────────────────────────────── */
 const firebaseConfig = {
   apiKey:            "AIzaSyDJ9hnUYzVqP_H_oEim-6u44lR0F_tkZhU",
   authDomain:        "pixel-8103d.firebaseapp.com",
@@ -1122,46 +1276,153 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db   = firebase.firestore();
 
+/* ─── EMAIL AUTH ────────────────────────────────────────────── */
+let isSignupMode = false;
+
+function toggleAuthMode() {
+  isSignupMode = !isSignupMode;
+  const btn    = document.getElementById('emailSubmitBtn');
+  const toggle = document.getElementById('loginToggle');
+  const pwd    = document.getElementById('passwordInput');
+  clearLoginError();
+  if (isSignupMode) {
+    btn.textContent  = 'CRÉER UN COMPTE →';
+    toggle.innerHTML = 'Déjà un compte ? <span onclick="toggleAuthMode()">Se connecter</span>';
+    pwd.autocomplete = 'new-password';
+    pwd.placeholder  = 'mot de passe (min. 6 caractères)';
+  } else {
+    btn.textContent  = 'SE CONNECTER →';
+    toggle.innerHTML = 'Pas encore de compte ? <span onclick="toggleAuthMode()">Créer un compte</span>';
+    pwd.autocomplete = 'current-password';
+    pwd.placeholder  = 'mot de passe';
+  }
+}
+
+function clearLoginError() { document.getElementById('loginError').textContent = ''; }
+function setLoginError(msg) { document.getElementById('loginError').textContent = msg; }
+
+function handleEmailAuth() {
+  const email = document.getElementById('emailInput').value.trim();
+  const pwd   = document.getElementById('passwordInput').value;
+  const btn   = document.getElementById('emailSubmitBtn');
+  clearLoginError();
+  if (!email || !pwd) { setLoginError('Remplis tous les champs.'); return; }
+  btn.textContent = '...';
+  btn.disabled = true;
+
+  const promise = isSignupMode
+    ? auth.createUserWithEmailAndPassword(email, pwd)
+    : auth.signInWithEmailAndPassword(email, pwd);
+
+  promise.catch(err => {
+    btn.disabled = false;
+    btn.textContent = isSignupMode ? 'CRÉER UN COMPTE →' : 'SE CONNECTER →';
+    const msgs = {
+      'auth/email-already-in-use': 'Email déjà utilisé.',
+      'auth/invalid-email':        'Email invalide.',
+      'auth/weak-password':        'Mot de passe trop court (min. 6 caractères).',
+      'auth/user-not-found':       'Compte introuvable.',
+      'auth/wrong-password':       'Mot de passe incorrect.',
+      'auth/invalid-credential':   'Email ou mot de passe incorrect.',
+      'auth/too-many-requests':    'Trop de tentatives. Réessaie plus tard.',
+    };
+    setLoginError(msgs[err.code] || 'Erreur : ' + err.message);
+  });
+}
+
+function handleForgotPassword() {
+  const email = document.getElementById('emailInput').value.trim();
+  if (!email) { setLoginError('Entre ton email ci-dessus.'); return; }
+  auth.sendPasswordResetEmail(email)
+    .then(() => { clearLoginError(); setLoginError('✓ Email envoyé ! Vérifie ta boîte.'); })
+    .catch(() => { setLoginError('Adresse introuvable.'); });
+}
+
 function signInWithGoogle() {
   const provider = new firebase.auth.GoogleAuthProvider();
   auth.signInWithPopup(provider).catch(err => console.error('Sign-in error:', err));
 }
 
+/* ─── AUTH STATE ────────────────────────────────────────────── */
 auth.onAuthStateChanged(async function(user) {
   if (!user) {
     document.getElementById('loginOverlay').style.display = 'flex';
     document.getElementById('profileZone').style.display  = 'none';
     return;
   }
-
-  // Utilisateur connecté
   document.getElementById('loginOverlay').style.display = 'none';
   document.getElementById('profileZone').style.display  = 'block';
 
-  let userData = {};
-  const docRef = db.collection('users').doc(user.uid);
+  const ref = db.collection('users').doc(user.uid);
+  let snap;
+  try { snap = await ref.get(); } catch(e) { snap = { exists: false }; }
 
-  try {
-    const doc = await docRef.get();
-    if (doc.exists) {
-      userData = doc.data();
-    } else {
-      // Nouveau joueur — crée son document
-      const raw = (user.displayName || 'PLAYER_01').toUpperCase();
-      const cleanName = raw.replace(/[^A-Z0-9_\- ]/g,'').replace(/ /g,'_').substring(0,16) || 'PLAYER_01';
-      userData = {
-        username:        cleanName,
-        bonus_minigame:  false,
-        bonus_cheatcode: false,
-        avatar:          0,
-        createdAt:       firebase.firestore.FieldValue.serverTimestamp()
-      };
-      await docRef.set(userData);
+  const bonusMini  = localStorage.getItem('pixel_bonus_minigame');
+  const bonusCheat = localStorage.getItem('pixel_bonus_cheatcode');
+
+  if (!snap.exists) {
+    const name = user.displayName
+      ? user.displayName.toUpperCase().replace(/\s+/g,'_')
+      : (user.email ? user.email.split('@')[0].toUpperCase() : 'PLAYER_01');
+    await ref.set({
+      username:        name,
+      bonus_minigame:  !!bonusMini,
+      bonus_cheatcode: !!bonusCheat,
+      avatar:          parseInt(localStorage.getItem('pixel_avatar') || '0'),
+      createdAt:       firebase.firestore.FieldValue.serverTimestamp()
+    });
+    renderProfile(user, { username: name, bonus_minigame: !!bonusMini, bonus_cheatcode: !!bonusCheat });
+  } else {
+    const data = snap.data();
+    const updates = {};
+    if (bonusMini  && !data.bonus_minigame)  updates.bonus_minigame  = true;
+    if (bonusCheat && !data.bonus_cheatcode) updates.bonus_cheatcode = true;
+    if (Object.keys(updates).length) await ref.update(updates);
+    if (data.bonus_minigame)  localStorage.setItem('pixel_bonus_minigame',  '1');
+    if (data.bonus_cheatcode) localStorage.setItem('pixel_bonus_cheatcode', '1');
+    if (data.avatar !== undefined) {
+      localStorage.setItem('pixel_avatar', data.avatar);
+      currentAvatarIdx = data.avatar;
+      renderMainAvatar();
     }
+    if (data.username) localStorage.setItem('pixel_username', data.username);
+    renderProfile(user, data);
+  }
+});
 
-    // Sync localStorage bonuses → Firestore (gagnés avant connexion)
-    const lsMinigame  = !!localStorage.getItem('pixel_bonus_minigame');
-    const lsCheatcode = !!localStorage.getItem('pixel_bonus_cheatcode');
-    const upd = {};
-    if (lsMinigame  && !userData.bonus_minigame)  upd.bonus_minigame  = true;
-    if (lsCheatcode && !userData.bon
+/* ─── SAVE PSEUDO (Firebase) ─────────────────────────────────── */
+// patché dans editPseudo — la fonction interne savePseudo est déjà dans le fichier
+// On surcharge handleLogout ici
+function handleLogout() {
+  auth.signOut().then(() => { window.location.reload(); });
+}
+
+/* ─── SETTINGS ──────────────────────────────────────────────── */
+function editEmail() {
+  if (auth.currentUser?.providerData[0]?.providerId === 'google.com') {
+    alert('Ton compte est lié à Google. Change l\'email depuis ton compte Google.');
+  } else {
+    const newEmail = prompt('Nouvel email :');
+    if (newEmail) {
+      auth.currentUser.updateEmail(newEmail)
+        .then(() => { document.getElementById('settingEmail').textContent = newEmail; alert('Email mis à jour.'); })
+        .catch(err => alert('Erreur : ' + err.message));
+    }
+  }
+}
+
+function editPass() {
+  if (auth.currentUser?.providerData[0]?.providerId === 'google.com') {
+    alert('Ton compte est lié à Google — pas de mot de passe PIXEL.');
+  } else {
+    auth.sendPasswordResetEmail(auth.currentUser.email)
+      .then(() => alert('Email de réinitialisation envoyé !'))
+      .catch(err => alert('Erreur : ' + err.message));
+  }
+}
+
+function editNotif() { alert('Gestion des notifications bientôt disponible.'); }
+
+</script>
+</body>
+</html>
