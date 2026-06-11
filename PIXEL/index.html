@@ -1830,6 +1830,43 @@ document.addEventListener('keydown', e => {
 });
 
 // ── SECRET PAGE FUNCTIONS ───────────────────────────────────
+function switchShowcase(btn, type) {
+  document.querySelectorAll('.s-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const img = document.getElementById('showcaseImg');
+  const map = {
+    lifestyle: 'products/photos/cheatcode-lifestyle.png',
+    front:     'products/photos/cheatcode-front.png',
+    back:      'products/photos/cheatcode-back.png'
+  };
+  if (map[type]) {
+    img.style.opacity = '0';
+    setTimeout(() => { img.src = map[type]; img.style.opacity = '1'; }, 150);
+  }
+}
+
+function selectSecretSize(btn) {
+  document.querySelectorAll('#secret-sizes .sz').forEach(s => s.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function addSecretToCart() {
+  const activeSize = document.querySelector('#secret-sizes .sz.active');
+  const size = activeSize ? activeSize.textContent : 'M';
+  addToCart('secret-cheatcode', 'T-Shirt CHEAT CODE', 35, 'CHEAT CODE', '🎮', size);
+}
+
+function submitSecret(e) {
+  e.preventDefault();
+  const input = e.target.querySelector('input[type="email"]');
+  showToast('CODE ACCEPTÉ — Bienvenue dans le jeu');
+  if (input) input.value = '';
+}
+
 function closeKonami() {
   document.getElementById('konami-overlay').classList.remove('show');
   document.body.classList.remove('secret-open');
+}
+</script>
+</body>
+</html>
