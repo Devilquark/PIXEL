@@ -45,7 +45,8 @@ nav {
   font-family: var(--mono); font-size: .75rem;
   font-weight: 700; letter-spacing: .12em; color: var(--white);
 }
-.nav-sq { width: 14px; height: 14px; background: var(--white); }
+.nav-sq { width: 14px; height: 14px; background: var(--white); transition: background 0.2s; }
+.nav-logo:hover .nav-sq { background: var(--red); }
 .nav-links { display: flex; gap: 2rem; font-family: var(--mono); font-size: .62rem; letter-spacing: .12em; }
 .nav-links a { color: var(--gray); }
 .nav-links a:hover { color: var(--white); opacity: 1; text-decoration: none; }
