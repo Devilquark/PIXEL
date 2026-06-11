@@ -323,9 +323,10 @@ function logoClick() {
 }
 
 /* ─── WAITLIST ───────────────────────────────────────────────── */
-function joinWaitlist() {
+async function joinWaitlist() {
   const input = document.getElementById('wlEmail');
   const fb    = document.getElementById('wlFeedback');
+  const btn   = document.querySelector('.form-btn');
   const email = input.value.trim().toLowerCase();
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -334,30 +335,48 @@ function joinWaitlist() {
     return;
   }
 
-  // sauvegarde locale
-  let list = JSON.parse(localStorage.getItem('pixel_waitlist') || '[]');
-  if (list.includes(email)) {
-    fb.textContent = '// DEJA ENREGISTRE — RESTE EN VEILLE.';
-    fb.className   = 'form-feedback ok';
-    return;
-  }
-  list.push(email);
-  localStorage.setItem('pixel_waitlist', JSON.stringify(list));
+  btn.disabled = true;
+  btn.textContent = '...';
+  fb.textContent = '';
 
-  input.value    = '';
-  fb.textContent = '✓ SAVE FILE CREATED — ON T\'AVERTIT AU DROP.';
-  fb.className   = 'form-feedback ok';
-  updateCounter();
+  try {
+    const res  = await fetch('/api/waitlist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+
+    if (data.duplicate) {
+      fb.textContent = '// DEJA ENREGISTRE — RESTE EN VEILLE.';
+      fb.className   = 'form-feedback ok';
+    } else {
+      input.value    = '';
+      fb.textContent = '✓ SAVE FILE CREATED — ON T\'AVERTIT AU DROP.';
+      fb.className   = 'form-feedback ok';
+    }
+    updateCounter(data.count);
+  } catch(e) {
+    fb.textContent = '// ERREUR RESEAU — REESSAIE.';
+    fb.className   = 'form-feedback err';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'NOTIFY ME ►';
+  }
 }
 
-function updateCounter() {
-  const list = JSON.parse(localStorage.getItem('pixel_waitlist') || '[]');
-  const el   = document.getElementById('wlCounter');
-  if (list.length > 0) {
-    el.innerHTML = '<span>' + list.length + '</span> PLAYER' + (list.length > 1 ? 'S' : '') + ' EN ATTENTE';
+function updateCounter(count) {
+  const el = document.getElementById('wlCounter');
+  if (count > 0) {
+    el.innerHTML = '<span>' + count + '</span> PLAYER' + (count > 1 ? 'S' : '') + ' EN ATTENTE';
   }
 }
-updateCounter();
+
+// Charge le compteur global au chargement
+fetch('/api/waitlist')
+  .then(r => r.json())
+  .then(d => { if (d.count > 0) updateCounter(d.count); })
+  .catch(() => {});
 
 /* ─── KONAMI CODE ────────────────────────────────────────────── */
 const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown',
