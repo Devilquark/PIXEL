@@ -1170,7 +1170,7 @@ function handleCheckout() {
   }
   var existing = cart.find(function(i){ return i.name==='T-Shirt CHEAT CODE' && i.size===selectedSize; });
   if (existing) { existing.qty++; }
-  else { cart.push({ name:'T-Shirt CHEAT CODE', size:selectedSize, price:35, qty:1, emoji:'👕', img:'../products/photos/cheatcode-front.png' }); }
+  else { cart.push({ id:'cheatcode', name:'T-Shirt CHEAT CODE', size:selectedSize, price:35, qty:1, collection:'CHEAT CODE', emoji:'👕', img:'../products/photos/cheatcode-front.png' }); }
   saveCart();
   toggleCart();
   showToast('✓ T-SHIRT CHEAT CODE ' + selectedSize + ' — AJOUTÉ AU PANIER');
