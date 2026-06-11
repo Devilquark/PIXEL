@@ -549,6 +549,58 @@ nav {
 }
 .upload-error.show { display:block; }
 
+/* ─── LOGIN OVERLAY ──────────────────────────────────────────── */
+#loginOverlay {
+  position:fixed; inset:0; z-index:300;
+  background:var(--white);
+  display:flex;
+  align-items:center; justify-content:center;
+  font-family:var(--mono);
+}
+.login-box {
+  text-align:center;
+  padding:2rem;
+  max-width:400px;
+}
+.login-pixel-sq {
+  width:20px; height:20px;
+  background:var(--red);
+  margin:0 auto 2rem;
+}
+.login-title {
+  font-size:1rem;
+  letter-spacing:0.15em;
+  margin-bottom:0.4rem;
+}
+.login-sub {
+  font-size:0.45rem;
+  color:var(--gray);
+  letter-spacing:0.2em;
+  margin-bottom:3rem;
+}
+.login-hint {
+  font-size:0.42rem;
+  color:var(--gray);
+  letter-spacing:0.1em;
+  line-height:2;
+  margin-bottom:2rem;
+}
+.google-btn {
+  font-family:var(--mono);
+  font-size:0.5rem;
+  letter-spacing:0.15em;
+  background:var(--black);
+  color:var(--white);
+  border:none;
+  padding:0.9rem 2rem;
+  cursor:none;
+  display:inline-flex;
+  align-items:center;
+  gap:0.7rem;
+  transition:background 0.2s;
+}
+.google-btn:hover { background:#333; }
+
 </style>
 </head>
 <body>
@@ -600,8 +652,30 @@ nav {
   </div>
 </nav>
 
+<!-- ─── LOGIN OVERLAY ────────────────────────────────────────── -->
+<div id="loginOverlay">
+  <div class="login-box">
+    <div class="login-pixel-sq"></div>
+    <div class="login-title">PIXEL</div>
+    <div class="login-sub">// PLAYER_PROFILE</div>
+    <div class="login-hint">
+      CONNECTE-TOI POUR ACCEDER A TON PROFIL<br>
+      ET SAUVEGARDER TES XP SUR TOUS TES APPAREILS
+    </div>
+    <button class="google-btn" onclick="signInWithGoogle()">
+      <svg width="16" height="16" viewBox="0 0 18 18">
+        <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908C16.658 14.092 17.64 11.785 17.64 9.2z" fill="#4285F4"/>
+        <path d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
+        <path d="M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.039l3.007-2.332z" fill="#FBBC05"/>
+        <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.96L3.964 7.292C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+      </svg>
+      CONTINUER AVEC GOOGLE
+    </button>
+  </div>
+</div>
+
 <!-- ─── PROFILE ZONE ────────────────────────────────────────── -->
-<div class="profile-zone" id="profileZone">
+<div class="profile-zone" id="profileZone" style="display:none">
 <div class="profile-inner">
 
   <!-- PAGE HEADER -->
@@ -754,6 +828,11 @@ nav {
 <input type="file" id="photoInput" accept="image/jpeg,image/png,image/webp"
   style="display:none" onchange="handlePhotoUpload(this)">
 
+<!-- Firebase SDK (compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
 <script>
 /* ─── CURSOR ─────────────────────────────────────────────────── */
 const cur = document.getElementById('cursor');
@@ -861,6 +940,10 @@ function selectAvatar(idx) {
   localStorage.setItem('pixel_avatar', idx);
   renderMainAvatar();
   closeAvatarModal();
+  // Sauvegarde Firestore
+  if (typeof auth !== 'undefined' && auth.currentUser) {
+    db.collection('users').doc(auth.currentUser.uid).update({ avatar: idx }).catch(console.error);
+  }
 }
 
 function closeAvatarModal() {
@@ -962,6 +1045,10 @@ function editPseudo() {
     newEl.textContent = val;
     input.replaceWith(newEl);
     localStorage.setItem('pixel_username', val);
+    // Sauvegarde Firestore
+    if (typeof auth !== 'undefined' && auth.currentUser) {
+      db.collection('users').doc(auth.currentUser.uid).update({ username: val }).catch(console.error);
+    }
   }
 
   input.addEventListener('keydown', e => {
@@ -977,26 +1064,16 @@ function editPseudo() {
   input.addEventListener('blur', savePseudo);
 }
 
-/* ─── SESSION GUARD ──────────────────────────────────────────── */
+/* ─── CART COUNT ─────────────────────────────────────────────── */
 (function() {
-  // Auto-crée une session si absente — pas de login requis
-  if (!localStorage.getItem('pixel_session')) {
-    localStorage.setItem('pixel_session', 'guest_' + Date.now());
-  }
+  try {
+    const cart  = JSON.parse(localStorage.getItem('pixel_cart') || '[]');
+    const total = cart.reduce((s,i) => s + (i.qty||1), 0);
+    document.getElementById('cart-count').textContent = total;
+  } catch(e) {}
 })();
 
-/* ─── CART COUNT ─────────────────────────────────────────────── */
-function loadCart() {
-  try {
-    const cart = JSON.parse(localStorage.getItem('pixel_cart') || '[]');
-    const total = cart.reduce((s, i) => s + (i.qty || 1), 0);
-    document.getElementById('cart-count').textContent = total;
-    return cart;
-  } catch(e) { return []; }
-}
-loadCart();
-
-/* ─── GAME DATA ──────────────────────────────────────────────── */
+/* ─── GAME DATA helpers ──────────────────────────────────────── */
 function getRankName(level) {
   if (level >= 100) return 'THE GOAT';
   if (level >= 91)  return 'MYTHIC';
@@ -1010,20 +1087,13 @@ function getRankName(level) {
   if (level >= 11)  return 'ROOKIE';
   return 'NEWBIE';
 }
-
-/* XP requis pour passer du niveau n au niveau n+1 */
-function xpForLevel(n) {
-  return 100 + (n - 1) * 20;
-}
-
+function xpForLevel(n) { return 100 + (n - 1) * 20; }
 function getLevelData(xp) {
-  let level = 1;
-  let cumXP = 0;
+  let level = 1, cumXP = 0;
   while (level < 100) {
     const needed = xpForLevel(level);
     if (xp < cumXP + needed) break;
-    cumXP += needed;
-    level++;
+    cumXP += needed; level++;
   }
   const name     = getRankName(level);
   const xpInLvl  = xp - cumXP;
@@ -1032,162 +1102,187 @@ function getLevelData(xp) {
   const xpToNext = level < 100 ? xpNeeded - xpInLvl : 0;
   return { level, name, xpInLvl, xpNeeded, pct, xpToNext };
 }
-
-/* demo orders — in a real build, fetch from backend */
-const DEMO_ORDERS = JSON.parse(localStorage.getItem('pixel_orders') || '[]');
-
-/* ── XP PAR TYPE DE PRODUIT ──────────────────────────────────── */
 function getProductXP(item) {
   const name = (item.name || item.id || '').toLowerCase();
   if (name.includes('pull') || name.includes('hoodie') || name.includes('sweat')) return 150;
   if (name.includes('chaussette') || name.includes('sock')) return 50;
-  return 100; // t-shirt par défaut
+  return 100;
 }
 
-/* XP commandes */
-const orderXP = DEMO_ORDERS.reduce((s, o) => s + getProductXP(o) * (o.qty || 1), 0);
+/* ─── FIREBASE ───────────────────────────────────────────────── */
+const firebaseConfig = {
+  apiKey:            "AIzaSyDJ9hnUYzVqP_H_oEim-6u44lR0F_tkZhU",
+  authDomain:        "pixel-8103d.firebaseapp.com",
+  projectId:         "pixel-8103d",
+  storageBucket:     "pixel-8103d.firebasestorage.app",
+  messagingSenderId: "738389635273",
+  appId:             "1:738389635273:web:d7285f6465085473661d18"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db   = firebase.firestore();
 
-/* XP bonus une seule fois */
-const bonusMinigame  = localStorage.getItem('pixel_bonus_minigame')  ? 100 : 0;
-const bonusCheatcode = localStorage.getItem('pixel_bonus_cheatcode') ? 100 : 0;
+function signInWithGoogle() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider).catch(err => console.error('Sign-in error:', err));
+}
 
-const totalXP = orderXP + bonusMinigame + bonusCheatcode;
-const lvlData = getLevelData(totalXP);
+auth.onAuthStateChanged(async function(user) {
+  if (!user) {
+    document.getElementById('loginOverlay').style.display = 'flex';
+    document.getElementById('profileZone').style.display  = 'none';
+    return;
+  }
 
-/* load saved pseudo */
-const savedUsername = localStorage.getItem('pixel_username');
-if (savedUsername) document.getElementById('playerName').textContent = savedUsername;
+  // Utilisateur connecté
+  document.getElementById('loginOverlay').style.display = 'none';
+  document.getElementById('profileZone').style.display  = 'block';
 
-/* populate player card */
-document.getElementById('playerLvl').textContent       = String(lvlData.level).padStart(2,'0');
-document.getElementById('playerRankName').textContent  = lvlData.name;
-document.getElementById('playerRank').textContent      = lvlData.name;
-document.getElementById('playerOrders').textContent    = DEMO_ORDERS.length;
-document.getElementById('xpCur').textContent           = lvlData.xpInLvl;
-document.getElementById('xpMax').textContent           = lvlData.level < 100 ? lvlData.xpNeeded : totalXP;
-document.getElementById('xpNext').textContent          = lvlData.level < 100
-  ? `+${lvlData.xpToNext} XP`
-  : 'MAX LEVEL — THE GOAT';
+  let userData = {};
+  const docRef = db.collection('users').doc(user.uid);
 
-/* animate XP bar */
-setTimeout(() => {
-  document.getElementById('xpBar').style.width = lvlData.pct + '%';
-}, 400);
+  try {
+    const doc = await docRef.get();
+    if (doc.exists) {
+      userData = doc.data();
+    } else {
+      // Nouveau joueur — crée son document
+      const raw = (user.displayName || 'PLAYER_01').toUpperCase();
+      const cleanName = raw.replace(/[^A-Z0-9_\- ]/g,'').replace(/ /g,'_').substring(0,16) || 'PLAYER_01';
+      userData = {
+        username:        cleanName,
+        bonus_minigame:  false,
+        bonus_cheatcode: false,
+        avatar:          0,
+        createdAt:       firebase.firestore.FieldValue.serverTimestamp()
+      };
+      await docRef.set(userData);
+    }
 
-/* populate stats */
-document.getElementById('statOrders').textContent = DEMO_ORDERS.length;
-document.getElementById('statXP').textContent     = totalXP;
-document.getElementById('statItems').textContent  = DEMO_ORDERS.reduce((s,o)=>s+(o.qty||1),0);
-document.getElementById('statRank').textContent   = lvlData.name;
+    // Sync localStorage bonuses → Firestore (gagnés avant connexion)
+    const lsMinigame  = !!localStorage.getItem('pixel_bonus_minigame');
+    const lsCheatcode = !!localStorage.getItem('pixel_bonus_cheatcode');
+    const upd = {};
+    if (lsMinigame  && !userData.bonus_minigame)  upd.bonus_minigame  = true;
+    if (lsCheatcode && !userData.bonus_cheatcode) upd.bonus_cheatcode = true;
+    if (Object.keys(upd).length) {
+      await docRef.update(upd);
+      Object.assign(userData, upd);
+    }
 
-/* easter eggs stat */
-const gotCheat  = !!sessionStorage.getItem('pixel_cheatcode');
-const gotSecret = !!sessionStorage.getItem('pixel_open_secret');
-const eggsFound = (gotCheat ? 1 : 0) + (gotSecret ? 1 : 0);
-document.getElementById('statEgg').textContent = eggsFound + '/2';
+    // Sync Firestore bonuses → localStorage
+    if (userData.bonus_minigame)  localStorage.setItem('pixel_bonus_minigame',  '1');
+    if (userData.bonus_cheatcode) localStorage.setItem('pixel_bonus_cheatcode', '1');
 
-/* ─── ACHIEVEMENTS ───────────────────────────────────────────── */
-const hasOrders     = DEMO_ORDERS.length > 0;
-const hasOverride   = DEMO_ORDERS.some(o => o.collection === 'OVERRIDE');
-const hasGlitch     = !!sessionStorage.getItem('pixel_game_win');
+    // Avatar depuis Firestore
+    if (typeof userData.avatar === 'number') {
+      currentAvatarIdx = userData.avatar;
+      localStorage.setItem('pixel_avatar', userData.avatar);
+      renderMainAvatar();
+    }
 
-const ACHIEVEMENTS = [
-  {
-    id:'first_blood',
-    icon:'🎮',
-    name:'FIRST BLOOD',
-    desc:'Premiere commande passee',
-    unlocked: hasOrders,
-  },
-  {
-    id:'vault',
-    icon:'🔒',
-    name:'VAULT LOCKED',
-    desc:'Paiement securise effectue',
-    unlocked: hasOrders,
-  },
-  {
-    id:'cheatcode',
-    icon:'⚡',
-    name:'CHEAT CODE',
-    desc:'Code Konami debloque',
-    unlocked: gotCheat,
-  },
-  {
-    id:'secret',
-    icon:'🕵️',
-    name:'WINK CULTURE',
-    desc:'Page secrete decouverte',
-    unlocked: gotSecret,
-  },
-  {
-    id:'override',
-    icon:'💜',
-    name:'OVERRIDE HUNTER',
-    desc:'Piece OVERRIDE acquise',
-    unlocked: hasOverride,
-  },
-  {
-    id:'glitch',
-    icon:'👾',
-    name:'GLITCH MASTER',
-    desc:'Mini-jeu OVERRIDE complete',
-    unlocked: hasGlitch,
-  },
-];
+  } catch(err) {
+    console.error('Firestore error:', err);
+  }
 
-const unlockedCount = ACHIEVEMENTS.filter(a => a.unlocked).length;
-document.getElementById('achCount').textContent = unlockedCount + '/6 UNLOCKED';
-document.getElementById('statAch').textContent  = unlockedCount + '/6';
+  // Email Google dans les paramètres
+  document.getElementById('settingEmail').textContent = user.email || '—';
 
-const grid = document.getElementById('achievementsGrid');
-ACHIEVEMENTS.forEach(a => {
-  const el = document.createElement('div');
-  el.className = 'ach-card ' + (a.unlocked ? 'unlocked' : 'locked');
-  el.innerHTML = `
-    <span class="ach-icon">${a.icon}</span>
-    <div class="ach-name">${a.name}</div>
-    <div class="ach-desc">${a.desc}</div>
-    <div class="ach-badge">${a.unlocked ? 'UNLOCKED' : 'LOCKED'}</div>
-  `;
-  grid.appendChild(el);
-  el.addEventListener('mouseenter', () => cur.classList.add('hover'));
-  el.addEventListener('mouseleave', () => cur.classList.remove('hover'));
+  renderProfile(userData, user);
 });
 
-/* ─── QUEST LOG ──────────────────────────────────────────────── */
-if (DEMO_ORDERS.length > 0) {
-  const ql = document.getElementById('questList');
-  ql.innerHTML = '';
-  DEMO_ORDERS.forEach((o, i) => {
-    const row = document.createElement('div');
-    row.className = 'quest-row';
-    const statusCls = o.status === 'LIVRE' ? 'done' : 'progress';
-    const statusTxt = o.status === 'LIVRE' ? '&#10003; LIVRE' : '&#9654; EN COURS';
-    row.innerHTML = `
-      <span class="quest-id">CMD_${String(i+1).padStart(3,'0')}</span>
-      <span class="quest-name">${o.name}</span>
-      <span class="quest-coll">${o.collection || '—'}</span>
-      <span class="quest-price">${o.price}€</span>
-      <span class="quest-status ${statusCls}">${statusTxt}</span>
-    `;
-    ql.appendChild(row);
+/* ─── RENDER PROFILE ─────────────────────────────────────────── */
+function renderProfile(userData, user) {
+  const username = userData.username
+    || (user && user.displayName && user.displayName.toUpperCase())
+    || 'PLAYER_01';
+  document.getElementById('playerName').textContent = username;
+  localStorage.setItem('pixel_username', username);
+
+  const orders         = JSON.parse(localStorage.getItem('pixel_orders') || '[]');
+  const orderXP        = orders.reduce((s,o) => s + getProductXP(o) * (o.qty||1), 0);
+  const bonusMinigame  = (userData.bonus_minigame  || !!localStorage.getItem('pixel_bonus_minigame'))  ? 100 : 0;
+  const bonusCheatcode = (userData.bonus_cheatcode || !!localStorage.getItem('pixel_bonus_cheatcode')) ? 100 : 0;
+  const totalXP        = orderXP + bonusMinigame + bonusCheatcode;
+  const lvlData        = getLevelData(totalXP);
+
+  document.getElementById('playerLvl').textContent      = String(lvlData.level).padStart(2,'0');
+  document.getElementById('playerRankName').textContent = lvlData.name;
+  document.getElementById('playerRank').textContent     = lvlData.name;
+  document.getElementById('playerOrders').textContent   = orders.length;
+  document.getElementById('xpCur').textContent          = lvlData.xpInLvl;
+  document.getElementById('xpMax').textContent          = lvlData.level < 100 ? lvlData.xpNeeded : totalXP;
+  document.getElementById('xpNext').textContent         = lvlData.level < 100
+    ? `+${lvlData.xpToNext} XP`
+    : 'MAX LEVEL — THE GOAT';
+
+  setTimeout(() => { document.getElementById('xpBar').style.width = lvlData.pct + '%'; }, 400);
+
+  document.getElementById('statOrders').textContent = orders.length;
+  document.getElementById('statXP').textContent     = totalXP;
+  document.getElementById('statItems').textContent  = orders.reduce((s,o)=>s+(o.qty||1),0);
+  document.getElementById('statRank').textContent   = lvlData.name;
+
+  const gotCheat  = !!sessionStorage.getItem('pixel_cheatcode');
+  const gotSecret = !!sessionStorage.getItem('pixel_open_secret');
+  document.getElementById('statEgg').textContent = ((gotCheat?1:0)+(gotSecret?1:0))+'/2';
+
+  const hasOrders   = orders.length > 0;
+  const hasOverride = orders.some(o => o.collection === 'OVERRIDE');
+  const hasGlitch   = !!sessionStorage.getItem('pixel_game_win');
+
+  const ACHIEVEMENTS = [
+    { icon:'🎮', name:'FIRST BLOOD',     desc:'Premiere commande passee',   unlocked: hasOrders   },
+    { icon:'🔒', name:'VAULT LOCKED',    desc:'Paiement securise effectue',  unlocked: hasOrders   },
+    { icon:'⚡', name:'CHEAT CODE',      desc:'Code Konami debloque',        unlocked: gotCheat    },
+    { icon:'🕵️', name:'WINK CULTURE',   desc:'Page secrete decouverte',     unlocked: gotSecret   },
+    { icon:'💜', name:'OVERRIDE HUNTER', desc:'Piece OVERRIDE acquise',      unlocked: hasOverride },
+    { icon:'👾', name:'GLITCH MASTER',   desc:'Mini-jeu OVERRIDE complete',  unlocked: hasGlitch   },
+  ];
+
+  const unlocked = ACHIEVEMENTS.filter(a=>a.unlocked).length;
+  document.getElementById('achCount').textContent = unlocked+'/6 UNLOCKED';
+  document.getElementById('statAch').textContent  = unlocked+'/6';
+
+  const achGrid = document.getElementById('achievementsGrid');
+  achGrid.innerHTML = '';
+  ACHIEVEMENTS.forEach(a => {
+    const el = document.createElement('div');
+    el.className = 'ach-card '+(a.unlocked?'unlocked':'locked');
+    el.innerHTML = `<span class="ach-icon">${a.icon}</span>
+      <div class="ach-name">${a.name}</div>
+      <div class="ach-desc">${a.desc}</div>
+      <div class="ach-badge">${a.unlocked?'UNLOCKED':'LOCKED'}</div>`;
+    achGrid.appendChild(el);
+    el.addEventListener('mouseenter', ()=>cur.classList.add('hover'));
+    el.addEventListener('mouseleave', ()=>cur.classList.remove('hover'));
   });
+
+  if (orders.length > 0) {
+    const ql = document.getElementById('questList');
+    ql.innerHTML = '';
+    orders.forEach((o,i) => {
+      const row = document.createElement('div');
+      row.className = 'quest-row';
+      const scls = o.status==='LIVRE' ? 'done' : 'progress';
+      const stxt = o.status==='LIVRE' ? '&#10003; LIVRE' : '&#9654; EN COURS';
+      row.innerHTML = `
+        <span class="quest-id">CMD_${String(i+1).padStart(3,'0')}</span>
+        <span class="quest-name">${o.name}</span>
+        <span class="quest-coll">${o.collection||'—'}</span>
+        <span class="quest-price">${o.price}€</span>
+        <span class="quest-status ${scls}">${stxt}</span>`;
+      ql.appendChild(row);
+    });
+  }
 }
 
 /* ─── SETTINGS ───────────────────────────────────────────────── */
-const savedEmail = localStorage.getItem('pixel_email') || '—';
-document.getElementById('settingEmail').textContent = savedEmail;
-
 function editEmail() {
-  const e = prompt('Nouvel email :');
-  if (e && e.includes('@')) {
-    localStorage.setItem('pixel_email', e);
-    document.getElementById('settingEmail').textContent = e;
-  }
+  alert('Email géré par Google Sign-In.\nPour le modifier, va dans les paramètres de ton compte Google.');
 }
 function editPass() {
-  alert('Un email de reinitialisation vous sera envoye.\n[FEATURE EN COURS]');
+  alert('Mot de passe géré par Google Sign-In.\n[FEATURE EN COURS]');
 }
 function editNotif() {
   const pref = confirm('Recevoir les alertes DROP et RESTOCK ?\n[OK = OUI  /  ANNULER = NON]');
@@ -1196,8 +1291,7 @@ function editNotif() {
 }
 function handleLogout() {
   if (confirm('Deconnecter cette session ?')) {
-    sessionStorage.clear();
-    window.location.href = '/';
+    auth.signOut().then(() => { window.location.href = '/'; });
   }
 }
 </script>
