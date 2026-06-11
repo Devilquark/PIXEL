@@ -257,6 +257,20 @@ nav {
 .login-btn:hover { background: var(--black); border-color: var(--black); }
 .login-btn:hover svg rect { fill: var(--white); }
 .login-btn svg { width:18px; height:18px; }
+.login-btn .online-dot {
+  display: none;
+  position: absolute;
+  top: 4px; right: 4px;
+  width: 8px; height: 8px;
+  background: #00C853;
+  border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+.login-btn.connected .online-dot { display: block; }
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,200,83,0.5); }
+  50% { box-shadow: 0 0 0 4px rgba(0,200,83,0); }
+}
 .cart-btn {
   font-family: var(--mono); font-size:0.72rem;
   background: var(--black); color: var(--white);
@@ -1081,15 +1095,13 @@ footer {
   </div>
   <div class="nav-right">
     <!-- Login pixel art icon -->
-    <a href="profil.html" class="login-btn" title="Mon profil">
+    <a href="profil.html" class="login-btn" id="profil-btn" title="Mon profil">
       <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Tête pixel -->
         <rect x="6" y="1" width="6" height="1" fill="var(--black)"/>
         <rect x="5" y="2" width="8" height="1" fill="var(--black)"/>
         <rect x="5" y="3" width="8" height="3" fill="var(--black)"/>
         <rect x="5" y="6" width="8" height="1" fill="var(--black)"/>
         <rect x="6" y="7" width="6" height="1" fill="var(--black)"/>
-        <!-- Corps pixel -->
         <rect x="3" y="9"  width="12" height="1" fill="var(--black)"/>
         <rect x="2" y="10" width="14" height="1" fill="var(--black)"/>
         <rect x="2" y="11" width="14" height="4" fill="var(--black)"/>
@@ -1098,6 +1110,7 @@ footer {
         <rect x="2" y="16" width="4"  height="1" fill="var(--black)"/>
         <rect x="12" y="16" width="4" height="1" fill="var(--black)"/>
       </svg>
+      <span class="online-dot"></span>
     </a>
     <button class="cart-btn" onclick="toggleCart()">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -1492,6 +1505,12 @@ function dismissLoader() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Point vert "connecté" si session profil active
+  if (localStorage.getItem('pixel_session')) {
+    const btn = document.getElementById('profil-btn');
+    if (btn) btn.classList.add('connected');
+  }
+
   const loader = document.getElementById('loader');
   if (!loader) return;
   if (sessionStorage.getItem('pixel_booted')) {
@@ -1529,8 +1548,8 @@ function addToCart(id, name, price, collection, emoji, selectedSize) {
   toggleCart();
 }
 
-function removeFromCart(id, size) {
-  cart = cart.filter(i => !(i.id === id && i.size === size));
+function removeFromCart(index) {
+  cart.splice(index, 1);
   saveCart();
   updateCart();
 }
@@ -1551,16 +1570,16 @@ function updateCart() {
       </div>`;
     return;
   }
-  container.innerHTML = cart.map(item => `
+  container.innerHTML = cart.map((item, idx) => `
     <div class="cart-item">
-      <div class="cart-item-img">${item.emoji}</div>
+      <div class="cart-item-img">${item.emoji || item.img ? (item.img ? '<img src="'+item.img+'" style="width:100%;height:100%;object-fit:cover">' : item.emoji) : '👕'}</div>
       <div class="cart-item-info">
         <div class="cart-item-name">${item.name}</div>
-        <div class="cart-item-meta">${item.collection} · Taille ${item.size} · Qté ${item.qty}</div>
+        <div class="cart-item-meta">${item.collection || 'PIXEL'} · Taille ${item.size} · Qté ${item.qty}</div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
         <div class="cart-item-price">${item.price * item.qty} €</div>
-        <button class="cart-item-remove" onclick="removeFromCart('${item.id}','${item.size}')">✕</button>
+        <button class="cart-item-remove" onclick="removeFromCart(${idx})">✕</button>
       </div>
     </div>
   `).join('');

@@ -93,12 +93,14 @@ nav {
 .nav-links a:hover { color:var(--black); }
 .nav-right { display:flex; gap:0.5rem; align-items:center; }
 .login-btn {
-  width:38px; height:38px;
+  width:28px; height:28px;
   background:transparent; display:flex; align-items:center; justify-content:center;
   color:var(--black); transition:color 0.2s;
+  position:relative;
 }
-.login-btn.active { color:var(--red); }
-.login-btn:hover { color:var(--red); }
+.login-btn svg { width:20px; height:20px; }
+.login-btn.active { color:#00C853; }
+.login-btn:hover { color:#00C853; }
 .cart-btn {
   display:flex; align-items:center; gap:0.5rem;
   background:var(--black); color:var(--white);
@@ -153,13 +155,13 @@ nav {
 }
 .pg-status {
   font-size:0.6rem;
-  color:var(--cyan);
+  color:#00C853;
   display:flex; align-items:center; gap:0.5rem;
 }
 .pg-status::before {
   content:'';
   width:6px; height:6px;
-  background:var(--cyan);
+  background:#00C853;
   border-radius:50%;
   animation:blink 1.2s step-start infinite;
 }
