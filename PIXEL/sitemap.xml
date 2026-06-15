@@ -2,137 +2,181 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
-  <!-- ─── HOMEPAGE ──────────────────────────────────────────── -->
+  <!-- HOMEPAGE -->
   <url>
-    <loc>https://pixelwear.fr/</loc>
-    <lastmod>2026-04-22</lastmod>
+    <loc>https://www.pixelwear.fr/</loc>
+    <lastmod>2026-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://pixelwear.fr/assets/og-image.png</image:loc>
+      <image:loc>https://www.pixelwear.fr/assets/og-image.png</image:loc>
       <image:title>PIXEL — Streetwear Gaming Pixel Art</image:title>
     </image:image>
   </url>
 
-  <!-- ─── COLLECTION ORIGIN ─────────────────────────────────── -->
+  <!-- COLLECTION ORIGIN -->
   <url>
-    <loc>https://pixelwear.fr/products/tshirt-origin-noir.html</loc>
-    <lastmod>2026-04-22</lastmod>
+    <loc>https://www.pixelwear.fr/products/tshirt-origin-noir.html</loc>
+    <lastmod>2026-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
-      <image:loc>https://pixelwear.fr/products/photos/tshirt-origin-noir.png</image:loc>
+      <image:loc>https://www.pixelwear.fr/products/photos/tshirt-origin-noir.png</image:loc>
       <image:title>T-Shirt ORIGIN Noir PIXEL</image:title>
     </image:image>
   </url>
 
   <url>
-    <loc>https://pixelwear.fr/products/tshirt-origin-blanc.html</loc>
-    <lastmod>2026-04-22</lastmod>
+    <loc>https://www.pixelwear.fr/products/tshirt-origin-blanc.html</loc>
+    <lastmod>2026-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
-      <image:loc>https://pixelwear.fr/products/photos/tshirt-origin-blanc.png</image:loc>
+      <image:loc>https://www.pixelwear.fr/products/photos/tshirt-origin-blanc.png</image:loc>
       <image:title>T-Shirt ORIGIN Blanc PIXEL</image:title>
     </image:image>
   </url>
 
   <url>
-    <loc>https://pixelwear.fr/products/pull-origin.html</loc>
-    <lastmod>2026-04-22</lastmod>
+    <loc>https://www.pixelwear.fr/products/pull-origin.html</loc>
+    <lastmod>2026-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
-      <image:loc>https://pixelwear.fr/products/photos/pull-origin.png</image:loc>
+      <image:loc>https://www.pixelwear.fr/products/photos/pull-origin.png</image:loc>
       <image:title>Pull ORIGIN Ghost PIXEL</image:title>
     </image:image>
   </url>
 
-  <!-- ─── COLLECTION RGB ───────────────────────────────────── -->
+  <!-- COLLECTION RGB -->
   <url>
-    <loc>https://pixelwear.fr/products/tshirt-rgb.html</loc>
-    <lastmod>2026-04-22</lastmod>
+    <loc>https://www.pixelwear.fr/products/tshirt-rgb.html</loc>
+    <lastmod>2026-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
-      <image:loc>https://pixelwear.fr/products/photos/tshirt-rgb.png</image:loc>
+      <image:loc>https://www.pixelwear.fr/products/photos/tshirt-rgb.png</image:loc>
       <image:title>T-Shirt RGB Arcade PIXEL</image:title>
     </image:image>
   </url>
 
-  <!-- ─── COLLECTION GLITCH ────────────────────────────────── -->
+  <!-- COLLECTION GLITCH -->
   <url>
-    <loc>https://pixelwear.fr/products/tshirt-glitch.html</loc>
-    <lastmod>2026-04-22</lastmod>
+    <loc>https://www.pixelwear.fr/products/tshirt-glitch.html</loc>
+    <lastmod>2026-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
-      <image:loc>https://pixelwear.fr/products/photos/tshirt-glitch.png</image:loc>
+      <image:loc>https://www.pixelwear.fr/products/photos/tshirt-glitch.png</image:loc>
       <image:title>T-Shirt Glitch PIXEL — drop limité</image:title>
     </image:image>
   </url>
 
-  <!-- ─── COLLECTION KONAMI ────────────────────────────────── -->
+  <!-- COLLECTION KONAMI -->
   <url>
-    <loc>https://pixelwear.fr/products/tshirt-konami.html</loc>
-    <lastmod>2026-04-22</lastmod>
+    <loc>https://www.pixelwear.fr/products/tshirt-konami.html</loc>
+    <lastmod>2026-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
-      <image:loc>https://pixelwear.fr/products/photos/tshirt-konami.png</image:loc>
+      <image:loc>https://www.pixelwear.fr/products/photos/tshirt-konami.png</image:loc>
       <image:title>T-Shirt KONAMI Code PIXEL</image:title>
     </image:image>
   </url>
 
-  <!-- ─── PAGES AIDE ───────────────────────────────────────── -->
+  <!-- BLOG -->
   <url>
-    <loc>https://pixelwear.fr/guide-tailles.html</loc>
-    <lastmod>2026-04-22</lastmod>
+    <loc>https://www.pixelwear.fr/blog/</loc>
+    <lastmod>2026-06-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.pixelwear.fr/blog/streetwear-gaming-2026.html</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.pixelwear.fr/blog/t-shirt-pixel-art-guide-style.html</loc>
+    <lastmod>2026-05-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.pixelwear.fr/blog/marque-gaming-francaise-pixel.html</loc>
+    <lastmod>2026-04-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- PAGES COLLECTIONS SEO -->
+  <url>
+    <loc>https://www.pixelwear.fr/collections/origin.html</loc>
+    <lastmod>2026-06-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://www.pixelwear.fr/collections/gaming-streetwear.html</loc>
+    <lastmod>2026-06-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- PAGES AIDE -->
+  <url>
+    <loc>https://www.pixelwear.fr/guide-tailles.html</loc>
+    <lastmod>2026-06-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://pixelwear.fr/faq.html</loc>
-    <lastmod>2026-04-22</lastmod>
+    <loc>https://www.pixelwear.fr/faq.html</loc>
+    <lastmod>2026-06-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
-  <!-- ─── PAGES LÉGALES ────────────────────────────────────── -->
+  <!-- PAGES LEGALES -->
   <url>
-    <loc>https://pixelwear.fr/legal/mentions-legales.html</loc>
-    <lastmod>2026-04-22</lastmod>
+    <loc>https://www.pixelwear.fr/legal/mentions-legales.html</loc>
+    <lastmod>2026-06-15</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
 
   <url>
-    <loc>https://pixelwear.fr/legal/cgv.html</loc>
-    <lastmod>2026-04-22</lastmod>
+    <loc>https://www.pixelwear.fr/legal/cgv.html</loc>
+    <lastmod>2026-06-15</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
 
   <url>
-    <loc>https://pixelwear.fr/legal/politique-retour.html</loc>
-    <lastmod>2026-04-22</lastmod>
+    <loc>https://www.pixelwear.fr/legal/politique-retour.html</loc>
+    <lastmod>2026-06-15</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <url>
-    <loc>https://pixelwear.fr/legal/politique-confidentialite.html</loc>
-    <lastmod>2026-04-22</lastmod>
+    <loc>https://www.pixelwear.fr/legal/politique-confidentialite.html</loc>
+    <lastmod>2026-06-15</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
 
   <url>
-    <loc>https://pixelwear.fr/legal/politique-cookies.html</loc>
-    <lastmod>2026-04-22</lastmod>
+    <loc>https://www.pixelwear.fr/legal/politique-cookies.html</loc>
+    <lastmod>2026-06-15</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
 
-</urls
+</urlset>

@@ -36,7 +36,7 @@ User-agent: anthropic-ai
 Disallow: /
 
 # ─── Sitemap ────────────────────────────────────────────────────
-Sitemap: https://pixelwear.fr/sitemap.xml
+Sitemap: https://www.pixelwear.fr/sitemap.xml
 
 # ─── Crawl delay (optionnel, évite de surcharger l'hébergeur) ───
 Crawl-delay: 1
