@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog PIXEL — Streetwear Gaming, Culture Pixel Art & Éditions Limitées</title>
+<meta name="description" content="Le blog PIXEL : actualités streetwear gaming, culture pixel art, conseils style et coulisses des collections. La marque gaming française édition limitée.">
+<meta property="og:title" content="Blog PIXEL — Streetwear Gaming & Culture Gaming">
+<meta property="og:description" content="Plongez dans l'univers PIXEL : streetwear gaming, pixel art, drops exclusifs et culture gaming française.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.pixelwear.fr/blog/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+:root {
+  --black: #0A0A0A;
+  --white: #FFFFFF;
+  --red:   #FF2D55;
+  --gray:  #444;
+  --dim:   #1a1a1a;
+  --mono:  'Space Mono', monospace;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--black); color: var(--white); }
+
+/* NAV */
+nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 3rem; border-bottom: 1px solid #1a1a1a;
+  position: sticky; top: 0; background: var(--black); z-index: 100;
+}
+.nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+.nav-logo-sq { width:12px; height:12px; background: var(--red); }
+.nav-logo-txt { color: var(--white); font-size: 1rem; font-weight: 700; letter-spacing: 0.3em; }
+.nav-links { display:flex; gap:2rem; }
+.nav-links a { color: #888; font-size:0.55rem; letter-spacing:0.2em; text-decoration:none; text-transform:uppercase; transition:color 0.2s; }
+.nav-links a:hover { color: var(--white); }
+
+/* HERO */
+.blog-hero {
+  padding: 5rem 3rem 3rem;
+  border-bottom: 1px solid #1a1a1a;
+  max-width: 1100px; margin: 0 auto;
+}
+.blog-hero-tag { font-size:0.6rem; color: var(--red); letter-spacing:0.3em; margin-bottom:1rem; }
+.blog-hero h1 { font-size: clamp(1.8rem, 4vw, 3rem); letter-spacing:0.1em; line-height:1.2; margin-bottom:1rem; }
+.blog-hero p { color: #888; font-size:0.7rem; line-height:1.8; max-width:560px; }
+
+/* GRID */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1px;
+  background: #1a1a1a;
+  max-width: 1100px; margin: 0 auto;
+}
+.blog-card {
+  background: var(--black);
+  padding: 2.5rem;
+  text-decoration: none;
+  display: block;
+  transition: background 0.2s;
+}
+.blog-card:hover { background: #111; }
+.card-tag { font-size:0.5rem; color: var(--red); letter-spacing:0.25em; text-transform:uppercase; margin-bottom:1rem; }
+.card-title { font-size: 0.95rem; color: var(--white); letter-spacing:0.05em; line-height:1.5; margin-bottom:1rem; font-weight:700; }
+.card-excerpt { font-size:0.6rem; color: #666; line-height:1.8; margin-bottom:1.5rem; }
+.card-meta { display:flex; justify-content:space-between; align-items:center; }
+.card-date { font-size:0.5rem; color: #444; letter-spacing:0.1em; }
+.card-read { font-size:0.5rem; color: var(--red); letter-spacing:0.15em; }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid #1a1a1a;
+  padding: 2rem 3rem;
+  text-align:center;
+  font-size:0.55rem; color: #333; letter-spacing:0.2em;
+}
+footer a { color:#444; text-decoration:none; }
+footer a:hover { color: var(--white); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <div class="nav-logo-sq"></div>
+    <span class="nav-logo-txt">PIXEL</span>
+  </a>
+  <div class="nav-links">
+    <a href="/">Boutique</a>
+    <a href="/blog/" style="color:var(--white)">Blog</a>
+    <a href="/adn.html">ADN</a>
+  </div>
+</nav>
+
+<div class="blog-hero">
+  <p class="blog-hero-tag">// PIXEL JOURNAL</p>
+  <h1>CULTURE<br>GAMING &amp; STYLE</h1>
+  <p>Streetwear gaming, pixel art, coulisses des drops et regards sur la culture gaming. Le journal de la marque gaming française qui habille ceux qui savent.</p>
+</div>
+
+<div class="blog-grid">
+
+  <a class="blog-card" href="/blog/streetwear-gaming-2026.html">
+    <div class="card-tag">// TENDANCES</div>
+    <div class="card-title">Streetwear Gaming 2026 : pourquoi le pixel art revient plus fort que jamais</div>
+    <div class="card-excerpt">La culture gaming s'impose dans la mode. Entre nostalgie 8-bit et drops exclusifs, le streetwear gaming devient le langage visuel d'une génération entière.</div>
+    <div class="card-meta">
+      <span class="card-date">JUIN 2026</span>
+      <span class="card-read">LIRE →</span>
+    </div>
+  </a>
+
+  <a class="blog-card" href="/blog/t-shirt-pixel-art-guide-style.html">
+    <div class="card-tag">// STYLE</div>
+    <div class="card-title">T-Shirt Pixel Art : comment le porter sans ressembler à un cosplay</div>
+    <div class="card-excerpt">Porter un t-shirt gaming en 2026, ça ne se fait plus avec un short cargo et des crocs. Guide de style PIXEL pour assumer la référence sans la crier.</div>
+    <div class="card-meta">
+      <span class="card-date">MAI 2026</span>
+      <span class="card-read">LIRE →</span>
+    </div>
+  </a>
+
+  <a class="blog-card" href="/blog/marque-gaming-francaise-pixel.html">
+    <div class="card-tag">// MARQUE</div>
+    <div class="card-title">Pourquoi PIXEL est la marque gaming française que le streetwear attendait</div>
+    <div class="card-excerpt">Pas de logo criard, pas de mascotte esport. PIXEL cache ses références : sous le col, à l'ourlet, dans les coutures. Pour ceux qui regardent vraiment.</div>
+    <div class="card-meta">
+      <span class="card-date">AVRIL 2026</span>
+      <span class="card-read">LIRE →</span>
+    </div>
+  </a>
+
+</div>
+
+<footer>
+  <p>PIXEL © 2026 &nbsp;//&nbsp; <a href="/">pixelwear.fr</a> &nbsp;//&nbsp; <a href="/adn.html">Notre ADN</a></p>
+</footer>
+
+</body>
+</html>

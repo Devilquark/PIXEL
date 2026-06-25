@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Vault Market — PIXEL</title>
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+<meta name="theme-color" content="#0A0A0A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --black:  #0A0A0A;
+  --white:  #FFFFFF;
+  --off:    #F7F7F7;
+  --red:    #FF2D55;
+  --green:  #00C853;
+  --violet: #7B2FBE;
+  --gray:   #888;
+  --border: #E8E8E8;
+  --mono:   'Space Mono', monospace;
+  --sans:   'Inter', sans-serif;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  background: var(--white);
+  color: var(--black);
+  overflow-x: hidden;
+}
+a { text-decoration:none; color:inherit; }
+
+/* ─── NAV ─────────────────────────────────────────────────── */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:500;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items:center; justify-content:space-between;
+  padding: 0 2.5rem;
+  height: 60px;
+}
+.nav-logo {
+  display: flex; align-items:center; gap:10px;
+  font-family: var(--mono); font-weight:700; font-size:1rem;
+}
+.nav-sq {
+  width: 16px; height: 16px;
+  background: var(--black); flex-shrink: 0;
+  transition: background 0.2s;
+}
+.nav-logo:hover .nav-sq { background: var(--red); }
+.nav-links {
+  display: flex; gap:2rem; align-items:center;
+}
+.nav-links a {
+  font-family: var(--mono); font-size:0.7rem;
+  text-transform: uppercase; letter-spacing:0.12em;
+  color: var(--gray); transition: color 0.2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--black); }
+.nav-right { display:flex; gap:0.5rem; align-items:center; }
+.cart-btn {
+  font-family: var(--mono); font-size:0.72rem;
+  background: var(--black); color: var(--white);
+  padding: 0.5rem 1rem;
+  display:flex; align-items:center; gap:6px;
+  transition: background 0.2s;
+}
+.cart-btn:hover { background: var(--red); }
+
+/* ─── HERO VAULT ──────────────────────────────────────────── */
+.vault-hero {
+  background: var(--black);
+  padding: 7rem 2.5rem 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.vault-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+.vault-hero-label {
+  font-family: var(--mono); font-size: 0.55rem;
+  letter-spacing: 0.25em; color: var(--red);
+  text-transform: uppercase; margin-bottom: 1.5rem;
+}
+.vault-hero h1 {
+  font-family: var(--mono); font-weight: 700;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: var(--white); line-height: 1.1;
+  margin-bottom: 1.2rem;
+}
+.vault-hero h1 span { color: var(--red); }
+.vault-hero p {
+  color: #666; font-size: 0.9rem; line-height: 1.8;
+  max-width: 52ch; margin: 0 auto 2.5rem;
+}
+.vault-stats {
+  display: inline-flex; gap: 3rem;
+  border: 1px solid #1e1e1e;
+  padding: 1.2rem 2.5rem;
+  margin: 0 auto;
+}
+.vault-stat { text-align: center; }
+.vault-stat-value {
+  font-family: var(--mono); font-size: 1.1rem;
+  font-weight: 700; color: var(--white);
+  display: block; margin-bottom: 0.3rem;
+}
+.vault-stat-label {
+  font-family: var(--mono); font-size: 0.48rem;
+  letter-spacing: 0.18em; color: #444;
+  text-transform: uppercase;
+}
+
+/* ─── FILTERS ─────────────────────────────────────────────── */
+.vault-filters {
+  border-bottom: 1px solid var(--border);
+  padding: 0 2.5rem;
+  display: flex; align-items: center; gap: 0.5rem;
+  overflow-x: auto;
+}
+.filter-btn {
+  font-family: var(--mono); font-size: 0.55rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 1rem 1.2rem;
+  border: none; background: none;
+  color: var(--gray); cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.18s; white-space: nowrap;
+  font-family: var(--mono);
+}
+.filter-btn:hover { color: var(--black); }
+.filter-btn.active { color: var(--black); border-bottom-color: var(--black); }
+
+/* ─── GRID ────────────────────────────────────────────────── */
+.vault-grid-wrap {
+  max-width: 1200px; margin: 0 auto;
+  padding: 3rem 2.5rem 5rem;
+}
+.vault-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1px;
+  border: 1px solid var(--border);
+  background: var(--border);
+}
+.vault-card {
+  background: var(--white);
+  padding: 2rem;
+  transition: background 0.18s;
+  cursor: default;
+}
+.vault-card:hover { background: var(--off); }
+.vault-card-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 1.4rem;
+}
+.vault-card-col {
+  font-family: var(--mono); font-size: 0.48rem;
+  letter-spacing: 0.2em; color: var(--gray);
+  text-transform: uppercase;
+}
+.vault-card-serial {
+  font-family: var(--mono); font-size: 0.48rem;
+  letter-spacing: 0.1em; color: var(--red);
+  background: rgba(255,45,85,0.08);
+  padding: 0.2rem 0.5rem;
+}
+.vault-card-name {
+  font-family: var(--mono); font-weight: 700;
+  font-size: 0.85rem; letter-spacing: 0.05em;
+  margin-bottom: 1.8rem;
+}
+.vault-card-prices {
+  display: flex; align-items: baseline;
+  gap: 0.8rem; margin-bottom: 0.6rem;
+}
+.vault-price-retail {
+  font-family: var(--mono); font-size: 0.75rem;
+  color: var(--gray); text-decoration: line-through;
+}
+.vault-price-market {
+  font-family: var(--mono); font-size: 1.3rem;
+  font-weight: 700; color: var(--black);
+}
+.vault-card-delta {
+  font-family: var(--mono); font-size: 0.62rem;
+  font-weight: 700; letter-spacing: 0.05em;
+}
+.vault-card-delta.up   { color: var(--green); }
+.vault-card-delta.down { color: var(--red); }
+.vault-card-meta {
+  margin-top: 1.4rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--border);
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+.vault-meta-item { }
+.vault-meta-label {
+  font-family: var(--mono); font-size: 0.45rem;
+  letter-spacing: 0.15em; color: var(--gray);
+  text-transform: uppercase; margin-bottom: 0.25rem;
+}
+.vault-meta-val {
+  font-family: var(--mono); font-size: 0.7rem;
+  color: var(--black); font-weight: 700;
+}
+
+/* ─── EXPLAINER ───────────────────────────────────────────── */
+.vault-explainer {
+  background: var(--off);
+  border-top: 1px solid var(--border);
+  padding: 4rem 2.5rem;
+}
+.vault-explainer-inner {
+  max-width: 900px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3rem;
+}
+.vault-exp-item { }
+.vault-exp-icon {
+  width: 8px; height: 8px;
+  background: var(--red); margin-bottom: 1.2rem;
+}
+.vault-exp-title {
+  font-family: var(--mono); font-size: 0.55rem;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 0.8rem; color: var(--black);
+}
+.vault-exp-text {
+  font-size: 0.85rem; line-height: 1.75;
+  color: var(--gray);
+}
+
+/* ─── MODAL GRAPHIQUE ─────────────────────────────────────────── */
+#vault-modal-backdrop {
+  position: fixed; inset: 0; z-index: 900;
+  background: rgba(10,10,10,0.55);
+  backdrop-filter: blur(4px);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+#vault-modal-backdrop.open { opacity: 1; pointer-events: all; }
+#vault-modal {
+  position: fixed; z-index: 901;
+  bottom: 0; left: 50%; transform: translateX(-50%) translateY(100%);
+  width: 100%; max-width: 560px;
+  background: #fff;
+  border-radius: 16px 16px 0 0;
+  transition: transform 0.35s cubic-bezier(0.32,0,0.18,1);
+  max-height: 92vh; overflow-y: auto;
+}
+#vault-modal.open { transform: translateX(-50%) translateY(0); }
+.modal-handle {
+  width: 36px; height: 4px; background: #ddd; border-radius: 2px;
+  margin: 12px auto 0;
+}
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 1.5rem 0.5rem;
+}
+.modal-back {
+  width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+  background: #f5f5f5; border-radius: 50%; font-size: 1rem;
+  cursor: pointer; border: none; color: var(--black); transition: background 0.15s;
+}
+.modal-back:hover { background: #eee; }
+.modal-header-title {
+  font-family: var(--mono); font-size: 0.72rem;
+  letter-spacing: 0.1em; text-align: center; flex: 1;
+}
+.modal-price-block { padding: 1rem 1.5rem 0; }
+.modal-sub {
+  font-family: var(--mono); font-size: 0.5rem;
+  letter-spacing: 0.18em; color: var(--gray);
+  text-transform: uppercase; margin-bottom: 0.5rem;
+}
+.modal-price-row { display: flex; align-items: baseline; gap: 0.8rem; }
+.modal-price-big {
+  font-family: var(--mono); font-size: 2.6rem;
+  font-weight: 700; line-height: 1;
+}
+.modal-price-trend { font-size: 1.2rem; line-height: 1; margin-bottom: 0.1rem; }
+.modal-change-row {
+  margin-top: 0.4rem; font-family: var(--mono);
+  font-size: 0.62rem; font-weight: 700;
+}
+.modal-change-row.up   { color: var(--green); }
+.modal-change-row.down { color: var(--red); }
+.modal-chart-wrap { padding: 1rem 0.5rem 0; position: relative; height: 200px; }
+.modal-periods {
+  display: flex; justify-content: center; gap: 0.3rem;
+  padding: 1rem 1.5rem 0;
+}
+.period-btn {
+  font-family: var(--mono); font-size: 0.6rem;
+  padding: 0.35rem 0.8rem; border: none; background: #f5f5f5;
+  border-radius: 20px; cursor: pointer; color: var(--gray);
+  transition: all 0.15s; letter-spacing: 0.05em;
+}
+.period-btn:hover { background: #eee; color: var(--black); }
+.period-btn.active { background: var(--black); color: #fff; }
+.modal-stats-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--border);
+  margin: 1.2rem 1.5rem 1.5rem;
+  border: 1px solid var(--border);
+}
+.modal-stat-cell { background: #fff; padding: 0.9rem 1rem; }
+.modal-stat-label {
+  font-family: var(--mono); font-size: 0.45rem;
+  letter-spacing: 0.15em; color: var(--gray);
+  text-transform: uppercase; margin-bottom: 0.3rem;
+}
+.modal-stat-val { font-family: var(--mono); font-size: 0.78rem; font-weight: 700; }
+
+/* ─── FOOTER ──────────────────────────────────────────────── */
+footer {
+  background: #0a0a0a;
+  border-top: 1px solid #1e1e1e;
+  padding: 2rem 2.5rem;
+  font-family: var(--mono);
+  font-size: 0.58rem; letter-spacing: 0.15em;
+  color: #555;
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+/* ─── RESPONSIVE ──────────────────────────────────────────── */
+@media(max-width:768px) {
+  nav { padding: 0 1.2rem; }
+  .nav-links { display: none; }
+  .vault-stats { gap: 1.5rem; flex-wrap: wrap; padding: 1rem 1.5rem; }
+  .vault-grid { grid-template-columns: 1fr; }
+  .vault-explainer-inner { grid-template-columns: 1fr; gap: 2rem; }
+  footer { flex-direction: column; gap: 0.8rem; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ─────────────────────────────────────────────────── -->
+<nav>
+  <a href="/" class="nav-logo">
+    <div class="nav-sq"></div>
+    PIXEL
+  </a>
+  <div class="nav-links">
+    <a href="home.html#collections">Collections</a>
+    <a href="home.html#boutique">T-Shirts</a>
+    <a href="home.html#boutique">Pulls</a>
+    <a href="adn.html">ADN</a>
+    <a href="vault-market.html" class="active">The Vault Market</a>
+  </div>
+  <div class="nav-right">
+    <a href="home.html" class="cart-btn">← Retour boutique</a>
+  </div>
+</nav>
+
+<!-- ─── HERO ─────────────────────────────────────────────────── -->
+<section class="vault-hero">
+  <p class="vault-hero-label">// PIXEL — Marché secondaire</p>
+  <h1>THE <span>VAULT</span> MARKET</h1>
+  <p>Chaque pièce PIXEL est numérotée. Les numéros bas sont rares. La valeur évolue dans le temps. Ici, tu suis en temps réel ce que vaut ta pièce sur le marché secondaire.</p>
+  <div class="vault-stats" id="vault-stats">
+    <div class="vault-stat">
+      <span class="vault-stat-value" id="stat-pieces">—</span>
+      <span class="vault-stat-label">Pièces tracées</span>
+    </div>
+    <div class="vault-stat">
+      <span class="vault-stat-value" id="stat-collections">—</span>
+      <span class="vault-stat-label">Collections</span>
+    </div>
+    <div class="vault-stat">
+      <span class="vault-stat-value" id="stat-appreciation">—</span>
+      <span class="vault-stat-label">Appréciation moy.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FILTERS ──────────────────────────────────────────────── -->
+<div class="vault-filters" id="vault-filters">
+  <button class="filter-btn active" data-filter="all">Tout</button>
+  <!-- Les filtres par collection sont injectés dynamiquement -->
+</div>
+
+<!-- ─── GRID ─────────────────────────────────────────────────── -->
+<div class="vault-grid-wrap">
+  <div class="vault-grid" id="vault-grid">
+    <!-- Cartes injectées par market-data.js -->
+  </div>
+</div>
+
+<!-- ─── EXPLAINER ────────────────────────────────────────────── -->
+<section class="vault-explainer">
+  <div class="vault-explainer-inner">
+    <div class="vault-exp-item">
+      <div class="vault-exp-icon"></div>
+      <div class="vault-exp-title">Comment ça marche</div>
+      <p class="vault-exp-text">Chaque pièce PIXEL sort en édition numérotée. La valeur affichée est une simulation basée sur la rareté de la série, l'ancienneté et le numéro de série. Elle change chaque jour.</p>
+    </div>
+    <div class="vault-exp-item">
+      <div class="vault-exp-icon"></div>
+      <div class="vault-exp-title">Les numéros bas valent plus</div>
+      <p class="vault-exp-text">#001 à #010 : +35% de prime collector. #011 à #025 : +18%. Au-delà, c'est le prix de marché standard. Plus ta série est petite, plus chaque numéro est rare.</p>
+    </div>
+    <div class="vault-exp-item">
+      <div class="vault-exp-icon"></div>
+      <div class="vault-exp-title">Wearable vs Vaulted</div>
+      <p class="vault-exp-text">Tu peux porter ta pièce — ou la "vaulter" pour la conserver intacte et la revendre. Un vêtement porté perd de la valeur. Un vêtement vaulté en prend. À toi de choisir.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ───────────────────────────────────────────────── -->
+<footer>
+  <div>© 2026 PIXEL · TOUS DROITS RÉSERVÉS</div>
+  <div>THE VAULT MARKET · SIMULATION DE PRIX · MIS À JOUR CHAQUE JOUR</div>
+</footer>
+
+<!-- ─── MODAL ────────────────────────────────────────────────── -->
+<div id="vault-modal-backdrop"></div>
+<div id="vault-modal" role="dialog" aria-modal="true">
+  <div class="modal-handle"></div>
+  <div class="modal-header">
+    <button class="modal-back" id="modal-close">←</button>
+    <div class="modal-header-title" id="modal-title"></div>
+    <button class="modal-back" id="modal-fav" title="Favoris">☆</button>
+  </div>
+  <div class="modal-price-block">
+    <div class="modal-sub" id="modal-sub"></div>
+    <div class="modal-price-row">
+      <span class="modal-price-big" id="modal-price"></span>
+      <span class="modal-price-trend" id="modal-trend"></span>
+    </div>
+    <div class="modal-change-row" id="modal-change"></div>
+  </div>
+  <div class="modal-chart-wrap">
+    <canvas id="vault-chart"></canvas>
+  </div>
+  <div class="modal-periods">
+    <button class="period-btn" data-period="1J">1J</button>
+    <button class="period-btn" data-period="1S">1S</button>
+    <button class="period-btn active" data-period="1M">1M</button>
+    <button class="period-btn" data-period="6M">6M</button>
+    <button class="period-btn" data-period="1A">1A</button>
+    <button class="period-btn" data-period="MAX">Max.</button>
+  </div>
+  <div class="modal-stats-grid" id="modal-stats"></div>
+</div>
+
+<!-- ─── SCRIPTS ──────────────────────────────────────────────── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="market-data.js"></script>
+<script>
+(function buildVaultPage() {
+  // ── Stats ──────────────────────────────────────────────────
+  const totalPieces     = PIXEL_MARKET.reduce((s, p) => s + p.seriesSize, 0);
+  const collections     = [...new Set(PIXEL_MARKET.map(p => p.collection))];
+  const avgAppreciation = (() => {
+    let sum = 0;
+    PIXEL_MARKET.forEach(p => {
+      const midSerial = Math.floor(p.seriesSize / 2);
+      const mkt = pixelMarketPrice(p, midSerial);
+      sum += ((mkt - p.retailPrice) / p.retailPrice) * 100;
+    });
+    return Math.round(sum / PIXEL_MARKET.length);
+  })();
+
+  document.getElementById('stat-pieces').textContent      = totalPieces.toLocaleString('fr-FR');
+  document.getElementById('stat-collections').textContent = collections.length;
+  document.getElementById('stat-appreciation').textContent = `+${avgAppreciation}%`;
+
+  // ── Filtres dynamiques ─────────────────────────────────────
+  const filtersEl = document.getElementById('vault-filters');
+  collections.forEach(col => {
+    const btn = document.createElement('button');
+    btn.className    = 'filter-btn';
+    btn.dataset.filter = col;
+    btn.textContent  = col;
+    filtersEl.appendChild(btn);
+  });
+
+  // ── Cartes ────────────────────────────────────────────────
+  const grid = document.getElementById('vault-grid');
+
+  function buildCard(p) {
+    // On affiche le prix du numéro médian (représentatif)
+    const midSerial  = Math.floor(p.seriesSize / 2) + 1;
+    const lowSerial  = Math.min(5, p.seriesSize);
+    const mktMid     = pixelMarketPrice(p, midSerial);
+    const mktLow     = pixelMarketPrice(p, lowSerial);
+    const deltaMid   = mktMid - p.retailPrice;
+    const pctMid     = Math.round((deltaMid / p.retailPrice) * 100);
+    const upMid      = deltaMid >= 0;
+
+    const daysSince  = Math.max(0, (Date.now() - new Date(p.releaseDate)) / 86400000);
+    const daysLabel  = daysSince < 1 ? 'Aujourd\'hui'
+                     : daysSince < 30 ? `${Math.floor(daysSince)}j`
+                     : `${Math.floor(daysSince / 30)}mo`;
+
+    return `
+      <div class="vault-card" data-collection="${p.collection}" data-product-id="${p.id}" style="cursor:pointer">
+        <div class="vault-card-top">
+          <span class="vault-card-col">${p.collection}</span>
+          <span class="vault-card-serial">Série de ${p.seriesSize}</span>
+        </div>
+        <div class="vault-card-name">${p.name}</div>
+        <div class="vault-card-prices">
+          <span class="vault-price-retail">${p.retailPrice}€</span>
+          <span class="vault-price-market">${mktMid}€</span>
+        </div>
+        <div class="vault-card-delta ${upMid ? 'up' : 'down'}">
+          ${upMid ? '▲' : '▼'} ${upMid ? '+' : ''}${pctMid}% depuis le drop
+        </div>
+        <div class="vault-card-meta">
+          <div class="vault-meta-item">
+            <div class="vault-meta-label">Prix #001–#005</div>
+            <div class="vault-meta-val">${mktLow}€</div>
+          </div>
+          <div class="vault-meta-item">
+            <div class="vault-meta-label">Prix médian</div>
+            <div class="vault-meta-val">${mktMid}€</div>
+          </div>
+          <div class="vault-meta-item">
+            <div class="vault-meta-label">Drop</div>
+            <div class="vault-meta-val">${p.releaseDate}</div>
+          </div>
+          <div class="vault-meta-item">
+            <div class="vault-meta-label">Ancienneté</div>
+            <div class="vault-meta-val">${daysLabel}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderGrid(filter) {
+    const filtered = filter === 'all' ? PIXEL_MARKET : PIXEL_MARKET.filter(p => p.collection === filter);
+    grid.innerHTML  = filtered.map(buildCard).join('');
+  }
+
+  renderGrid('all');
+
+  // ── Filtrage ──────────────────────────────────────────────
+  filtersEl.addEventListener('click', e => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderGrid(btn.dataset.filter);
+  });
+
+  // ── Clic sur une carte → ouvre le modal ───────────────────
+  grid.addEventListener('click', e => {
+    const card = e.target.closest('.vault-card');
+    if (!card) return;
+    const productId = card.dataset.productId;
+    const product   = PIXEL_MARKET.find(p => p.id === productId);
+    if (!product) return;
+    openVaultModal(product);
+  });
+
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   MODAL — graphique Trade Republic style
+   ═══════════════════════════════════════════════════════════════ */
+let _chart = null;
+let _currentProduct = null;
+let _currentPeriod  = '1M';
+
+function openVaultModal(product) {
+  _currentProduct = product;
+  _currentPeriod  = '1M';
+  document.querySelectorAll('.period-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.period === _currentPeriod);
+  });
+  updateModalContent(product, _currentPeriod);
+  document.getElementById('vault-modal-backdrop').classList.add('open');
+  document.getElementById('vault-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeVaultModal() {
+  document.getElementById('vault-modal-backdrop').classList.remove('open');
+  document.getElementById('vault-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function updateModalContent(product, period) {
+  const midSerial = Math.floor(product.seriesSize / 2) + 1;
+  const curPrice  = pixelMarketPrice(product, midSerial);
+  const delta     = curPrice - product.retailPrice;
+  const pct       = ((delta / product.retailPrice) * 100).toFixed(1);
+  const up        = delta >= 0;
+
+  // Header
+  document.getElementById('modal-title').textContent = product.name;
+  document.getElementById('modal-sub').textContent   = `${product.collection} · Série de ${product.seriesSize}`;
+  document.getElementById('modal-price').textContent = `${curPrice}€`;
+  document.getElementById('modal-trend').textContent = up ? '☀' : '🌧';
+
+  const changeEl = document.getElementById('modal-change');
+  changeEl.textContent  = `${up ? '+' : ''}${delta}€  ${up ? '▲' : '▼'} ${up ? '+' : ''}${pct}% depuis le drop`;
+  changeEl.className    = `modal-change-row ${up ? 'up' : 'down'}`;
+
+  // Stats
+  const lowPrice = pixelMarketPrice(product, Math.min(3, product.seriesSize));
+  const daysSince = Math.max(0, (Date.now() - new Date(product.releaseDate)) / 86400000);
+  const daysLabel = daysSince < 30 ? `${Math.floor(daysSince)}j`
+                  : daysSince < 365 ? `${Math.floor(daysSince / 30)} mois`
+                  : `${(daysSince / 365).toFixed(1)} ans`;
+
+  document.getElementById('modal-stats').innerHTML = `
+    <div class="modal-stat-cell">
+      <div class="modal-stat-label">Prix retail</div>
+      <div class="modal-stat-val">${product.retailPrice}€</div>
+    </div>
+    <div class="modal-stat-cell">
+      <div class="modal-stat-label">Prix #001–#003</div>
+      <div class="modal-stat-val">${lowPrice}€</div>
+    </div>
+    <div class="modal-stat-cell">
+      <div class="modal-stat-label">Taille de série</div>
+      <div class="modal-stat-val">${product.seriesSize} pièces</div>
+    </div>
+    <div class="modal-stat-cell">
+      <div class="modal-stat-label">Ancienneté</div>
+      <div class="modal-stat-val">${daysLabel}</div>
+    </div>
+  `;
+
+  // Graphique
+  buildChart(product, midSerial, period, up);
+}
+
+function buildChart(product, serialNum, period, up) {
+  const points = pixelPriceHistory(product, serialNum, period);
+  if (!points.length) return;
+
+  const labels = points.map(p => {
+    const d = new Date(p.t);
+    if (period === '1J') return d.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+    if (period === '1S' || period === '1M') return d.toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit' });
+    return d.toLocaleDateString('fr-FR', { month:'short', year: period === 'MAX' ? '2-digit' : undefined });
+  });
+  const prices = points.map(p => p.price);
+
+  const color  = up ? '#00C853' : '#FF2D55';
+  const canvas = document.getElementById('vault-chart');
+  const ctx    = canvas.getContext('2d');
+
+  if (_chart) { _chart.destroy(); _chart = null; }
+
+  const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+  gradient.addColorStop(0, up ? 'rgba(0,200,83,0.18)' : 'rgba(255,45,85,0.18)');
+  gradient.addColorStop(1, 'rgba(255,255,255,0)');
+
+  _chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        data: prices,
+        borderColor: color,
+        borderWidth: 2,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+        pointHoverBackgroundColor: color,
+        fill: true,
+        backgroundColor: gradient,
+        tension: 0.35,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#0a0a0a',
+          titleFont: { family: "'Space Mono', monospace", size: 10 },
+          bodyFont:  { family: "'Space Mono', monospace", size: 12, weight: '700' },
+          callbacks: {
+            label: ctx => ` ${ctx.parsed.y}€`,
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: {
+            font: { family: "'Space Mono', monospace", size: 9 },
+            color: '#aaa',
+            maxTicksLimit: 6,
+            maxRotation: 0,
+          },
+          border: { display: false },
+        },
+        y: {
+          position: 'right',
+          grid: { color: '#f5f5f5' },
+          ticks: {
+            font: { family: "'Space Mono', monospace", size: 9 },
+            color: '#aaa',
+            callback: v => `${v}€`,
+          },
+          border: { display: false },
+        }
+      }
+    }
+  });
+}
+
+// ── Événements modal ────────────────────────────────────────
+document.getElementById('modal-close').addEventListener('click', closeVaultModal);
+document.getElementById('vault-modal-backdrop').addEventListener('click', closeVaultModal);
+
+document.querySelector('.modal-periods').addEventListener('click', e => {
+  const btn = e.target.closest('.period-btn');
+  if (!btn || !_currentProduct) return;
+  _currentPeriod = btn.dataset.period;
+  document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const midSerial = Math.floor(_currentProduct.seriesSize / 2) + 1;
+  const curPrice  = pixelMarketPrice(_currentProduct, midSerial);
+  const up        = curPrice >= _currentProduct.retailPrice;
+  buildChart(_currentProduct, midSerial, _currentPeriod, up);
+});
+</script>
+
+</body>
+</html>

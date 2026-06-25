@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collection ORIGIN — PIXEL</title>
+  <meta name="description" content="Collection ORIGIN — T-shirts et pulls gaming pixel art. Designs discrets, coton bio, made in France.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0A0A0A;
+      --white: #fff;
+      --red:   #FF2D55;
+      --gray:  #888;
+      --border:#eee;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--white);
+      color: var(--black);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 60px;
+      background: rgba(255,255,255,.95);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--black);
+    }
+    .nav-logo-sq { width: 16px; height: 16px; background: var(--black); }
+    .nav-logo-name {
+      font-family: 'Space Mono', monospace;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .nav-back {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      font-family: 'Space Mono', monospace;
+      font-size: .6rem;
+      letter-spacing: .15em;
+      color: #bbb;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color .2s;
+    }
+    .nav-back:hover { color: var(--black); }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .cart-btn {
+      position: relative;
+      background: none;
+      border: 1px solid #ddd;
+      color: var(--black);
+      font-family: 'Space Mono', monospace;
+      font-size: .6rem;
+      letter-spacing: .12em;
+      padding: .45rem .9rem;
+      cursor: pointer;
+      transition: background .2s, border-color .2s, color .2s;
+    }
+    .cart-btn:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+    #cart-count {
+      position: absolute;
+      top: -6px; right: -6px;
+      background: var(--red);
+      color: #fff;
+      font-size: .55rem;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      display: none;
+    }
+
+    /* ── HERO COLLECTION ── */
+    .coll-hero {
+      padding: 5rem 2.5rem 3.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      border-bottom: 1px solid var(--border);
+    }
+    .coll-hero-label {
+      font-family: 'Space Mono', monospace;
+      font-size: .6rem;
+      letter-spacing: .25em;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .coll-hero-title {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      font-weight: 700;
+      letter-spacing: .05em;
+      line-height: 1;
+      margin-bottom: 1.2rem;
+      color: var(--black);
+    }
+    .coll-hero-sub {
+      font-size: .95rem;
+      color: var(--gray);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 1.8rem;
+    }
+    .coll-hero-meta {
+      display: flex;
+      gap: 2rem;
+      font-family: 'Space Mono', monospace;
+      font-size: .58rem;
+      letter-spacing: .18em;
+      color: #bbb;
+      text-transform: uppercase;
+    }
+    .coll-hero-meta span { color: var(--black); }
+
+    /* ── COLLECTION NAV ARROWS ── */
+    .coll-title-row {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 1.2rem;
+    }
+    .coll-title-row .coll-hero-title { margin-bottom: 0; }
+    .coll-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.2rem;
+      height: 2.2rem;
+      border: 1.5px solid var(--black);
+      color: var(--black);
+      text-decoration: none;
+      font-family: 'Space Mono', monospace;
+      font-size: .85rem;
+      flex-shrink: 0;
+      transition: background .18s, color .18s;
+    }
+    .coll-arrow:hover { background: var(--black); color: #fff; }
+    .coll-arrow.disabled {
+      border-color: #ddd;
+      color: #ddd;
+      pointer-events: none;
+      cursor: default;
+    }
+
+    /* ── PRODUCTS GRID ── */
+    .products-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3.5rem 2.5rem 5rem;
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    @media (max-width: 900px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .products-grid { grid-template-columns: 1fr; } }
+
+    .prod-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: border-color .25s, transform .25s;
+    }
+    .prod-card:hover {
+      border-color: #bbb;
+      transform: translateY(-3px);
+    }
+    .prod-card-img {
+      position: relative;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      background: #f7f7f7;
+    }
+    .prod-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .4s ease;
+    }
+    .prod-card:hover .prod-card-img img { transform: scale(1.04); }
+    .prod-badge {
+      position: absolute;
+      top: .75rem; left: .75rem;
+      font-family: 'Space Mono', monospace;
+      font-size: .52rem;
+      letter-spacing: .15em;
+      padding: .3rem .6rem;
+      text-transform: uppercase;
+      z-index: 1;
+    }
+    .prod-badge.new      { background: var(--black); color: var(--white); }
+    .prod-badge.new-drop { background: var(--red);   color: var(--white); }
+    .prod-badge.ltd      { background: var(--red);   color: var(--white); }
+    .prod-info {
+      padding: 1.1rem 1.2rem 1.3rem;
+      border-top: 1px solid var(--border);
+    }
+    .prod-collection {
+      font-family: 'Space Mono', monospace;
+      font-size: .5rem;
+      letter-spacing: .22em;
+      color: #bbb;
+      text-transform: uppercase;
+      margin-bottom: .35rem;
+    }
+    .prod-name {
+      font-size: .9rem;
+      font-weight: 500;
+      color: var(--black);
+      margin-bottom: .5rem;
+    }
+    .prod-desc {
+      font-size: .75rem;
+      color: var(--gray);
+      line-height: 1.5;
+      margin-bottom: .8rem;
+    }
+    .prod-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .prod-price {
+      font-family: 'Space Mono', monospace;
+      font-size: .85rem;
+      color: var(--black);
+    }
+    .prod-cta {
+      font-family: 'Space Mono', monospace;
+      font-size: .5rem;
+      letter-spacing: .15em;
+      color: #bbb;
+      text-transform: uppercase;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 1px;
+      transition: color .2s, border-color .2s;
+    }
+    .prod-card:hover .prod-cta { color: var(--black); border-color: var(--black); }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Space Mono', monospace;
+      font-size: .65rem;
+      letter-spacing: .1em;
+      padding: .8rem 1.4rem;
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all .35s;
+      z-index: 999;
+      pointer-events: none;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0a0a0a;
+      border-top: 1px solid #1E1E1E;
+      padding: 3rem 2.5rem 2rem;
+      color: #888;
+      font-family: 'Inter', sans-serif;
+    }
+    footer a { color: #888; text-decoration: none; }
+    footer a:hover { color: var(--white); }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="home.html" class="nav-logo">
+    <div class="nav-logo-sq"></div>
+    <span class="nav-logo-name">PIXEL</span>
+  </a>
+  <a href="home.html#collections" class="nav-back">← Collections</a>
+  <div class="nav-right">
+    <button class="cart-btn" onclick="window.location='home.html#boutique'">
+      PANIER
+      <div id="cart-count">0</div>
+    </button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="coll-hero">
+  <p class="coll-hero-label">// Collection 01</p>
+  <div class="coll-title-row">
+    <a class="coll-arrow disabled" aria-disabled="true">←</a>
+    <h1 class="coll-hero-title">ORIGIN</h1>
+    <a href="collection-glitch.html" class="coll-arrow" title="Collection suivante : GLITCH">→</a>
+  </div>
+  <p class="coll-hero-sub">L'épure. Intemporel. Le gaming qui se devine — des designs haute densité pour ceux qui savent regarder. Ghost 8-bit sous le col, pixel art brodé à l'ourlet.</p>
+  <div class="coll-hero-meta">
+    <div><span>3</span> pièces</div>
+    <div>Coton bio <span>200–380g</span></div>
+    <div>Made in <span>Portugal</span></div>
+  </div>
+</div>
+
+<!-- ── PRODUCTS ── -->
+<section class="products-section">
+  <div class="products-grid">
+
+    <a class="prod-card" href="products/tshirt-origin-noir.html">
+      <div class="prod-card-img">
+        <span class="prod-badge new">Nouveau</span>
+        <img src="products/photos/tshirt-origin-noir.png" alt="T-Shirt ORIGIN Noir">
+      </div>
+      <div class="prod-info">
+        <div class="prod-collection">ORIGIN</div>
+        <div class="prod-name">T-Shirt ORIGIN Noir</div>
+        <div class="prod-desc">Ghost 8-bit sous le col · Coton bio 200g</div>
+        <div class="prod-footer">
+          <span class="prod-price">35 €</span>
+          <span class="prod-cta">Voir le produit →</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="prod-card" href="products/tshirt-origin-blanc.html">
+      <div class="prod-card-img">
+        <img src="products/photos/tshirt-origin-blanc.png" alt="T-Shirt ORIGIN Blanc">
+      </div>
+      <div class="prod-info">
+        <div class="prod-collection">ORIGIN</div>
+        <div class="prod-name">T-Shirt ORIGIN Blanc</div>
+        <div class="prod-desc">Ghost 8-bit encre noire · Coton bio 200g</div>
+        <div class="prod-footer">
+          <span class="prod-price">35 €</span>
+          <span class="prod-cta">Voir le produit →</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="prod-card" href="products/pull-origin.html">
+      <div class="prod-card-img">
+        <img src="products/photos/pull-origin.png" alt="Pull ORIGIN Ghost">
+      </div>
+      <div class="prod-info">
+        <div class="prod-collection">ORIGIN</div>
+        <div class="prod-name">Pull ORIGIN Ghost</div>
+        <div class="prod-desc">Ghost brodé · Molleton 380g · Coupe oversize</div>
+        <div class="prod-footer">
+          <span class="prod-price">70 €</span>
+          <span class="prod-cta">Voir le produit →</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<div id="toast"></div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:2.5rem;margin-bottom:2.5rem;">
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;">
+        <div style="width:16px;height:16px;background:#fff;"></div>
+        <span style="font-family:'Space Mono',monospace;font-size:.8rem;letter-spacing:.12em;color:#fff;font-weight:700;">PIXEL</span>
+      </div>
+      <p style="font-size:.82rem;line-height:1.65;color:#888;max-width:280px;margin-bottom:1rem;">Streetwear gaming pixel art. Designs discrets pour ceux qui savent regarder. Made in France.</p>
+      <p style="font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.2em;color:#FF2D55;text-transform:uppercase;">&#9617; 8-BIT STYLE. 100% REAL.</p>
+    </div>
+    <div>
+      <h4 style="font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.2em;color:#fff;text-transform:uppercase;margin-bottom:1rem;">Boutique</h4>
+      <ul style="list-style:none;padding:0;margin:0;font-size:.82rem;line-height:1.9;">
+        <li><a href="home.html#collections">Collections</a></li>
+        <li><a href="products/tshirt-origin-noir.html">T-Shirts</a></li>
+        <li><a href="products/pull-origin.html">Pulls</a></li>
+        <li><a href="home.html#best-sellers">Drops limit&eacute;s</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 style="font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.2em;color:#fff;text-transform:uppercase;margin-bottom:1rem;">Service client</h4>
+      <ul style="list-style:none;padding:0;margin:0;font-size:.82rem;line-height:1.9;">
+        <li><a href="guide-tailles.html">Guide des tailles</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="legal/politique-retour.html">Retours &amp; &eacute;changes</a></li>
+        <li><a href="mailto:contact@pixelwear.fr">Nous contacter</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 style="font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.2em;color:#fff;text-transform:uppercase;margin-bottom:1rem;">L&eacute;gal</h4>
+      <ul style="list-style:none;padding:0;margin:0;font-size:.82rem;line-height:1.9;">
+        <li><a href="legal/mentions-legales.html">Mentions l&eacute;gales</a></li>
+        <li><a href="legal/cgv.html">CGV</a></li>
+        <li><a href="legal/politique-confidentialite.html">Confidentialit&eacute;</a></li>
+        <li><a href="legal/politique-cookies.html">Cookies</a></li>
+      </ul>
+    </div>
+  </div>
+  <div style="max-width:1200px;margin:0 auto;padding-top:1.8rem;border-top:1px solid #1E1E1E;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.15em;color:#555;">
+    <div>&copy; 2026 PIXEL &middot; TOUS DROITS R&Eacute;SERV&Eacute;S</div>
+    <div>MADE IN FRANCE &#127477;&#127481; &middot; SHIPPED WORLDWIDE</div>
+  </div>
+</footer>
+
+<script>
+  // Cart count display
+  const cart = JSON.parse(localStorage.getItem('pixel_cart') || '[]');
+  const count = cart.reduce((s, i) => s + (i.qty || 1), 0);
+  if (count > 0) {
+    const el = document.getElementById('cart-count');
+    el.textContent = count;
+    el.style.display = 'flex';
+  }
+</script>
+<script src="assets/cookie-banner.js" defer></script>
+
+</body>
+</html>
