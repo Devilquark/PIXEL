@@ -29,17 +29,42 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Email invalide' });
     }
 
+    const WAITLIST_LIST_ID = 2; // ID de la liste Brevo "Your first list"
+
     const r = await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
       headers: { 'api-key': BREVO_KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email,
+        listIds: [WAITLIST_LIST_ID],
         attributes: { SOURCE: 'waitlist-pixel' },
-        updateEnabled: false
+        updateEnabled: true
       })
     });
 
     const duplicate = r.status === 400;
+
+    // Email de confirmation
+    if (!duplicate) {
+      await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: { 'api-key': BREVO_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sender: { name: 'PIXEL', email: 'hello@pixelwear.fr' },
+          to: [{ email }],
+          subject: '▓ PIXEL — Tu es dans la liste.',
+          htmlContent: `
+            <div style="background:#111;color:#EEE9DE;font-family:monospace;padding:48px 32px;max-width:480px;margin:0 auto;">
+              <p style="font-size:22px;letter-spacing:4px;margin-bottom:8px;">■ P I X E L</p>
+              <p style="color:#888;font-size:11px;margin-bottom:32px;">The Hidden Tribute.</p>
+              <p style="font-size:14px;line-height:1.8;">Accès enregistré.<br>Tu seras le premier informé du drop.</p>
+              <p style="margin-top:32px;color:#888;font-size:11px;">Ne réponds pas à cet email — pixelwear.fr</p>
+            </div>
+          `
+        })
+      }).catch(() => {}); // silencieux si l'envoi échoue
+    }
+
     const count = await getCount();
     return res.json({ count, duplicate });
   }
