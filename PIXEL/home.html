@@ -1125,6 +1125,10 @@ footer {
       </div>
       <p class="hero-tagline">The Hidden Tribute.</p>
       <p class="sr-only">Streetwear gaming et pixel art fabriqué au Portugal. Designs discrets pour initiés — t-shirts, pulls et drops limités.</p>
+      <div class="hero-ctas">
+        <a href="#newsletter" class="btn-primary">Rejoindre la liste →</a>
+        <a href="#collections" class="btn-secondary">Voir les collections</a>
+      </div>
     </div>
   </div>
   <div class="hero-strip">
@@ -1866,6 +1870,39 @@ function submitSecret(e) {
 function closeKonami() {
   document.getElementById('konami-overlay').classList.remove('show');
   document.body.classList.remove('secret-open');
+}
+
+// ── NEWSLETTER WAITLIST ──────────────────────────────────────
+async function submitNewsletter(e) {
+  e.preventDefault();
+  const form = e.target;
+  const input = form.querySelector('input[type="email"]');
+  const btn = form.querySelector('button');
+  const email = input.value.trim();
+  if (!email) return;
+
+  btn.textContent = '...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('/api/waitlist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+    if (data.duplicate) {
+      showToast('Tu es déjà dans la liste.');
+    } else {
+      showToast('✓ Accès enregistré — check tes mails');
+      input.value = '';
+    }
+  } catch {
+    showToast('Erreur — réessaie dans un instant.');
+  } finally {
+    btn.textContent = 'S\'inscrire →';
+    btn.disabled = false;
+  }
 }
 </script>
 </body>
