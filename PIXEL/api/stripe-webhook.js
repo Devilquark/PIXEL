@@ -103,7 +103,7 @@ async function sendConfirmationEmail(email, name, items, total, shipping, sessio
         <tr><td style="padding-top:40px;border-top:1px solid #1a1a1a;margin-top:32px;">
           <p style="margin:0;color:#333;font-size:11px;line-height:1.6;">
             Des questions ? Réponds à cet email.<br>
-            <span style="color:#555;">PIXEL · Made in France · Édition limitée</span>
+            <span style="color:#555;">PIXEL · Made in Portugal · Édition limitée</span>
           </p>
           <p style="margin:12px 0 0;color:#FF2D55;font-size:10px;letter-spacing:0.2em;">↑ ↑ ↓ ↓ ← → ← → P I X E L</p>
         </td></tr>

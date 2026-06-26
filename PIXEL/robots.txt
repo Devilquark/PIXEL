@@ -1,6 +1,6 @@
 # ═══════════════════════════════════════════════════════════════
 # PIXEL — robots.txt
-# Streetwear gaming pixel art · Made in France
+# Streetwear gaming pixel art · Made in Portugal
 # ═══════════════════════════════════════════════════════════════
 
 User-agent: *
