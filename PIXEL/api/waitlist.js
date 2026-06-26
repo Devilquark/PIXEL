@@ -52,13 +52,19 @@ export default async function handler(req, res) {
         body: JSON.stringify({
           sender: { name: 'PIXEL', email: 'hello@pixelwear.fr' },
           to: [{ email }],
-          subject: '▓ PIXEL — Tu es dans la liste.',
+          subject: '■ PIXEL — Tu es dans la liste.',
           htmlContent: `
             <div style="background:#111;color:#EEE9DE;font-family:monospace;padding:48px 32px;max-width:480px;margin:0 auto;">
               <p style="font-size:22px;letter-spacing:4px;margin-bottom:8px;">■ P I X E L</p>
               <p style="color:#888;font-size:11px;margin-bottom:32px;">The Hidden Tribute.</p>
               <p style="font-size:14px;line-height:1.8;">Accès enregistré.<br>Tu seras le premier informé du drop.</p>
-              <p style="margin-top:32px;color:#888;font-size:11px;">Ne réponds pas à cet email — pixelwear.fr</p>
+              <hr style="border:none;border-top:1px solid #222;margin:32px 0;">
+              <p style="color:#555;font-size:10px;line-height:1.7;">
+                Tu reçois cet email car tu t'es inscrit sur <a href="https://pixelwear.fr" style="color:#555;">pixelwear.fr</a>.<br>
+                © 2026 PIXEL —
+                <a href="https://pixelwear.fr/legal/mentions-legales.html" style="color:#555;">Mentions légales</a> ·
+                <a href="https://pixelwear.fr/legal/politique-confidentialite.html" style="color:#555;">Confidentialité</a>
+              </p>
             </div>
           `
         })
