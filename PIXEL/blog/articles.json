@@ -1,0 +1,67 @@
+[
+  {
+    "slug": "meccha-chameleon-jeu-cache-cache",
+    "title": "Meccha Chameleon : le jeu de cache-cache qui a vendu 10M de copies en 16 jours",
+    "tag": "GAMING",
+    "date": "JUIN 2026",
+    "image": "/blog/images/meccha-chameleon.jpg",
+    "alt": "Meccha Chameleon jeu cache-cache 2026"
+  },
+  {
+    "slug": "resident-evil-requiem-easter-eggs",
+    "title": "Les easter eggs de Resident Evil Requiem que tu as (probablement) ratés",
+    "tag": "GAMING",
+    "date": "JUIN 2026",
+    "image": "/blog/images/resident-evil-requiem-easter-eggs.png.png",
+    "alt": "Resident Evil Requiem easter eggs Leon"
+  },
+  {
+    "slug": "streetwear-gaming-2026",
+    "title": "Streetwear Gaming 2026 : le pixel art revient plus fort que jamais",
+    "tag": "TENDANCES",
+    "date": "JUIN 2026",
+    "image": "/blog/images/streetwear-gaming-2026.jpg.png",
+    "alt": "Streetwear gaming 2026 pixel art"
+  },
+  {
+    "slug": "gta6-drops-gaming-2026",
+    "title": "GTA VI, Switch 2, Metroid Prime 4 : les drops gaming de 2026",
+    "tag": "GAMING",
+    "date": "JUIN 2026",
+    "image": "/blog/images/gta6-drops-gaming-2026.png.png",
+    "alt": "GTA VI Switch 2 Metroid Prime 4 drops 2026",
+    "hero": true
+  },
+  {
+    "slug": "marque-gaming-francaise-pixel",
+    "title": "Pourquoi PIXEL est la marque gaming française que le streetwear attendait",
+    "tag": "MARQUE",
+    "date": "JUIN 2026",
+    "image": "/blog/images/marque-gaming-francaise-pixel.png.png",
+    "alt": "PIXEL marque gaming française"
+  },
+  {
+    "slug": "easter-eggs-jeux-video",
+    "title": "Les meilleurs easter eggs de jeux vidéo qu'on n'a jamais remarqués",
+    "tag": "CULTURE",
+    "date": "JUIN 2026",
+    "image": "/blog/images/easter-eggs-jeux-video.png.png",
+    "alt": "Easter eggs jeux vidéo Minecraft Zelda GTA"
+  },
+  {
+    "slug": "wink-culture-porter-sa-passion",
+    "title": "Wink culture : porter sa passion sans la crier",
+    "tag": "WINK CULTURE",
+    "date": "JUIN 2026",
+    "image": "/blog/images/wink-culture.png",
+    "alt": "Wink culture gaming porter sa passion"
+  },
+  {
+    "slug": "t-shirt-pixel-art-guide-style",
+    "title": "T-shirt pixel art : comment le porter sans ressembler à un cosplay",
+    "tag": "STYLE",
+    "date": "JUIN 2026",
+    "image": null,
+    "alt": "T-shirt pixel art guide style"
+  }
+]

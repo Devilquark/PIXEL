@@ -12,172 +12,91 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
 :root {
-  --black: #0A0A0A;
-  --white: #FFFFFF;
-  --red:   #FF2D55;
-  --gray:  #888;
-  --border: #e8e8e8;
-  --mono:  'Space Mono', monospace;
+  --black: #0A0A0A; --white: #FFFFFF; --red: #FF2D55;
+  --gray: #888; --border: #e8e8e8; --mono: 'Space Mono', monospace;
 }
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 body { font-family: var(--mono); background: var(--white); color: var(--black); }
 
-/* NAV */
 nav {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 1.2rem 3rem; border-bottom: 1px solid var(--border);
-  position: sticky; top: 0; background: var(--white); z-index: 100;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:1.2rem 3rem; border-bottom:1px solid var(--border);
+  position:sticky; top:0; background:var(--white); z-index:100;
 }
 .nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--black); }
-.nav-logo-sq { width:12px; height:12px; background: var(--black); }
-.nav-logo-txt { font-size: 1rem; font-weight: 700; letter-spacing: 0.3em; }
+.nav-logo-sq { width:12px; height:12px; background:var(--black); }
+.nav-logo-txt { font-size:1rem; font-weight:700; letter-spacing:0.3em; }
 .nav-links { display:flex; gap:2rem; }
-.nav-links a { color: var(--gray); font-size:0.55rem; letter-spacing:0.2em; text-decoration:none; text-transform:uppercase; transition:color 0.2s; }
-.nav-links a:hover, .nav-links a.active { color: var(--black); }
+.nav-links a { color:var(--gray); font-size:0.55rem; letter-spacing:0.2em; text-decoration:none; text-transform:uppercase; transition:color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color:var(--black); }
 
-/* BLOG HEADER */
-.blog-header {
-  padding: 3.5rem 3rem 2.5rem;
-  border-bottom: 1px solid var(--border);
-  max-width: 1200px; margin: 0 auto;
-}
-.blog-header-tag { font-size:0.5rem; color: var(--red); letter-spacing:0.3em; margin-bottom:0.7rem; }
-.blog-header h1 { font-size: clamp(1.6rem, 3.5vw, 2.5rem); letter-spacing:0.06em; line-height:1.15; }
-.blog-header p { color: var(--gray); font-size:0.6rem; line-height:1.8; margin-top:0.8rem; }
+.blog-header { padding:3.5rem 3rem 2.5rem; border-bottom:1px solid var(--border); max-width:1200px; margin:0 auto; }
+.blog-header-tag { font-size:0.5rem; color:var(--red); letter-spacing:0.3em; margin-bottom:0.7rem; }
+.blog-header h1 { font-size:clamp(1.6rem,3.5vw,2.5rem); letter-spacing:0.06em; line-height:1.15; }
+.blog-header p { color:var(--gray); font-size:0.6rem; line-height:1.8; margin-top:0.8rem; }
 
-/* 3-CARD GRID */
 .card-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  max-width: 1200px; margin: 0 auto;
-  border-left: 1px solid var(--border);
-  border-top: 1px solid var(--border);
+  display:grid; grid-template-columns:repeat(3,1fr); gap:0;
+  max-width:1200px; margin:0 auto;
+  border-left:1px solid var(--border); border-top:1px solid var(--border);
 }
 .mini-card {
-  border-right: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  text-decoration: none;
-  display: block;
-  color: var(--black);
-  transition: background 0.2s;
+  border-right:1px solid var(--border); border-bottom:1px solid var(--border);
+  text-decoration:none; display:block; color:var(--black); transition:background 0.2s;
 }
-.mini-card:hover { background: #fafafa; }
-.mini-card-img {
-  width: 100%;
-  aspect-ratio: 4/3;
-  overflow: hidden;
-  background: #f0f0f0;
-}
-.mini-card-img img {
-  width: 100%; height: 100%;
-  object-fit: cover; display: block;
-  transition: transform 0.35s;
-}
-.mini-card:hover .mini-card-img img { transform: scale(1.04); }
-.mini-card-img-placeholder {
-  width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
-  background: #f5f5f5;
-}
-.mini-card-body { padding: 1.4rem 1.6rem 1.8rem; }
-.mini-card-meta {
-  font-size: 0.48rem; color: var(--gray);
-  letter-spacing: 0.18em; text-transform: uppercase;
-  margin-bottom: 0.75rem;
-}
-.mini-card-meta span { color: var(--black); }
-.mini-card-title {
-  font-size: 0.78rem; font-weight: 700;
-  letter-spacing: 0.04em; line-height: 1.5;
-  text-transform: uppercase;
-}
+.mini-card:hover { background:#fafafa; }
+.mini-card-img { width:100%; aspect-ratio:4/3; overflow:hidden; background:#f0f0f0; }
+.mini-card-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.35s; }
+.mini-card:hover .mini-card-img img { transform:scale(1.04); }
+.mini-card-img-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#f5f5f5; }
+.mini-card-body { padding:1.4rem 1.6rem 1.8rem; }
+.mini-card-meta { font-size:0.48rem; color:var(--gray); letter-spacing:0.18em; text-transform:uppercase; margin-bottom:0.75rem; }
+.mini-card-meta span { color:var(--black); }
+.mini-card-title { font-size:0.78rem; font-weight:700; letter-spacing:0.04em; line-height:1.5; text-transform:uppercase; }
 
-/* HERO */
 .hero-article {
-  max-width: 1200px; margin: 0 auto;
-  border-left: 1px solid var(--border);
-  border-right: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  display: block; text-decoration: none;
-  position: relative; overflow: hidden;
+  max-width:1200px; margin:0 auto;
+  border-left:1px solid var(--border); border-right:1px solid var(--border); border-bottom:1px solid var(--border);
+  display:block; text-decoration:none; position:relative; overflow:hidden;
 }
-.hero-article-img {
-  width: 100%;
-  height: 55vh; min-height: 340px; max-height: 560px;
-  overflow: hidden; display: block;
-}
-.hero-article-img img {
-  width: 100%; height: 100%;
-  object-fit: cover; display: block;
-  transition: transform 0.5s;
-}
-.hero-article:hover .hero-article-img img { transform: scale(1.03); }
+.hero-article-img { width:100%; height:55vh; min-height:340px; max-height:560px; overflow:hidden; display:block; }
+.hero-article-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.5s; }
+.hero-article:hover .hero-article-img img { transform:scale(1.03); }
 .hero-overlay {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  padding: 3rem 2.5rem 2rem;
-  background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.45) 55%, transparent 100%);
+  position:absolute; bottom:0; left:0; right:0; padding:3rem 2.5rem 2rem;
+  background:linear-gradient(to top,rgba(0,0,0,0.82) 0%,rgba(0,0,0,0.45) 55%,transparent 100%);
 }
-.hero-meta {
-  font-size: 0.48rem; color: rgba(255,255,255,0.7);
-  letter-spacing: 0.22em; text-transform: uppercase;
-  margin-bottom: 0.8rem;
-}
-.hero-meta span { color: var(--red); }
-.hero-title {
-  font-size: clamp(1rem, 2.5vw, 1.7rem);
-  font-weight: 700; color: var(--white);
-  letter-spacing: 0.05em; line-height: 1.25;
-  text-transform: uppercase; max-width: 700px;
-}
+.hero-meta { font-size:0.48rem; color:rgba(255,255,255,0.7); letter-spacing:0.22em; text-transform:uppercase; margin-bottom:0.8rem; }
+.hero-meta span { color:var(--red); }
+.hero-title { font-size:clamp(1rem,2.5vw,1.7rem); font-weight:700; color:var(--white); letter-spacing:0.05em; line-height:1.25; text-transform:uppercase; max-width:700px; }
 
-/* PAGINATION */
 .pagination {
-  max-width: 1200px; margin: 0 auto;
-  padding: 2.5rem 3rem;
-  display: flex; align-items: center; gap: 1.5rem;
-  border-left: 1px solid var(--border);
-  border-right: 1px solid var(--border);
+  max-width:1200px; margin:0 auto; padding:2.5rem 3rem;
+  display:flex; align-items:center; gap:1.5rem;
+  border-left:1px solid var(--border); border-right:1px solid var(--border);
 }
-.pagination a, .pagination span {
-  font-size: 0.55rem; letter-spacing: 0.15em;
-  text-decoration: none; color: var(--gray);
-  transition: color 0.2s;
-}
-.pagination a:hover { color: var(--black); }
-.pagination .pg-active {
-  color: var(--black); font-weight: 700;
-  border-bottom: 1px solid var(--black);
-  padding-bottom: 2px;
-}
-.pagination .arrow { font-size: 0.7rem; color: var(--black); }
+.pagination a, .pagination span { font-size:0.55rem; letter-spacing:0.15em; text-decoration:none; color:var(--gray); transition:color 0.2s; }
+.pagination a:hover { color:var(--black); }
+.pg-active { color:var(--black) !important; font-weight:700; border-bottom:1px solid var(--black); padding-bottom:2px; }
+.arrow { font-size:0.7rem !important; color:var(--black) !important; }
 
-/* FOOTER */
-footer {
-  border-top: 1px solid var(--border);
-  padding: 2rem 3rem;
-  text-align:center;
-  font-size:0.55rem; color: #bbb; letter-spacing:0.2em;
-}
+footer { border-top:1px solid var(--border); padding:2rem 3rem; text-align:center; font-size:0.55rem; color:#bbb; letter-spacing:0.2em; }
 footer a { color:#888; text-decoration:none; }
-footer a:hover { color: var(--black); }
+footer a:hover { color:var(--black); }
 
-@media(max-width: 768px) {
-  .card-grid { grid-template-columns: 1fr; border-left: none; }
-  nav { padding: 1rem 1.5rem; }
-  .blog-header { padding: 2rem 1.5rem; }
-  .hero-overlay { padding: 2rem 1.5rem 1.5rem; }
-  .pagination { padding: 2rem 1.5rem; gap: 1rem; }
+@media(max-width:768px) {
+  .card-grid { grid-template-columns:1fr; border-left:none; }
+  nav { padding:1rem 1.5rem; }
+  .blog-header { padding:2rem 1.5rem; }
+  .hero-overlay { padding:2rem 1.5rem 1.5rem; }
+  .pagination { padding:2rem 1.5rem; gap:1rem; }
 }
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="/" class="nav-logo">
-    <div class="nav-logo-sq"></div>
-    <span class="nav-logo-txt">PIXEL</span>
-  </a>
+  <a href="/" class="nav-logo"><div class="nav-logo-sq"></div><span class="nav-logo-txt">PIXEL</span></a>
   <div class="nav-links">
     <a href="/home.html">Boutique</a>
     <a href="/blog/" class="active">Blog</a>
@@ -191,137 +110,122 @@ footer a:hover { color: var(--black); }
   <p>Le journal de la communauté PIXEL.</p>
 </div>
 
-<!-- 3 CARTES DU HAUT — les plus récents -->
-<div class="card-grid">
-
-  <!-- 1 — NOUVEAU -->
-  <a class="mini-card" href="/blog/meccha-chameleon-jeu-cache-cache.html">
-    <div class="mini-card-img">
-      <img src="/blog/images/meccha-chameleon.jpg" alt="Meccha Chameleon jeu cache-cache 2026" loading="lazy">
-    </div>
-    <div class="mini-card-body">
-      <div class="mini-card-meta"><span>// GAMING</span> &nbsp;|&nbsp; JUIN 2026</div>
-      <div class="mini-card-title">Meccha Chameleon : le jeu de cache-cache qui a vendu 10M de copies en 16 jours</div>
-    </div>
-  </a>
-
-  <!-- 2 -->
-  <a class="mini-card" href="/blog/resident-evil-requiem-easter-eggs.html">
-    <div class="mini-card-img">
-      <img src="/blog/images/resident-evil-requiem-easter-eggs.png.png" alt="Resident Evil Requiem easter eggs Leon" loading="lazy">
-    </div>
-    <div class="mini-card-body">
-      <div class="mini-card-meta"><span>// GAMING</span> &nbsp;|&nbsp; JUIN 2026</div>
-      <div class="mini-card-title">Les easter eggs de Resident Evil Requiem que tu as (probablement) ratés</div>
-    </div>
-  </a>
-
-  <!-- 3 -->
-  <a class="mini-card" href="/blog/streetwear-gaming-2026.html">
-    <div class="mini-card-img">
-      <img src="/blog/images/streetwear-gaming-2026.jpg.png" alt="Streetwear gaming 2026 pixel art" loading="lazy">
-    </div>
-    <div class="mini-card-body">
-      <div class="mini-card-meta"><span>// TENDANCES</span> &nbsp;|&nbsp; JUIN 2026</div>
-      <div class="mini-card-title">Streetwear Gaming 2026 : le pixel art revient plus fort que jamais</div>
-    </div>
-  </a>
-
-</div>
-
-<!-- HERO GTA VI -->
-<a class="hero-article" href="/blog/gta6-drops-gaming-2026.html">
-  <div class="hero-article-img">
-    <img src="/blog/images/gta6-drops-gaming-2026.png.png" alt="GTA VI Switch 2 Metroid Prime 4 drops 2026" loading="lazy">
-  </div>
-  <div class="hero-overlay">
-    <div class="hero-meta"><span>// GAMING</span> &nbsp;|&nbsp; JUIN 2026</div>
-    <div class="hero-title">GTA VI, Switch 2, Metroid Prime 4 : les drops gaming de 2026</div>
-  </div>
-</a>
-
-<!-- 3 CARTES DU BAS -->
-<div class="card-grid">
-
-  <!-- 4 -->
-  <a class="mini-card" href="/blog/marque-gaming-francaise-pixel.html">
-    <div class="mini-card-img">
-      <img src="/blog/images/marque-gaming-francaise-pixel.png.png" alt="PIXEL marque gaming française" loading="lazy">
-    </div>
-    <div class="mini-card-body">
-      <div class="mini-card-meta"><span>// MARQUE</span> &nbsp;|&nbsp; JUIN 2026</div>
-      <div class="mini-card-title">Pourquoi PIXEL est la marque gaming française que le streetwear attendait</div>
-    </div>
-  </a>
-
-  <!-- 5 -->
-  <a class="mini-card" href="/blog/easter-eggs-jeux-video.html">
-    <div class="mini-card-img">
-      <img src="/blog/images/easter-eggs-jeux-video.png.png" alt="Easter eggs jeux vidéo Minecraft Zelda GTA" loading="lazy">
-    </div>
-    <div class="mini-card-body">
-      <div class="mini-card-meta"><span>// CULTURE</span> &nbsp;|&nbsp; JUIN 2026</div>
-      <div class="mini-card-title">Les meilleurs easter eggs de jeux vidéo qu'on n'a jamais remarqués</div>
-    </div>
-  </a>
-
-  <!-- 6 -->
-  <a class="mini-card" href="/blog/wink-culture-porter-sa-passion.html">
-    <div class="mini-card-img">
-      <img src="/blog/images/wink-culture.png" alt="Wink culture gaming porter sa passion" loading="lazy">
-    </div>
-    <div class="mini-card-body">
-      <div class="mini-card-meta"><span>// WINK CULTURE</span> &nbsp;|&nbsp; JUIN 2026</div>
-      <div class="mini-card-title">Wink culture : porter sa passion sans la crier</div>
-    </div>
-  </a>
-
-</div>
-
-<!-- PAGINATION dynamique -->
+<div id="blog-content"></div>
 <div class="pagination" id="pagination"></div>
-
-<script>
-const ARTICLES_PER_PAGE = 7;
-const totalArticles = 8; // ← mettre à jour à chaque nouvel article
-const currentPage = 1;
-const totalPages = Math.ceil(totalArticles / ARTICLES_PER_PAGE);
-
-const pg = document.getElementById('pagination');
-if (totalPages <= 1) {
-  pg.style.display = 'none';
-} else {
-  let html = '';
-  const maxVisible = 5;
-
-  for (let i = 1; i <= totalPages; i++) {
-    if (
-      i === 1 || i === totalPages ||
-      (i >= currentPage - 1 && i <= currentPage + 1)
-    ) {
-      if (i === currentPage) {
-        html += `<span class="pg-active">${i}</span>`;
-      } else {
-        html += `<a href="#">${i}</a>`;
-      }
-    } else if (
-      i === currentPage - 2 || i === currentPage + 2
-    ) {
-      html += `<span>...</span>`;
-    }
-  }
-
-  if (currentPage < totalPages) {
-    html += `<a href="#" class="arrow">→</a>`;
-  }
-
-  pg.innerHTML = html;
-}
-</script>
 
 <footer>
   <p>PIXEL © 2026 &nbsp;//&nbsp; <a href="/">pixelwear.fr</a> &nbsp;//&nbsp; <a href="/adn.html">Notre ADN</a></p>
 </footer>
+
+<script>
+const PER_PAGE = 7;
+const HERO_POSITION = 3; // index 3 = 4e article = hero (0-indexé)
+
+function pageUrl(n) {
+  return n === 1 ? '/blog/' : '/blog/?page=' + n;
+}
+
+function getPage() {
+  const params = new URLSearchParams(window.location.search);
+  return parseInt(params.get('page') || '1', 10);
+}
+
+function placeholderSVG() {
+  return `<div class="mini-card-img-placeholder">
+    <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
+      <rect x="12" y="20" width="40" height="28" fill="#0A0A0A" opacity=".07"/>
+      <rect x="24" y="28" width="10" height="10" fill="#FF2D55" opacity=".2"/>
+    </svg>
+  </div>`;
+}
+
+function renderCard(article) {
+  const img = article.image
+    ? `<div class="mini-card-img"><img src="${article.image}" alt="${article.alt}" loading="lazy"></div>`
+    : `<div class="mini-card-img">${placeholderSVG()}</div>`;
+  return `<a class="mini-card" href="/blog/${article.slug}.html">
+    ${img}
+    <div class="mini-card-body">
+      <div class="mini-card-meta"><span>// ${article.tag}</span> &nbsp;|&nbsp; ${article.date}</div>
+      <div class="mini-card-title">${article.title}</div>
+    </div>
+  </a>`;
+}
+
+function renderHero(article) {
+  return `<a class="hero-article" href="/blog/${article.slug}.html">
+    <div class="hero-article-img">
+      <img src="${article.image}" alt="${article.alt}" loading="lazy">
+    </div>
+    <div class="hero-overlay">
+      <div class="hero-meta"><span>// ${article.tag}</span> &nbsp;|&nbsp; ${article.date}</div>
+      <div class="hero-title">${article.title}</div>
+    </div>
+  </a>`;
+}
+
+function renderPagination(currentPage, totalPages) {
+  const pg = document.getElementById('pagination');
+  if (totalPages <= 1) { pg.style.display = 'none'; return; }
+
+  let html = '';
+  if (currentPage > 1) html += `<a href="${pageUrl(currentPage - 1)}" class="arrow">←</a>`;
+
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+      html += i === currentPage
+        ? `<span class="pg-active">${i}</span>`
+        : `<a href="${pageUrl(i)}">${i}</a>`;
+    } else if (i === currentPage - 2 || i === currentPage + 2) {
+      html += `<span>...</span>`;
+    }
+  }
+
+  if (currentPage < totalPages) html += `<a href="${pageUrl(currentPage + 1)}" class="arrow">→</a>`;
+  pg.innerHTML = html;
+}
+
+fetch('/blog/articles.json')
+  .then(r => r.json())
+  .then(articles => {
+    const currentPage = getPage();
+    const totalPages = Math.ceil(articles.length / PER_PAGE);
+    const start = (currentPage - 1) * PER_PAGE;
+    const pageArticles = articles.slice(start, start + PER_PAGE);
+
+    // Trouver le hero sur cette page (soit marqué hero:true, soit position 4)
+    let heroIdx = pageArticles.findIndex(a => a.hero);
+    if (heroIdx === -1) heroIdx = Math.min(HERO_POSITION, pageArticles.length - 1);
+
+    const top = pageArticles.slice(0, heroIdx);
+    const heroArticle = pageArticles[heroIdx];
+    const bottom = pageArticles.slice(heroIdx + 1);
+
+    let html = '';
+
+    // Grille du haut
+    if (top.length > 0) {
+      html += `<div class="card-grid">${top.map(renderCard).join('')}</div>`;
+    }
+
+    // Hero (seulement si image disponible, sinon carte normale)
+    if (heroArticle) {
+      if (heroArticle.image) {
+        html += renderHero(heroArticle);
+      } else {
+        html += `<div class="card-grid">${renderCard(heroArticle)}</div>`;
+      }
+    }
+
+    // Grille du bas
+    if (bottom.length > 0) {
+      html += `<div class="card-grid">${bottom.map(renderCard).join('')}</div>`;
+    }
+
+    document.getElementById('blog-content').innerHTML = html;
+    renderPagination(currentPage, totalPages);
+  });
+</script>
 
 </body>
 </html>
