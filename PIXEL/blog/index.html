@@ -16,68 +16,83 @@
   --black: #0A0A0A;
   --white: #FFFFFF;
   --red:   #FF2D55;
-  --gray:  #444;
-  --dim:   #1a1a1a;
+  --gray:  #888;
+  --border: #e8e8e8;
   --mono:  'Space Mono', monospace;
 }
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: var(--mono); background: var(--black); color: var(--white); }
+body { font-family: var(--mono); background: var(--white); color: var(--black); }
 
 /* NAV */
 nav {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 1.2rem 3rem; border-bottom: 1px solid #1a1a1a;
-  position: sticky; top: 0; background: var(--black); z-index: 100;
+  padding: 1.2rem 3rem; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: var(--white); z-index: 100;
 }
-.nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
-.nav-logo-sq { width:12px; height:12px; background: var(--red); }
-.nav-logo-txt { color: var(--white); font-size: 1rem; font-weight: 700; letter-spacing: 0.3em; }
+.nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--black); }
+.nav-logo-sq { width:12px; height:12px; background: var(--black); }
+.nav-logo-txt { font-size: 1rem; font-weight: 700; letter-spacing: 0.3em; }
 .nav-links { display:flex; gap:2rem; }
-.nav-links a { color: #888; font-size:0.55rem; letter-spacing:0.2em; text-decoration:none; text-transform:uppercase; transition:color 0.2s; }
-.nav-links a:hover { color: var(--white); }
+.nav-links a { color: var(--gray); font-size:0.55rem; letter-spacing:0.2em; text-decoration:none; text-transform:uppercase; transition:color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--black); }
 
 /* HERO */
 .blog-hero {
-  padding: 5rem 3rem 3rem;
-  border-bottom: 1px solid #1a1a1a;
+  padding: 4rem 3rem 3rem;
+  border-bottom: 1px solid var(--border);
   max-width: 1100px; margin: 0 auto;
+  display:flex; align-items:flex-end; justify-content:space-between; gap:2rem;
 }
-.blog-hero-tag { font-size:0.6rem; color: var(--red); letter-spacing:0.3em; margin-bottom:1rem; }
-.blog-hero h1 { font-size: clamp(1.8rem, 4vw, 3rem); letter-spacing:0.1em; line-height:1.2; margin-bottom:1rem; }
-.blog-hero p { color: #888; font-size:0.7rem; line-height:1.8; max-width:560px; }
+.blog-hero-tag { font-size:0.55rem; color: var(--red); letter-spacing:0.3em; margin-bottom:0.8rem; }
+.blog-hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); letter-spacing:0.06em; line-height:1.15; }
+.blog-hero p { color: var(--gray); font-size:0.65rem; line-height:1.9; max-width:380px; }
 
 /* GRID */
 .blog-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1px;
-  background: #1a1a1a;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
   max-width: 1100px; margin: 0 auto;
+  border-left: 1px solid var(--border);
 }
 .blog-card {
-  background: var(--black);
-  padding: 2.5rem;
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
   text-decoration: none;
   display: block;
   transition: background 0.2s;
+  color: var(--black);
 }
-.blog-card:hover { background: #111; }
-.card-tag { font-size:0.5rem; color: var(--red); letter-spacing:0.25em; text-transform:uppercase; margin-bottom:1rem; }
-.card-title { font-size: 0.95rem; color: var(--white); letter-spacing:0.05em; line-height:1.5; margin-bottom:1rem; font-weight:700; }
-.card-excerpt { font-size:0.6rem; color: #666; line-height:1.8; margin-bottom:1.5rem; }
+.blog-card:hover { background: #f9f9f9; }
+.card-img { width:100%; aspect-ratio:16/9; overflow:hidden; background:#f0f0f0; }
+.card-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s; }
+.blog-card:hover .card-img img { transform:scale(1.03); }
+.card-img-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#f5f5f5; }
+.card-body { padding: 1.8rem; }
+.card-tag { font-size:0.48rem; color: var(--red); letter-spacing:0.25em; text-transform:uppercase; margin-bottom:0.8rem; }
+.card-title { font-size: 0.82rem; color: var(--black); letter-spacing:0.03em; line-height:1.55; margin-bottom:0.8rem; font-weight:700; }
+.card-excerpt { font-size:0.58rem; color: var(--gray); line-height:1.85; margin-bottom:1.2rem; }
 .card-meta { display:flex; justify-content:space-between; align-items:center; }
-.card-date { font-size:0.5rem; color: #444; letter-spacing:0.1em; }
-.card-read { font-size:0.5rem; color: var(--red); letter-spacing:0.15em; }
+.card-date { font-size:0.48rem; color: #bbb; letter-spacing:0.1em; }
+.card-read { font-size:0.48rem; color: var(--black); letter-spacing:0.15em; border-bottom:1px solid var(--black); padding-bottom:1px; }
+.blog-card:hover .card-read { color: var(--red); border-color: var(--red); }
+
+@media(max-width:768px){
+  .blog-grid { grid-template-columns: 1fr; border-left:none; }
+  .blog-hero { flex-direction:column; }
+  nav { padding: 1rem 1.5rem; }
+}
 
 /* FOOTER */
 footer {
-  border-top: 1px solid #1a1a1a;
+  border-top: 1px solid var(--border);
   padding: 2rem 3rem;
   text-align:center;
-  font-size:0.55rem; color: #333; letter-spacing:0.2em;
+  font-size:0.55rem; color: #bbb; letter-spacing:0.2em;
 }
-footer a { color:#444; text-decoration:none; }
-footer a:hover { color: var(--white); }
+footer a { color:#888; text-decoration:none; }
+footer a:hover { color: var(--black); }
 </style>
 </head>
 <body>
@@ -88,77 +103,85 @@ footer a:hover { color: var(--white); }
     <span class="nav-logo-txt">PIXEL</span>
   </a>
   <div class="nav-links">
-    <a href="/">Boutique</a>
-    <a href="/blog/" style="color:var(--white)">Blog</a>
+    <a href="/home.html">Boutique</a>
+    <a href="/blog/" class="active">Blog</a>
     <a href="/adn.html">ADN</a>
   </div>
 </nav>
 
 <div class="blog-hero">
-  <p class="blog-hero-tag">// PIXEL JOURNAL</p>
-  <h1>CULTURE<br>GAMING &amp; STYLE</h1>
+  <div>
+    <p class="blog-hero-tag">// PIXEL JOURNAL</p>
+    <h1>CULTURE<br>GAMING &amp; STYLE</h1>
+  </div>
   <p>Streetwear gaming, pixel art, coulisses des drops et regards sur la culture gaming. Le journal de la marque gaming française qui habille ceux qui savent.</p>
 </div>
 
 <div class="blog-grid">
 
   <a class="blog-card" href="/blog/streetwear-gaming-2026.html">
-    <div class="card-tag">// TENDANCES</div>
-    <div class="card-title">Streetwear Gaming 2026 : pourquoi le pixel art revient plus fort que jamais</div>
-    <div class="card-excerpt">La culture gaming s'impose dans la mode. Entre nostalgie 8-bit et drops exclusifs, le streetwear gaming devient le langage visuel d'une génération entière.</div>
-    <div class="card-meta">
-      <span class="card-date">JUIN 2026</span>
-      <span class="card-read">LIRE →</span>
-    </div>
-  </a>
-
-  <a class="blog-card" href="/blog/t-shirt-pixel-art-guide-style.html">
-    <div class="card-tag">// STYLE</div>
-    <div class="card-title">T-Shirt Pixel Art : comment le porter sans ressembler à un cosplay</div>
-    <div class="card-excerpt">Porter un t-shirt gaming en 2026, ça ne se fait plus avec un short cargo et des crocs. Guide de style PIXEL pour assumer la référence sans la crier.</div>
-    <div class="card-meta">
-      <span class="card-date">MAI 2026</span>
-      <span class="card-read">LIRE →</span>
+    <div class="card-img"><img src="/blog/images/streetwear-gaming-2026.jpg.png" alt="Streetwear gaming 2026 pixel art" loading="lazy"></div>
+    <div class="card-body">
+      <div class="card-tag">// TENDANCES</div>
+      <div class="card-title">Streetwear Gaming 2026 : le pixel art revient plus fort que jamais</div>
+      <div class="card-excerpt">La culture gaming s'impose dans la mode. Entre nostalgie 8-bit et drops exclusifs, le streetwear gaming devient le langage visuel d'une génération entière.</div>
+      <div class="card-meta"><span class="card-date">JUIN 2026</span><span class="card-read">LIRE →</span></div>
     </div>
   </a>
 
   <a class="blog-card" href="/blog/marque-gaming-francaise-pixel.html">
-    <div class="card-tag">// MARQUE</div>
-    <div class="card-title">Pourquoi PIXEL est la marque gaming française que le streetwear attendait</div>
-    <div class="card-excerpt">Pas de logo criard, pas de mascotte esport. PIXEL cache ses références : sous le col, à l'ourlet, dans les coutures. Pour ceux qui regardent vraiment.</div>
-    <div class="card-meta">
-      <span class="card-date">AVRIL 2026</span>
-      <span class="card-read">LIRE →</span>
+    <div class="card-img"><img src="/blog/images/marque-gaming-francaise-pixel.png.png" alt="PIXEL marque gaming française" loading="lazy"></div>
+    <div class="card-body">
+      <div class="card-tag">// MARQUE</div>
+      <div class="card-title">Pourquoi PIXEL est la marque gaming française que le streetwear attendait</div>
+      <div class="card-excerpt">Pas de logo criard, pas de mascotte esport. PIXEL cache ses références : sous le col, à l'ourlet, dans les coutures. Pour ceux qui regardent vraiment.</div>
+      <div class="card-meta"><span class="card-date">MAI 2026</span><span class="card-read">LIRE →</span></div>
     </div>
   </a>
 
   <a class="blog-card" href="/blog/gta6-drops-gaming-2026.html">
-    <div class="card-tag">// ACTUALITÉS GAMING</div>
-    <div class="card-title">GTA VI, Switch 2, Metroid Prime 4 : les drops gaming de 2026 qu'on attend tous</div>
-    <div class="card-excerpt">GTA VI en précommande, Nintendo Switch 2, Metroid Prime 4 : les sorties gaming les plus attendues de 2026 vues par la communauté PIXEL.</div>
-    <div class="card-meta">
-      <span class="card-date">JUIN 2026</span>
-      <span class="card-read">LIRE →</span>
-    </div>
-  </a>
-
-  <a class="blog-card" href="/blog/wink-culture-porter-sa-passion.html">
-    <div class="card-tag">// CULTURE</div>
-    <div class="card-title">Wink culture : porter sa passion sans la crier</div>
-    <div class="card-excerpt">La wink culture, c'est la complicité silencieuse entre ceux qui partagent les mêmes références. Porter sa passion gaming sans l'afficher — l'art du clin d'œil discret.</div>
-    <div class="card-meta">
-      <span class="card-date">JUIN 2026</span>
-      <span class="card-read">LIRE →</span>
+    <div class="card-img"><img src="/blog/images/gta6-drops-gaming-2026.png.png" alt="GTA VI Switch 2 Metroid drops 2026" loading="lazy"></div>
+    <div class="card-body">
+      <div class="card-tag">// GAMING</div>
+      <div class="card-title">GTA VI, Switch 2, Metroid Prime 4 : les drops gaming de 2026</div>
+      <div class="card-excerpt">GTA VI en précommande, Nintendo Switch 2, Metroid Prime 4 : les sorties gaming les plus attendues de 2026. L'actu gaming vue par la communauté PIXEL.</div>
+      <div class="card-meta"><span class="card-date">JUIN 2026</span><span class="card-read">LIRE →</span></div>
     </div>
   </a>
 
   <a class="blog-card" href="/blog/easter-eggs-jeux-video.html">
-    <div class="card-tag">// GAMING</div>
-    <div class="card-title">Les meilleurs easter eggs de jeux vidéo qu'on n'a jamais remarqués</div>
-    <div class="card-excerpt">De Minecraft à Dark Souls en passant par Zelda et GTA — les secrets les mieux cachés du jeu vidéo. Des easter eggs que même les speedrunners ont mis des années à trouver.</div>
-    <div class="card-meta">
-      <span class="card-date">JUIN 2026</span>
-      <span class="card-read">LIRE →</span>
+    <div class="card-img card-img-placeholder">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><rect x="20" y="8" width="8" height="8" fill="#0A0A0A" opacity=".15"/><rect x="28" y="16" width="8" height="8" fill="#FF2D55" opacity=".3"/><rect x="36" y="8" width="8" height="8" fill="#0A0A0A" opacity=".15"/><rect x="16" y="24" width="32" height="24" fill="#0A0A0A" opacity=".08"/></svg>
+    </div>
+    <div class="card-body">
+      <div class="card-tag">// CULTURE</div>
+      <div class="card-title">Les meilleurs easter eggs de jeux vidéo qu'on n'a jamais remarqués</div>
+      <div class="card-excerpt">Les easter eggs de jeux vidéo les plus fous et les mieux cachés : de Doom à GTA, en passant par Zelda et Dark Souls. Les secrets que seuls les vrais ont trouvés.</div>
+      <div class="card-meta"><span class="card-date">AVRIL 2026</span><span class="card-read">LIRE →</span></div>
+    </div>
+  </a>
+
+  <a class="blog-card" href="/blog/wink-culture-porter-sa-passion.html">
+    <div class="card-img card-img-placeholder">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><rect x="8" y="28" width="48" height="8" fill="#0A0A0A" opacity=".1"/><rect x="24" y="16" width="16" height="8" fill="#FF2D55" opacity=".25"/><rect x="16" y="40" width="32" height="8" fill="#0A0A0A" opacity=".08"/></svg>
+    </div>
+    <div class="card-body">
+      <div class="card-tag">// WINK CULTURE</div>
+      <div class="card-title">Wink culture : porter sa passion sans la crier</div>
+      <div class="card-excerpt">La complicité silencieuse entre ceux qui partagent les mêmes références. Porter sa passion gaming sans l'afficher — l'art du clin d'œil discret.</div>
+      <div class="card-meta"><span class="card-date">MARS 2026</span><span class="card-read">LIRE →</span></div>
+    </div>
+  </a>
+
+  <a class="blog-card" href="/blog/t-shirt-pixel-art-guide-style.html">
+    <div class="card-img card-img-placeholder">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><rect x="22" y="8" width="20" height="6" fill="#0A0A0A" opacity=".12"/><rect x="8" y="14" width="14" height="6" fill="#0A0A0A" opacity=".08"/><rect x="42" y="14" width="14" height="6" fill="#0A0A0A" opacity=".08"/><rect x="14" y="20" width="36" height="28" fill="#0A0A0A" opacity=".08"/><rect x="22" y="28" width="8" height="8" fill="#FF2D55" opacity=".3"/></svg>
+    </div>
+    <div class="card-body">
+      <div class="card-tag">// STYLE</div>
+      <div class="card-title">T-shirt pixel art : comment le porter sans ressembler à un cosplay</div>
+      <div class="card-excerpt">Porter un t-shirt gaming en 2026, ça ne se fait plus avec un short cargo et des crocs. Guide de style PIXEL pour assumer la référence sans la crier.</div>
+      <div class="card-meta"><span class="card-date">MARS 2026</span><span class="card-read">LIRE →</span></div>
     </div>
   </a>
 
