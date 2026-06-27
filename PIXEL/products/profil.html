@@ -527,8 +527,9 @@ nav {
   min-height:100px; position:relative;
 }
 .avatar-upload-card:hover { border-color:var(--red); }
-.avatar-upload-card.has-photo { border-style:solid; border-color:var(--red); }
-.avatar-upload-card.has-photo::after {
+.avatar-upload-card.has-photo { border-style:solid; }
+.avatar-upload-card.selected { border-color:var(--red); }
+.avatar-upload-card.selected::after {
   content:'✓'; position:absolute; top:4px; right:6px;
   font-size:0.5rem; color:var(--red); font-family:var(--mono);
 }
@@ -1400,8 +1401,10 @@ auth.onAuthStateChanged(async function(user) {
     if (data.bonus_cheatcode)      localStorage.setItem('pixel_bonus_cheatcode',      '1');
     if (data.avatar !== undefined) {
       localStorage.setItem('pixel_avatar', data.avatar);
-      currentAvatarIdx = data.avatar;
-      renderMainAvatar();
+      if (!customPhoto) {
+        currentAvatarIdx = data.avatar;
+        renderMainAvatar();
+      }
     }
     if (data.username) localStorage.setItem('pixel_username', data.username);
     renderProfile(user, data);
