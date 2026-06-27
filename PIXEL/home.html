@@ -1248,33 +1248,29 @@ footer {
     <a href="/blog/">Tous les articles</a>
   </div>
 
-  <div class="news-grid">
+  <div class="news-grid" id="news-grid"></div>
 
-    <a href="/blog/streetwear-gaming-2026.html" class="news-card">
-      <div class="news-thumb">
-        <img src="/blog/images/streetwear-gaming-2026.jpg.png" alt="Streetwear gaming 2026" style="width:100%;height:100%;object-fit:cover;"/>
-        <span class="news-thumb-label">// TENDANCES</span>
-      </div>
-      <p class="news-card-title">Streetwear gaming 2026 : le pixel art revient plus fort que jamais</p>
-    </a>
-
-    <a href="/blog/marque-gaming-francaise-pixel.html" class="news-card">
-      <div class="news-thumb">
-        <img src="/blog/images/marque-gaming-francaise-pixel.png.png" alt="PIXEL marque gaming française" style="width:100%;height:100%;object-fit:cover;"/>
-        <span class="news-thumb-label">// MARQUE</span>
-      </div>
-      <p class="news-card-title">Pourquoi PIXEL est la marque gaming française que le streetwear attendait</p>
-    </a>
-
-    <a href="/blog/gta6-drops-gaming-2026.html" class="news-card">
-      <div class="news-thumb">
-        <img src="/blog/images/gta6-drops-gaming-2026.png.png" alt="GTA VI Switch 2 Metroid 2026" style="width:100%;height:100%;object-fit:cover;"/>
-        <span class="news-thumb-label">// GAMING</span>
-      </div>
-      <p class="news-card-title">GTA VI, Switch 2, Metroid Prime 4 : les drops gaming de 2026</p>
-    </a>
-
-  </div>
+  <script>
+    fetch('/blog/articles.json')
+      .then(r => r.json())
+      .then(articles => {
+        const grid = document.getElementById('news-grid');
+        const top3 = articles.slice(0, 3);
+        grid.innerHTML = top3.map(a => {
+          const thumb = a.image
+            ? `<img src="${a.image}" alt="${a.alt || a.title}" style="width:100%;height:100%;object-fit:cover;"/>`
+            : `<div style="width:100%;height:100%;background:#111;display:flex;align-items:center;justify-content:center;"><span style="color:#333;font-size:0.6rem;letter-spacing:0.2em;">PIXEL</span></div>`;
+          return `
+            <a href="/blog/${a.slug}.html" class="news-card">
+              <div class="news-thumb">
+                ${thumb}
+                <span class="news-thumb-label">// ${a.tag}</span>
+              </div>
+              <p class="news-card-title">${a.title}</p>
+            </a>`;
+        }).join('');
+      });
+  </script>
 
 </section>
 
