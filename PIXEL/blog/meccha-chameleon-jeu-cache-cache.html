@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meccha Chameleon : le jeu de cache-cache qui a explosé en 16 jours | PIXEL Blog</title>
+<meta name="description" content="10 millions de copies en 16 jours. Meccha Chameleon est le phénomène indie de 2026. Histoire, gameplay, meilleures cachettes et tout ce qu'il faut savoir.">
+<meta property="og:title" content="Meccha Chameleon : le jeu de cache-cache qui a explosé en 16 jours">
+<meta property="og:description" content="10 millions de copies en 16 jours. Meccha Chameleon est le phénomène indie de 2026.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.pixelwear.fr/blog/meccha-chameleon-jeu-cache-cache.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Meccha Chameleon : le jeu de cache-cache qui a explosé en 16 jours",
+  "datePublished": "2026-06-27",
+  "author": {"@type": "Organization", "name": "PIXEL"},
+  "publisher": {"@type": "Organization", "name": "PIXEL", "url": "https://www.pixelwear.fr"}
+}
+</script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+:root {
+  --black: #0A0A0A;
+  --white: #FFFFFF;
+  --red:   #FF2D55;
+  --gray:  #888;
+  --border: #e8e8e8;
+  --mono:  'Space Mono', monospace;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--white); color: var(--black); }
+
+nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 3rem; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: var(--black); z-index: 100;
+}
+.nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--white); }
+.nav-logo-sq { width:12px; height:12px; background: var(--white); }
+.nav-logo-txt { font-size: 1rem; font-weight: 700; letter-spacing: 0.3em; }
+.nav-links { display:flex; gap:2rem; }
+.nav-links a { color: rgba(255,255,255,0.55); font-size:0.55rem; letter-spacing:0.2em; text-decoration:none; text-transform:uppercase; transition:color 0.2s; }
+.nav-links a:hover { color: var(--white); }
+
+.article-hero {
+  width: 100%; max-width: 1200px; margin: 0 auto;
+  height: 62vh; min-height: 380px; max-height: 600px;
+  overflow: hidden; display: block;
+}
+.article-hero img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.article-hero-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 40%, #16213e 70%, #0f3460 100%);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+
+article {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 5rem;
+}
+
+.article-tag {
+  font-size: 0.48rem; color: var(--red);
+  letter-spacing: 0.3em; text-transform: uppercase;
+  margin-bottom: 1.2rem;
+}
+.article-date {
+  font-size: 0.48rem; color: var(--gray);
+  letter-spacing: 0.2em; text-transform: uppercase;
+}
+
+h1 {
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  text-transform: uppercase;
+  margin: 1rem 0 2rem;
+}
+
+h2 {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 2.8rem 0 1rem;
+  color: var(--black);
+}
+
+p {
+  font-size: 0.7rem;
+  line-height: 2;
+  color: #444;
+  margin-bottom: 1.4rem;
+}
+
+strong { color: var(--black); }
+
+.highlight {
+  background: #f5f5f5;
+  border-left: 3px solid var(--black);
+  padding: 1.2rem 1.5rem;
+  margin: 2rem 0;
+  font-size: 0.68rem;
+  line-height: 1.9;
+  color: #333;
+}
+
+.stat-block {
+  display: flex;
+  gap: 2px;
+  margin: 2.5rem 0;
+}
+.stat-item {
+  flex: 1;
+  background: var(--black);
+  color: var(--white);
+  padding: 1.5rem 1.2rem;
+  text-align: center;
+}
+.stat-number {
+  font-size: 1.6rem;
+  font-weight: 700;
+  display: block;
+  letter-spacing: -0.02em;
+  color: var(--red);
+}
+.stat-label {
+  font-size: 0.42rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  margin-top: 0.4rem;
+  display: block;
+}
+
+.back-link {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.5rem; letter-spacing: 0.2em;
+  text-decoration: none; color: var(--gray);
+  text-transform: uppercase; margin-bottom: 2rem;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--black); }
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem 3rem;
+  text-align:center;
+  font-size:0.55rem; color: #bbb; letter-spacing:0.2em;
+}
+footer a { color:#888; text-decoration:none; }
+footer a:hover { color: var(--black); }
+
+@media(max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  article { padding: 2.5rem 1.5rem 4rem; }
+  .stat-block { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <div class="nav-logo-sq"></div>
+    <span class="nav-logo-txt">PIXEL</span>
+  </a>
+  <div class="nav-links">
+    <a href="/home.html">Boutique</a>
+    <a href="/blog/">Blog</a>
+    <a href="/adn.html">ADN</a>
+  </div>
+</nav>
+
+<div class="article-hero">
+  <div class="article-hero-placeholder">
+    <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:0.15">
+      <rect x="60" y="60" width="80" height="80" rx="40" fill="white"/>
+      <rect x="75" y="50" width="20" height="20" rx="10" fill="white"/>
+      <rect x="105" y="50" width="20" height="20" rx="10" fill="white"/>
+      <rect x="82" y="78" width="8" height="8" fill="#0A0A0A"/>
+      <rect x="110" y="78" width="8" height="8" fill="#0A0A0A"/>
+      <rect x="88" y="100" width="24" height="6" rx="3" fill="#0A0A0A"/>
+    </svg>
+  </div>
+</div>
+
+<article>
+
+  <a href="/blog/" class="back-link">← Retour au journal</a>
+
+  <p class="article-tag">// GAMING</p>
+  <p class="article-date">JUIN 2026</p>
+
+  <h1>Meccha Chameleon : le jeu de cache-cache qui a vendu 10 millions de copies en 16 jours</h1>
+
+  <p>Il y a des jeux qui mettent dix ans à trouver leur public. Et puis il y a Meccha Chameleon, sorti le 10 juin 2026, qui a mis seize jours pour atteindre les dix millions de copies vendues. Pas un AAA avec un budget marketing à neuf chiffres. Deux développeurs japonais. Deux mois de travail. Une idée simple. Et une déflagration mondiale.</p>
+
+  <p>Si tu n'en as pas encore entendu parler, c'est que tu étais probablement hors ligne. Parce que depuis sa sortie, Meccha Chameleon s'est infiltré partout — sur Twitch, sur X, sur YouTube, dans les streams de tes créateurs préférés — avec la discrétion d'un caméléon. Ironie du sort.</p>
+
+  <div class="stat-block">
+    <div class="stat-item">
+      <span class="stat-number">10M</span>
+      <span class="stat-label">Copies vendues en 16 jours</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">2</span>
+      <span class="stat-label">Développeurs</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">2</span>
+      <span class="stat-label">Mois de dev</span>
+    </div>
+  </div>
+
+  <h2>L'histoire : deux gars, deux mois, une idée</h2>
+
+  <p>Derrière Meccha Chameleon, il y a deux Japonais. Lemorion_1224, qui s'est occupé des maps et des modèles 3D, et Haganeiro, chargé du développement système. Ensemble, ils ont bossé pendant deux mois sur une idée qu'ils avaient eue en jouant aux modes cache-cache de Fortnite : et si tu pouvais vraiment te fondre dans le décor, à la manière d'un caméléon, en peignant littéralement ta propre peau aux couleurs de ton environnement ?</p>
+
+  <p>Le concept est né d'une frustration simple. Dans la plupart des jeux de cache-cache, tu te caches <em>derrière</em> quelque chose. Ici, tu te caches <em>en étant</em> quelque chose. Une étagère. Un tuyau. Un mur. Un tas de foin. C'est un glissement de perspective qui change tout, et visiblement, le monde entier attendait ça sans le savoir.</p>
+
+  <p>Avant même la sortie, un aperçu du gameplay posté sur X a cumulé six millions de vues. Le jeu est sorti le 10 juin. Deux millions de copies en cinq jours. Dix millions en seize. Lemorion_1224 et Haganeiro sont officiellement devenus deux des développeurs indés les plus suivis de 2026 — sans communiqué de presse, sans éditeur, sans rien d'autre que du bouche-à-oreille et une idée qui claque.</p>
+
+  <h2>Le concept : peinture, silence et paranoïa</h2>
+
+  <p>Le principe est d'une clarté brutale. Une partie oppose des cacheurs à un chasseur. Les cacheurs contrôlent un petit personnage blanc et informe — un genre de blob bipède sans expression — et doivent se fondre dans le décor avant que le chasseur les trouve. Pour ça, ils disposent d'un outil de pipette et d'un sélecteur de couleur : tu prélèves la teinte exacte d'une surface de ta map, tu te peins avec, et tu espères que tu ressembles suffisamment à un meuble pour passer inaperçu.</p>
+
+  <p>Le chasseur, lui, a le temps contre lui. Il doit débusquer tous les cacheurs avant la fin du compte à rebours. Et ce n'est pas si simple quand un joueur bien camouflé peut ressembler à une poignée de porte.</p>
+
+  <div class="highlight">
+    Le truc qui rend Meccha Chameleon addictif, c'est que la mécanique crée une tension que peu de jeux atteignent. Le chasseur scrute chaque centimètre d'une pièce en sachant que quelqu'un est là, caché en pleine vue. Les cacheurs, eux, sont paralysés par l'angoisse de bouger d'un pixel au mauvais moment. C'est du pur théâtre.
+  </div>
+
+  <p>Le jeu propose également un mode Infection : chaque cacheur découvert rejoint les chasseurs pour la suite de la partie, ce qui transforme la dynamique en une course contre une contamination de plus en plus rapide. Et pour compliquer encore les choses, une mécanique de sifflet permet aux cacheurs de provoquer le chasseur — au risque de révéler leur position.</p>
+
+  <h2>Les maps et où se planquer</h2>
+
+  <p>Meccha Chameleon tourne autour de plusieurs maps aux ambiances très différentes, chacune avec ses opportunités et ses pièges. La Hide-and-Seek Mansion mise sur les textures fines et répétitives — les étagères de cuisine sont particulièrement redoutables pour qui sait s'y fondre. L'Indoor Country joue sur les grands espaces avec de la végétation et des bottes de foin, ce qui favorise les blobs qui savent jouer avec les formes organiques plutôt que les couleurs franches.</p>
+
+  <p>Le Sewer est sans doute la map la plus technique : les tuyaux, les murs humides et les variations de lumière rendent la correspondance de couleur difficile, mais les bords de canalisation offrent des positions presque impossibles à détecter si tu es bien positionné. Les Backrooms — oui, ils ont fait une map Backrooms — récompensent ceux qui savent empiler leur personnage dans les amas de chaises et de mobilier défoncé. Et le Penguin Hotel, malgré ses couloirs larges et lumineux, cache des angles morts dans le mobilier du hall que beaucoup de chasseurs négligent systématiquement.</p>
+
+  <p>La règle qui s'applique à toutes les maps sans exception : choisis ton endroit avant de te peindre, pas l'inverse. L'erreur classique du débutant, c'est de se maquiller d'abord puis de courir vers un coin. Le chasseur te voit courir. Tu perds. Identifie ta surface, applique les teintes de base, ajoute les détails, puis arrête de bouger. Le moindre micro-mouvement est le signal le plus lisible qu'un chasseur expérimenté cherche.</p>
+
+  <p>L'autre astuce que peu de joueurs exploitent vraiment : la posture compte autant que la couleur. S'accroupir, s'allonger, plaquer son personnage contre un mur ou prendre une pose tordue qui casse la silhouette humaine — chaque map a sa géométrie dominante. Dans un espace bas avec des objets au sol, la position couchée est presque toujours la bonne. Dans une grande pièce vide, coller au mur latéralement disparaît bien mieux qu'on ne le pense.</p>
+
+  <h2>Sur quelles plateformes jouer ?</h2>
+
+  <p>Pour l'instant, Meccha Chameleon est exclusivement disponible sur PC, via Steam. Pas de version PS5, pas de Xbox, pas de Nintendo Switch pour le moment. Les développeurs n'ont pas annoncé de portage officiel — et vu la vitesse à laquelle le jeu a explosé, difficile de savoir ce que l'avenir réserve. Si tu veux y jouer aujourd'hui, c'est PC ou rien.</p>
+
+  <p>Ce qui, d'une certaine façon, renforce encore l'histoire. Deux personnes, deux mois, un fichier Steam, dix millions de joueurs. Dans un secteur qui adore les gros budgets et les sorties multi-plateformes simultanées, Meccha Chameleon est une gifle — la bonne sorte.</p>
+
+  <h2>Pourquoi ce jeu nous touche</h2>
+
+  <p>Chez PIXEL, on parle souvent de cette idée de se fondre dans le décor tout en portant quelque chose que les initiés reconnaissent. C'est exactement ce que Meccha Chameleon transforme en mécanique de jeu : l'art de passer inaperçu aux yeux de ceux qui ne savent pas regarder, et d'être immédiatement visible pour ceux qui savent chercher. Le caméléon comme philosophie. On ne pouvait pas ne pas en parler.</p>
+
+</article>
+
+<footer>
+  <p>PIXEL © 2026 &nbsp;//&nbsp; <a href="/">pixelwear.fr</a> &nbsp;//&nbsp; <a href="/blog/">Journal</a></p>
+</footer>
+
+</body>
+</html>
