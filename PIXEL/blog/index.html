@@ -278,15 +278,46 @@ footer a:hover { color: var(--black); }
 
 </div>
 
-<!-- PAGINATION -->
-<div class="pagination">
-  <span class="pg-active">1</span>
-  <a href="#">2</a>
-  <a href="#">3</a>
-  <span>...</span>
-  <a href="#">45</a>
-  <a href="#" class="arrow">→</a>
-</div>
+<!-- PAGINATION dynamique -->
+<div class="pagination" id="pagination"></div>
+
+<script>
+const ARTICLES_PER_PAGE = 7;
+const totalArticles = 8; // ← mettre à jour à chaque nouvel article
+const currentPage = 1;
+const totalPages = Math.ceil(totalArticles / ARTICLES_PER_PAGE);
+
+const pg = document.getElementById('pagination');
+if (totalPages <= 1) {
+  pg.style.display = 'none';
+} else {
+  let html = '';
+  const maxVisible = 5;
+
+  for (let i = 1; i <= totalPages; i++) {
+    if (
+      i === 1 || i === totalPages ||
+      (i >= currentPage - 1 && i <= currentPage + 1)
+    ) {
+      if (i === currentPage) {
+        html += `<span class="pg-active">${i}</span>`;
+      } else {
+        html += `<a href="#">${i}</a>`;
+      }
+    } else if (
+      i === currentPage - 2 || i === currentPage + 2
+    ) {
+      html += `<span>...</span>`;
+    }
+  }
+
+  if (currentPage < totalPages) {
+    html += `<a href="#" class="arrow">→</a>`;
+  }
+
+  pg.innerHTML = html;
+}
+</script>
 
 <footer>
   <p>PIXEL © 2026 &nbsp;//&nbsp; <a href="/">pixelwear.fr</a> &nbsp;//&nbsp; <a href="/adn.html">Notre ADN</a></p>
