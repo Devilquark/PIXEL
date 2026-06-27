@@ -55,6 +55,32 @@ canvas {
 @media (orientation: landscape) and (max-height: 500px) {
   #dpad { display:none; }
 }
+
+/* ─── XP POPUP ─────────────────────────────────────────────── */
+#xp-popup {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: #0A0A0A;
+  border: 1px solid #FF2D55;
+  color: #fff;
+  font-family: 'Courier New', monospace;
+  padding: 1rem 1.5rem;
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  min-width: 180px;
+}
+#xp-popup.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+#xp-popup.hiding {
+  opacity: 0;
+  transform: translateY(-24px);
+}
 </style>
 </head>
 <body>
@@ -64,6 +90,7 @@ canvas {
 </a>
 <a href="index.html" style="position:fixed;top:1.2rem;right:1.5rem;z-index:10;font-family:'Courier New',monospace;font-size:0.68rem;color:#f5f5f5;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#FF2D55'" onmouseout="this.style.color='#f5f5f5'">✕ QUITTER</a>
 <canvas id="c"></canvas>
+<div id="xp-popup"></div>
 <div id="dpad">
   <div class="de"></div>
   <div class="db" id="bu">↑</div>
@@ -316,9 +343,30 @@ function anyKey(){
   else if(gs==='go'){ gs='title'; }
 }
 
+// ── XP POPUP ──────────────────────────────────────────────────────────
+function showXPPopup(amount, label){
+  const el = document.getElementById('xp-popup');
+  el.innerHTML =
+    '<div style="color:#FF2D55;font-size:0.5rem;letter-spacing:0.25em;margin-bottom:0.4rem;">// XP GAINED</div>' +
+    '<div style="font-size:1.6rem;font-weight:700;letter-spacing:0.04em;">+' + amount + ' XP</div>' +
+    '<div style="font-size:0.5rem;color:#888;letter-spacing:0.18em;margin-top:0.3rem;text-transform:uppercase;">' + label + '</div>';
+  el.classList.remove('hiding');
+  el.classList.add('visible');
+  setTimeout(function(){
+    el.classList.remove('visible');
+    el.classList.add('hiding');
+  }, 3200);
+}
+
 // ── GAME ──────────────────────────────────────────────────────────────
 function startGame(){
   lv=0; lives=3; loadLv();
+  // +100 XP première fois que le jeu est trouvé
+  if (!localStorage.getItem('pixel_bonus_minigame_found')) {
+    localStorage.setItem('pixel_bonus_minigame_found', '1');
+    sessionStorage.setItem('pixel_xp_popup', JSON.stringify({amount:100, label:'GLITCH RUNNER DÉCOUVERT'}));
+    setTimeout(function(){ showXPPopup(100, 'GLITCH RUNNER DÉCOUVERT'); }, 600);
+  }
 }
 
 function loadLv(){
@@ -353,9 +401,11 @@ function nextLv(){
   lv++;
   if(lv>=LEVELS.length){
     gs='win';
-    // XP bonus mini-jeu une seule fois
+    // +200 XP première complétion
     if (!localStorage.getItem('pixel_bonus_minigame')) {
       localStorage.setItem('pixel_bonus_minigame', '1');
+      sessionStorage.setItem('pixel_xp_popup', JSON.stringify({amount:200, label:'GLITCH RUNNER TERMINÉ'}));
+      showXPPopup(200, 'GLITCH RUNNER TERMINÉ');
     }
     setTimeout(()=>{
       sessionStorage.setItem('pixel_cheatcode','1');

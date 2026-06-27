@@ -649,9 +649,22 @@ nav {
 }
 .forgot-pwd:hover { color:var(--red); }
 
+
+/* ─── XP POPUP ──────────────────────────────────────────────── */
+#xp-popup {
+  position: fixed; bottom: 2rem; right: 2rem;
+  background: #0A0A0A; border: 1px solid #FF2D55; color: #fff;
+  font-family: 'Space Mono', monospace; padding: 1rem 1.5rem;
+  z-index: 9999; opacity: 0; transform: translateY(16px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none; min-width: 180px;
+}
+#xp-popup.visible { opacity: 1; transform: translateY(0); }
+#xp-popup.hiding  { opacity: 0; transform: translateY(-24px); }
 </style>
 </head>
 <body>
+<div id="xp-popup"></div>
 
 <!-- ─── CURSOR ───────────────────────────────────────────────── -->
 <div id="cursor">
@@ -1179,7 +1192,8 @@ function computeTotalXP() {
     const items = Array.isArray(o.items) ? o.items : (o.name ? [o] : []);
     return s + items.reduce((sx, i) => sx + getProductXP(i), 0);
   }, 0);
-  if (localStorage.getItem('pixel_bonus_minigame'))  xp += 50;
+  if (localStorage.getItem('pixel_bonus_minigame_found')) xp += 100;
+  if (localStorage.getItem('pixel_bonus_minigame'))       xp += 200;
   if (localStorage.getItem('pixel_bonus_cheatcode')) xp += 100;
   return xp;
 }
@@ -1357,29 +1371,33 @@ auth.onAuthStateChanged(async function(user) {
   let snap;
   try { snap = await ref.get(); } catch(e) { snap = { exists: false }; }
 
-  const bonusMini  = localStorage.getItem('pixel_bonus_minigame');
-  const bonusCheat = localStorage.getItem('pixel_bonus_cheatcode');
+  const bonusMiniFound = localStorage.getItem('pixel_bonus_minigame_found');
+  const bonusMini      = localStorage.getItem('pixel_bonus_minigame');
+  const bonusCheat     = localStorage.getItem('pixel_bonus_cheatcode');
 
   if (!snap.exists) {
     const name = user.displayName
       ? user.displayName.toUpperCase().replace(/\s+/g,'_')
       : (user.email ? user.email.split('@')[0].toUpperCase() : 'PLAYER_01');
     await ref.set({
-      username:        name,
-      bonus_minigame:  !!bonusMini,
-      bonus_cheatcode: !!bonusCheat,
-      avatar:          parseInt(localStorage.getItem('pixel_avatar') || '0'),
-      createdAt:       firebase.firestore.FieldValue.serverTimestamp()
+      username:             name,
+      bonus_minigame_found: !!bonusMiniFound,
+      bonus_minigame:       !!bonusMini,
+      bonus_cheatcode:      !!bonusCheat,
+      avatar:               parseInt(localStorage.getItem('pixel_avatar') || '0'),
+      createdAt:            firebase.firestore.FieldValue.serverTimestamp()
     });
-    renderProfile(user, { username: name, bonus_minigame: !!bonusMini, bonus_cheatcode: !!bonusCheat });
+    renderProfile(user, { username: name, bonus_minigame_found: !!bonusMiniFound, bonus_minigame: !!bonusMini, bonus_cheatcode: !!bonusCheat });
   } else {
     const data = snap.data();
     const updates = {};
-    if (bonusMini  && !data.bonus_minigame)  updates.bonus_minigame  = true;
-    if (bonusCheat && !data.bonus_cheatcode) updates.bonus_cheatcode = true;
+    if (bonusMiniFound && !data.bonus_minigame_found) updates.bonus_minigame_found = true;
+    if (bonusMini      && !data.bonus_minigame)       updates.bonus_minigame       = true;
+    if (bonusCheat     && !data.bonus_cheatcode)      updates.bonus_cheatcode      = true;
     if (Object.keys(updates).length) await ref.update(updates);
-    if (data.bonus_minigame)  localStorage.setItem('pixel_bonus_minigame',  '1');
-    if (data.bonus_cheatcode) localStorage.setItem('pixel_bonus_cheatcode', '1');
+    if (data.bonus_minigame_found) localStorage.setItem('pixel_bonus_minigame_found', '1');
+    if (data.bonus_minigame)       localStorage.setItem('pixel_bonus_minigame',       '1');
+    if (data.bonus_cheatcode)      localStorage.setItem('pixel_bonus_cheatcode',      '1');
     if (data.avatar !== undefined) {
       localStorage.setItem('pixel_avatar', data.avatar);
       currentAvatarIdx = data.avatar;
@@ -1422,6 +1440,33 @@ function editPass() {
 }
 
 function editNotif() { alert('Gestion des notifications bientôt disponible.'); }
+
+/* ─── XP POPUP ──────────────────────────────────────────────── */
+function showXPPopup(amount, label) {
+  const el = document.getElementById('xp-popup');
+  el.innerHTML =
+    '<div style="color:#FF2D55;font-size:0.5rem;letter-spacing:0.25em;margin-bottom:0.4rem;">// XP GAINED</div>' +
+    '<div style="font-size:1.6rem;font-weight:700;letter-spacing:0.04em;">+' + amount + ' XP</div>' +
+    '<div style="font-size:0.5rem;color:#888;letter-spacing:0.18em;margin-top:0.3rem;text-transform:uppercase;">' + label + '</div>';
+  el.classList.remove('hiding');
+  el.classList.add('visible');
+  setTimeout(function() {
+    el.classList.remove('visible');
+    el.classList.add('hiding');
+  }, 3200);
+}
+
+// Affiche le popup XP en attente (posé par glitch-game.html via sessionStorage)
+window.addEventListener('DOMContentLoaded', function() {
+  const pending = sessionStorage.getItem('pixel_xp_popup');
+  if (pending) {
+    try {
+      const p = JSON.parse(pending);
+      sessionStorage.removeItem('pixel_xp_popup');
+      setTimeout(function() { showXPPopup(p.amount, p.label); }, 800);
+    } catch(e) {}
+  }
+});
 
 </script>
 </body>
