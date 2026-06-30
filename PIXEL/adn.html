@@ -89,21 +89,13 @@ nav {
 }
 .nav-links a:hover, .nav-links a.active { color:var(--black); }
 .nav-right { display:flex; gap:0.5rem; align-items:center; }
-.cart-btn {
-  display:flex; align-items:center; gap:0.5rem;
-  background:var(--black); color:var(--white);
-  padding:0.5rem 1rem;
-  font-family:var(--mono); font-size:0.65rem;
-  text-transform:uppercase; letter-spacing:0.1em;
-  transition:background 0.2s;
-}
-.cart-btn:hover { background:#333; }
-.cart-count {
-  background:var(--red); color:white;
-  border-radius:50%; width:16px; height:16px;
-  display:inline-flex; align-items:center; justify-content:center;
-  font-size:0.6rem;
-}
+.login-btn { width:38px; height:38px; background:transparent; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; transition:all 0.2s; text-decoration:none; position:relative; }
+.login-btn:hover { background:var(--black); border-color:var(--black); }
+.login-btn:hover svg rect { fill:var(--white); }
+.login-btn svg { width:18px; height:18px; }
+.login-btn .online-dot { display:none; position:absolute; top:4px; right:4px; width:8px; height:8px; background:#00C853; border-radius:50%; animation:pulse-dot 2s ease-in-out infinite; }
+.login-btn.connected .online-dot { display:block; }
+@keyframes pulse-dot { 0%,100% { box-shadow:0 0 0 0 rgba(0,200,83,0.5); } 50% { box-shadow:0 0 0 4px rgba(0,200,83,0); } }
 @media(max-width:768px) {
   nav { padding:0 1.2rem; }
   .nav-links { display:none; }
@@ -339,20 +331,30 @@ footer {
     PIXEL
   </a>
   <div class="nav-links">
-    <a href="/#collections">Collections</a>
-    <a href="/#boutique">T-Shirts</a>
-    <a href="/#boutique">Pulls</a>
+    <a href="/home.html#collections">Collections</a>
+    <a href="/home.html#boutique">T-Shirts</a>
+    <a href="/home.html#boutique">Pulls</a>
+    <a href="/blog/">Blog</a>
     <a href="/adn.html" class="active">ADN</a>
   </div>
   <div class="nav-right">
-    <a href="/profil.html" style="font-family:var(--mono);font-size:0.65rem;letter-spacing:0.12em;color:var(--gray);text-transform:uppercase;transition:color 0.2s;margin-right:0.5rem;" onmouseover="this.style.color='#0A0A0A'" onmouseout="this.style.color='#888'">PROFIL</a>
-    <button class="cart-btn" onclick="window.location='/'">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <rect x="1" y="4" width="12" height="9" stroke="white" stroke-width="1.2"/>
-        <path d="M4.5 4V3a2.5 2.5 0 015 0v1" stroke="white" stroke-width="1.2"/>
+    <a href="/profil.html" class="login-btn" id="profil-btn" title="Mon profil">
+      <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="6" y="1" width="6" height="1" fill="var(--black)"/>
+        <rect x="5" y="2" width="8" height="1" fill="var(--black)"/>
+        <rect x="5" y="3" width="8" height="3" fill="var(--black)"/>
+        <rect x="5" y="6" width="8" height="1" fill="var(--black)"/>
+        <rect x="6" y="7" width="6" height="1" fill="var(--black)"/>
+        <rect x="3" y="9"  width="12" height="1" fill="var(--black)"/>
+        <rect x="2" y="10" width="14" height="1" fill="var(--black)"/>
+        <rect x="2" y="11" width="14" height="4" fill="var(--black)"/>
+        <rect x="2" y="15" width="5"  height="1" fill="var(--black)"/>
+        <rect x="11" y="15" width="5" height="1" fill="var(--black)"/>
+        <rect x="2" y="16" width="4"  height="1" fill="var(--black)"/>
+        <rect x="12" y="16" width="4" height="1" fill="var(--black)"/>
       </svg>
-      Panier <span class="cart-count" id="cart-count">0</span>
-    </button>
+      <span class="online-dot"></span>
+    </a>
   </div>
 </nav>
 

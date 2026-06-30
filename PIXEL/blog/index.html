@@ -19,16 +19,30 @@
 body { font-family: var(--mono); background: var(--white); color: var(--black); }
 
 nav {
+  position:sticky; top:0; z-index:500;
+  background:rgba(255,255,255,0.95); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
   display:flex; align-items:center; justify-content:space-between;
-  padding:1.2rem 3rem; border-bottom:1px solid var(--border);
-  position:sticky; top:0; background:var(--white); z-index:100;
+  padding:0 2.5rem; height:60px;
 }
-.nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--black); }
-.nav-logo-sq { width:12px; height:12px; background:var(--black); }
-.nav-logo-txt { font-size:1rem; font-weight:700; letter-spacing:0.3em; }
-.nav-links { display:flex; gap:2rem; }
-.nav-links a { color:var(--gray); font-size:0.55rem; letter-spacing:0.2em; text-decoration:none; text-transform:uppercase; transition:color 0.2s; }
+.nav-logo {
+  display:flex; align-items:center; gap:10px;
+  font-family:var(--mono); font-weight:700; font-size:1rem;
+  text-decoration:none; color:var(--black);
+}
+.nav-sq { width:16px; height:16px; background:var(--black); flex-shrink:0; transition:background 0.2s; }
+.nav-logo:hover .nav-sq { background:var(--red); }
+.nav-links { display:flex; gap:2rem; align-items:center; }
+.nav-links a { font-family:var(--mono); font-size:0.7rem; text-transform:uppercase; letter-spacing:0.12em; color:var(--gray); transition:color 0.2s; text-decoration:none; }
 .nav-links a:hover, .nav-links a.active { color:var(--black); }
+.nav-right { display:flex; gap:0.5rem; align-items:center; }
+.login-btn { width:38px; height:38px; background:transparent; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; transition:all 0.2s; text-decoration:none; position:relative; }
+.login-btn:hover { background:var(--black); border-color:var(--black); }
+.login-btn:hover svg rect { fill:var(--white); }
+.login-btn svg { width:18px; height:18px; }
+.login-btn .online-dot { display:none; position:absolute; top:4px; right:4px; width:8px; height:8px; background:#00C853; border-radius:50%; animation:pulse-dot 2s ease-in-out infinite; }
+.login-btn.connected .online-dot { display:block; }
+@keyframes pulse-dot { 0%,100% { box-shadow:0 0 0 0 rgba(0,200,83,0.5); } 50% { box-shadow:0 0 0 4px rgba(0,200,83,0); } }
 
 .blog-header { padding:3.5rem 3rem 2.5rem; border-bottom:1px solid var(--border); max-width:1200px; margin:0 auto; }
 .blog-header-tag { font-size:0.5rem; color:var(--red); letter-spacing:0.3em; margin-bottom:0.7rem; }
@@ -96,11 +110,35 @@ footer a:hover { color:var(--black); }
 <body>
 
 <nav>
-  <a href="/" class="nav-logo"><div class="nav-logo-sq"></div><span class="nav-logo-txt">PIXEL</span></a>
+  <a href="/" class="nav-logo">
+    <div class="nav-sq"></div>
+    PIXEL
+  </a>
   <div class="nav-links">
-    <a href="/home.html">Boutique</a>
+    <a href="/home.html#collections">Collections</a>
+    <a href="/home.html#boutique">T-Shirts</a>
+    <a href="/home.html#boutique">Pulls</a>
     <a href="/blog/" class="active">Blog</a>
     <a href="/adn.html">ADN</a>
+  </div>
+  <div class="nav-right">
+    <a href="/profil.html" class="login-btn" id="profil-btn" title="Mon profil">
+      <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="6" y="1" width="6" height="1" fill="var(--black)"/>
+        <rect x="5" y="2" width="8" height="1" fill="var(--black)"/>
+        <rect x="5" y="3" width="8" height="3" fill="var(--black)"/>
+        <rect x="5" y="6" width="8" height="1" fill="var(--black)"/>
+        <rect x="6" y="7" width="6" height="1" fill="var(--black)"/>
+        <rect x="3" y="9"  width="12" height="1" fill="var(--black)"/>
+        <rect x="2" y="10" width="14" height="1" fill="var(--black)"/>
+        <rect x="2" y="11" width="14" height="4" fill="var(--black)"/>
+        <rect x="2" y="15" width="5"  height="1" fill="var(--black)"/>
+        <rect x="11" y="15" width="5" height="1" fill="var(--black)"/>
+        <rect x="2" y="16" width="4"  height="1" fill="var(--black)"/>
+        <rect x="12" y="16" width="4" height="1" fill="var(--black)"/>
+      </svg>
+      <span class="online-dot"></span>
+    </a>
   </div>
 </nav>
 
